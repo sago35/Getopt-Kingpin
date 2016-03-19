@@ -16,6 +16,10 @@ has name => (
     is => 'rw',
 );
 
+has short_name => (
+    is => 'rw',
+);
+
 has description => (
     is => 'rw',
 );
@@ -46,6 +50,15 @@ sub int {
     my ($type) = @_;
 
     $self->type("int");
+
+    return $self;
+}
+
+sub short {
+    my $self = shift;
+    my ($short_name) = @_;
+
+    $self->short_name($short_name);
 
     return $self;
 }

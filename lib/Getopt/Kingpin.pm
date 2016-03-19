@@ -41,10 +41,25 @@ sub _parse {
     };
     while (scalar @argv > 0) {
         my $arg = shift @argv;
-        if ($arg =~ /^--(?<name>\S+)$/) {
-            delete $required_but_not_found->{$+{name}} if exists $required_but_not_found->{$+{name}};
+        if ($arg =~ /^(?:--(?<name>\S+)|-(?<short_name>\S+))$/) {
+            my $name;
+            if (defined $+{name}) {
+                $name = $+{name};
+            } elsif (defined $+{short_name}) {
+                foreach my $f (values %{$self->flags}) {
+                    if (defined $f->short_name and $f->short_name eq $+{short_name}) {
+                        $name = $f->name;
+                    }
+                }
+                if (not defined $name) {
+                    croak sprintf "option -%s is not found", $+{short_name};
+                }
+            } else {
+                croak;
+            }
+            delete $required_but_not_found->{$name} if exists $required_but_not_found->{$name};
             my $value = shift @argv;
-            my $v = $self->flags->{$+{name}};
+            my $v = $self->flags->{$name};
             if ($v->type eq "string") {
                 $v->value($value);
             } elsif ($v->type eq "int") {
