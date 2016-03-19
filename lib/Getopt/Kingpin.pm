@@ -16,6 +16,7 @@ sub flag {
     my $self = shift;
     my ($name, $description) = @_;
     $self->flags({
+            (map {$_ => $self->flags->{$_}} keys %{$self->flags}),
             $name => Getopt::Kingpin::Flag->new(
                 name        => $name,
                 description => $description,
