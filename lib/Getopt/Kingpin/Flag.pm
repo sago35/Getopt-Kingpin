@@ -29,9 +29,8 @@ has type => (
 
 sub string {
     my $self = shift;
-    my ($type) = @_;
 
-    $self->type($type);
+    $self->type("string");
 
     return $self;
 }
