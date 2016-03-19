@@ -72,6 +72,17 @@ sub default {
     return $self;
 }
 
+sub override_default_from_envar {
+    my $self = shift;
+    my ($envar_name) = @_;
+
+    if (exists $ENV{$envar_name}) {
+        $self->value($ENV{$envar_name});
+    }
+
+    return $self;
+}
+
 sub required {
     my $self = shift;
     $self->_required(1);
