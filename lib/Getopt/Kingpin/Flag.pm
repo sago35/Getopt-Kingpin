@@ -8,6 +8,7 @@ our $VERSION = "0.01";
 
 use overload (
     '""' => sub {$_[0]->value},
+    '==' => sub {$_[0]->value},
     fallback => 1,
 );
 
@@ -31,6 +32,15 @@ sub string {
     my $self = shift;
 
     $self->type("string");
+
+    return $self;
+}
+
+sub int {
+    my $self = shift;
+    my ($type) = @_;
+
+    $self->type("int");
 
     return $self;
 }

@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Moo;
 use Getopt::Kingpin::Flag;
+use Carp;
 
 our $VERSION = "0.01";
 
@@ -39,7 +40,16 @@ sub _parse {
         my $arg = shift @argv;
         if ($arg =~ /^--(?<name>\S+)$/) {
             my $value = shift @argv;
-            $self->flags->{$+{name}}->value($value);
+            my $v = $self->flags->{$+{name}};
+            if ($v->type eq "string") {
+                $v->value($value);
+            } elsif ($v->type eq "int") {
+                if ($value =~ /^-?[0-9]+$/) {
+                    $v->value($value);
+                } else {
+                    croak "int parse error";
+                }
+            }
         }
     }
 }
