@@ -6,6 +6,11 @@ use Moo;
 
 our $VERSION = "0.01";
 
+use overload (
+    '""' => sub {$_[0]->value},
+    fallback => 1,
+);
+
 has name => (
     is => 'rw',
 );
@@ -27,6 +32,8 @@ sub string {
     my ($type) = @_;
 
     $self->type($type);
+
+    return $self;
 }
 
 1;
