@@ -2,9 +2,54 @@ package Getopt::Kingpin;
 use 5.008001;
 use strict;
 use warnings;
+use Moo;
+use Getopt::Kingpin::Flag;
 
 our $VERSION = "0.01";
 
+has flags => (
+    is => 'rw',
+    default => sub {return {}},
+);
+
+sub flag {
+    my $self = shift;
+    my ($name, $description) = @_;
+    $self->flags({
+            $name => Getopt::Kingpin::Flag->new(
+                name        => $name,
+                description => $description,
+            ),
+        });
+    return $self->flags->{$name};
+}
+
+sub parse {
+    my $self = shift;
+    my @_argv = @ARGV;
+    $self->_parse(@_argv);
+}
+
+sub _parse {
+    my $self = shift;
+    my @argv = @_;
+
+    while (scalar @argv > 0) {
+        my $arg = shift @argv;
+        if ($arg =~ /^--(?<name>\S+)$/) {
+            my $value = shift @argv;
+            $self->flags->{$+{name}}->value($value);
+        }
+    }
+}
+
+sub get {
+    my $self = shift;
+    my ($target) = @_;
+    my $t = $self->flags->{$target};
+
+    return $t->value;
+}
 
 
 1;
