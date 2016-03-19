@@ -28,6 +28,11 @@ has type => (
     is => 'rw',
 );
 
+has _required => (
+    is => 'rw',
+    default => sub {0},
+);
+
 sub string {
     my $self = shift;
 
@@ -41,6 +46,13 @@ sub int {
     my ($type) = @_;
 
     $self->type("int");
+
+    return $self;
+}
+
+sub required {
+    my $self = shift;
+    $self->_required(1);
 
     return $self;
 }

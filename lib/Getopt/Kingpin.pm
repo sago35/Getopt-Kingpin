@@ -36,9 +36,13 @@ sub _parse {
     my $self = shift;
     my @argv = @_;
 
+    my $required_but_not_found = {
+        map {$_->name => $_} grep {$_->_required} values %{$self->flags}
+    };
     while (scalar @argv > 0) {
         my $arg = shift @argv;
         if ($arg =~ /^--(?<name>\S+)$/) {
+            delete $required_but_not_found->{$+{name}} if exists $required_but_not_found->{$+{name}};
             my $value = shift @argv;
             my $v = $self->flags->{$+{name}};
             if ($v->type eq "string") {
@@ -51,6 +55,9 @@ sub _parse {
                 }
             }
         }
+    }
+    foreach my $r (values %$required_but_not_found) {
+        croak sprintf "required flag --%s not provided", $r->name;
     }
 }
 
