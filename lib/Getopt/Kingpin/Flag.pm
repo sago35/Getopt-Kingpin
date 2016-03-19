@@ -7,7 +7,7 @@ use Moo;
 our $VERSION = "0.01";
 
 use overload (
-    '""' => sub {$_[0]->value},
+    '""' => sub {$_[0]->value // ""},
     '==' => sub {$_[0]->value},
     fallback => 1,
 );
@@ -59,6 +59,15 @@ sub short {
     my ($short_name) = @_;
 
     $self->short_name($short_name);
+
+    return $self;
+}
+
+sub default {
+    my $self = shift;
+    my ($default) = @_;
+
+    $self->value($default);
 
     return $self;
 }
