@@ -41,7 +41,7 @@ sub _parse {
     };
     while (scalar @argv > 0) {
         my $arg = shift @argv;
-        if ($arg =~ /^(?:--(?<name>\S+)|-(?<short_name>\S+))$/) {
+        if ($arg =~ /^(?:--(?<name>\S+?)(?<equal>=(?<value>\S+))?|-(?<short_name>\S+))$/) {
             my $name;
             if (defined $+{name}) {
                 $name = $+{name};
@@ -58,7 +58,7 @@ sub _parse {
                 croak;
             }
             delete $required_but_not_found->{$name} if exists $required_but_not_found->{$name};
-            my $value = shift @argv;
+            my $value = defined $+{equal} ? $+{value} : shift @argv;
             my $v = $self->flags->{$name};
             if ($v->type eq "string") {
                 $v->value($value);
