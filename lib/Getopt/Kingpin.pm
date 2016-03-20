@@ -101,6 +101,7 @@ Getopt::Kingpin - command line options parser (like golang kingpin)
     my $name = $kingpin->flag('name', 'set name')->string();
     $kingpin->parse;
 
+    # perl sample.pl --name hello
     printf "name : %s\n", $name;
 
 =head1 DESCRIPTION
