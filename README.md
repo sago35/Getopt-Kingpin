@@ -1,14 +1,43 @@
 # NAME
 
-Getopt::Kingpin - It's new $module
+Getopt::Kingpin - command line options parser (like golang kingpin)
 
 # SYNOPSIS
 
     use Getopt::Kingpin;
+    my $kingpin = Getopt::Kingpin->new;
+    my $name = $kingpin->flag('name', 'set name')->string();
+    $kingpin->parse;
+
+    printf "name : %s\n", $name;
 
 # DESCRIPTION
 
-Getopt::Kingpin is ...
+Getopt::Kingpin は、コマンドラインオプションを扱うモジュールです。
+Golangのkingpinのperl版になるべく作成しています。
+https://github.com/alecthomas/kingpin
+
+# METHOD
+
+## new()
+
+Create a parser object.
+
+    my $kingpin = Getopt::Kingpin->new;
+    my $name = $kingpin->flag('name', 'set name')->string();
+    $kingpin->parse;
+
+## flag($name, $description)
+
+Add and return Getopt::Kingpin::Flag object.
+
+## parse()
+
+Parse @ARGV.
+
+## get($name)
+
+Get value of $name.
 
 # LICENSE
 
