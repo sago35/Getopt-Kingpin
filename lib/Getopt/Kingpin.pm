@@ -81,7 +81,7 @@ sub get {
     my ($target) = @_;
     my $t = $self->flags->{$target};
 
-    return $t->value;
+    return $t;
 }
 
 
@@ -130,7 +130,7 @@ Parse @ARGV.
 
 =head2 get($name)
 
-Get value of $name.
+Get Getopt::Kingpin::Flag instance of $name.
 
 =head1 LICENSE
 
