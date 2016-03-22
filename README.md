@@ -38,7 +38,7 @@ Parse @ARGV.
 
 ## get($name)
 
-Get value of $name.
+Get Getopt::Kingpin::Flag instance of $name.
 
 # LICENSE
 
