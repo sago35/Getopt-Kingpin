@@ -41,7 +41,7 @@ sub _parse {
     };
     while (scalar @argv > 0) {
         my $arg = shift @argv;
-        if ($arg =~ /^(?:--(?<name>\S+?)(?<equal>=(?<value>\S+))?|-(?<short_name>\S+))$/) {
+        if ($arg =~ /^(?:--(?<no>no-)?(?<name>\S+?)(?<equal>=(?<value>\S+))?|-(?<short_name>\S+))$/) {
             my $name;
             if (defined $+{name}) {
                 $name = $+{name};
@@ -58,8 +58,16 @@ sub _parse {
                 croak;
             }
             delete $required_but_not_found->{$name} if exists $required_but_not_found->{$name};
-            my $value = defined $+{equal} ? $+{value} : shift @argv;
             my $v = $self->flags->{$name};
+
+            my $value;
+            if ($v->type eq "bool") {
+                $value = defined $+{no} ? 0 : 1;
+            } elsif (defined $+{equal}) {
+                $value = $+{value}
+            } else {
+                $value = shift @argv;
+            }
             if ($v->type eq "string") {
                 $v->value($value);
             } elsif ($v->type eq "int") {
@@ -68,6 +76,8 @@ sub _parse {
                 } else {
                     croak "int parse error";
                 }
+            } elsif ($v->type eq "bool") {
+                $v->value($value);
             }
         }
     }

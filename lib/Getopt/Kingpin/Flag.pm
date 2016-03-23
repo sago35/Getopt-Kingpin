@@ -54,6 +54,14 @@ sub int {
     return $self;
 }
 
+sub bool {
+    my $self = shift;
+
+    $self->type("bool");
+
+    return $self;
+}
+
 sub short {
     my $self = shift;
     my ($short_name) = @_;
@@ -125,6 +133,10 @@ Create Getopt::Kingpin::Flag object.
 =head2 int()
 
 自分自身をintegerとして定義します。
+
+=head2 bool()
+
+自分自身をboolとして定義します。
 
 =head2 short($short_name)
 
