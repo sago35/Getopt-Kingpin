@@ -44,14 +44,10 @@ sub _parse {
         if ($arg =~ /^(?:--(?<no>no-)?(?<name>\S+?)(?<equal>=(?<value>\S+))?|-(?<short_name>\S+))$/) {
             my $name;
             if (defined $+{name}) {
-                foreach my $f (values %{$self->flags}) {
-                    if ($f->name eq $+{name}) {
-                        $name = $+{name};
-                    }
-                }
-                if (not defined $name) {
+                if (not exists $self->flags->{$+{name}}) {
                     croak sprintf "flag --%s is not found", $+{name};
                 }
+                $name = $+{name};
             } elsif (defined $+{short_name}) {
                 foreach my $f (values %{$self->flags}) {
                     if (defined $f->short_name and $f->short_name eq $+{short_name}) {
