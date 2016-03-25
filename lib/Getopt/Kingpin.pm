@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Moo;
 use Getopt::Kingpin::Flag;
+use Getopt::Kingpin::Arg;
 use Carp;
 
 our $VERSION = "0.01";
@@ -11,6 +12,11 @@ our $VERSION = "0.01";
 has flags => (
     is => 'rw',
     default => sub {return {}},
+);
+
+has args => (
+    is => 'rw',
+    default => sub {return []},
 );
 
 sub flag {
@@ -26,6 +32,20 @@ sub flag {
     return $self->flags->{$name};
 }
 
+sub arg {
+    my $self = shift;
+    my ($name, $description) = @_;
+    my $arg = Getopt::Kingpin::Arg->new(
+        name        => $name,
+        description => $description,
+    );
+    $self->args([
+            @{$self->args},
+            $arg,
+        ]);
+    return $arg;
+}
+
 sub parse {
     my $self = shift;
     my @_argv = @ARGV;
@@ -39,6 +59,7 @@ sub _parse {
     my $required_but_not_found = {
         map {$_->name => $_} grep {$_->_required} values %{$self->flags}
     };
+    my $arg_index = 0;
     while (scalar @argv > 0) {
         my $arg = shift @argv;
         if ($arg =~ /^(?:--(?<no>no-)?(?<name>\S+?)(?<equal>=(?<value>\S+))?|-(?<short_name>\S+))$/) {
@@ -82,6 +103,9 @@ sub _parse {
             } elsif ($v->type eq "bool") {
                 $v->value($value);
             }
+        } else {
+            $self->args->[$arg_index]->value($arg);
+            $arg_index++;
         }
     }
     foreach my $r (values %$required_but_not_found) {
