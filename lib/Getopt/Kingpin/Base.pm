@@ -47,7 +47,6 @@ sub string {
 
 sub int {
     my $self = shift;
-    my ($type) = @_;
 
     $self->type("int");
 
