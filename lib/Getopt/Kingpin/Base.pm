@@ -30,6 +30,7 @@ has value => (
 
 has type => (
     is => 'rw',
+    default => sub {"string"},
 );
 
 has _required => (
