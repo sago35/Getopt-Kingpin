@@ -111,6 +111,9 @@ sub _parse {
     foreach my $r (values %$required_but_not_found) {
         croak sprintf "required flag --%s not provided", $r->name;
     }
+    if (scalar @{$self->args} > $arg_index) {
+        croak sprintf "required arg '%s' not provided", $self->args->[$arg_index]->name;
+    }
 }
 
 sub get {
