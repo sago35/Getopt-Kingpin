@@ -7,3 +7,11 @@ perl:
   - "5.20"
   - "5.22"
 
+before_install:
+  - cpanm --quiet --notest --skip-satisfied Devel::Cover Devel::Cover::Report::Codecov
+  - cpanm --quiet --notest --skip-satisfied --installdeps --with-recommend .
+  - cover -delete
+script:
+  - perl Build.PL
+  - ./Build build
+  - cover -test -report codecov
