@@ -3,6 +3,7 @@ use 5.008001;
 use strict;
 use warnings;
 use Moo;
+use Carp;
 
 our $VERSION = "0.01";
 
@@ -96,6 +97,23 @@ sub required {
     $self->_required(1);
 
     return $self;
+}
+
+sub set_value {
+    my $self = shift;
+    my ($value) = @_;
+
+    if ($self->type eq "string") {
+        $self->value($value);
+    } elsif ($self->type eq "int") {
+        if ($value =~ /^-?[0-9]+$/) {
+            $self->value($value);
+        } else {
+            croak "int parse error";
+        }
+    } elsif ($self->type eq "bool") {
+        $self->value($value);
+    }
 }
 
 1;

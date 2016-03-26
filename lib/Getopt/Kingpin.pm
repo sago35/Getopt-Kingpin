@@ -92,17 +92,8 @@ sub _parse {
             } else {
                 $value = shift @argv;
             }
-            if ($v->type eq "string") {
-                $v->value($value);
-            } elsif ($v->type eq "int") {
-                if ($value =~ /^-?[0-9]+$/) {
-                    $v->value($value);
-                } else {
-                    croak "int parse error";
-                }
-            } elsif ($v->type eq "bool") {
-                $v->value($value);
-            }
+
+            $v->set_value($value);
         } else {
             $self->args->[$arg_index]->value($arg);
             $arg_index++;

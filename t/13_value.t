@@ -18,5 +18,29 @@ subtest 'default type' => sub {
     is $word, 'hello';
 };
 
+subtest 'validate value' => sub {
+    local @ARGV;
+    push @ARGV, qw(--num 10);
+
+    my $kingpin = Getopt::Kingpin->new;
+    my $num = $kingpin->flag('num', 'set number')->int();
+
+    $kingpin->parse;
+
+    is $num, 10;
+};
+
+subtest 'validate value parse error' => sub {
+    local @ARGV;
+    push @ARGV, qw(--num ten);
+
+    my $kingpin = Getopt::Kingpin->new;
+    my $num = $kingpin->flag('num', 'set number')->int();
+
+    throws_ok {
+        $kingpin->parse;
+    } qr/int parse error/, "int parse error";
+};
+
 done_testing;
 
