@@ -9,7 +9,6 @@ our $VERSION = "0.01";
 
 use overload (
     '""' => sub {$_[0]->value // ""},
-    '==' => sub {$_[0]->value},
     fallback => 1,
 );
 

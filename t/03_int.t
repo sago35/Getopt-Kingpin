@@ -13,6 +13,7 @@ subtest 'int normal with overload' => sub {
     $kingpin->parse;
 
     is $x, 0;
+    ok $x == 0;
 };
 
 
