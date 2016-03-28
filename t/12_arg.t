@@ -67,5 +67,18 @@ subtest 'arg required 3' => sub {
     is $arg2, 'arg2';
 };
 
+subtest 'arg num' => sub {
+    local @ARGV;
+    push @ARGV, qw(--name=kingpin arg1 arg2);
+
+    my $kingpin = Getopt::Kingpin->new;
+    my $name = $kingpin->flag('name', 'set name')->string();
+    my $arg1 = $kingpin->arg('arg1', 'set arg1')->string();
+
+    $kingpin->parse;
+
+    is $arg1, 'arg1';
+};
+
 done_testing;
 
