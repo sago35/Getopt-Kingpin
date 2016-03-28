@@ -95,8 +95,10 @@ sub _parse {
 
             $v->set_value($value);
         } else {
-            $self->args->[$arg_index]->value($arg);
-            $arg_index++;
+            if ($arg_index < scalar @{$self->args}) {
+                $self->args->[$arg_index]->value($arg);
+                $arg_index++;
+            }
         }
     }
     foreach my $r (values %$required_but_not_found) {
