@@ -46,7 +46,7 @@ subtest 'arg required 2' => sub {
     # requiredがついている手前は、全てrequiredの扱い
     throws_ok {
         $kingpin->parse;
-    } qr/required arg 'arg1' not provided/, 'required error';
+    } qr/required arg 'arg2' not provided/, 'required error';
 };
 
 subtest 'arg required 3' => sub {
