@@ -11,7 +11,14 @@ our $VERSION = "0.01";
 
 has flags => (
     is => 'rw',
-    default => sub {return {}},
+    default => sub {
+        return {
+            help => Getopt::Kingpin::Flag->new(
+                name        => 'help',
+                description => 'Show context-sensitive help.',
+            )->bool(),
+        }
+    },
 );
 
 has args => (
@@ -101,6 +108,10 @@ sub _parse {
             }
         }
     }
+    if ($self->flags->{help}) {
+        $self->help;
+        return;
+    }
     foreach my $r (values %$required_but_not_found) {
         croak sprintf "required flag --%s not provided", $r->name;
     }
@@ -118,6 +129,48 @@ sub get {
     my $t = $self->flags->{$target};
 
     return $t;
+}
+
+sub help {
+    my $self = shift;
+
+    printf "usage: %s\n", join " ", $0, "[<flags>]", map {sprintf "<%s>", $_->name} @{$self->args};
+    printf "\n";
+
+    my $max_length_of_flag = 0;
+    foreach my $flag (keys %{$self->flags}) {
+        if ($max_length_of_flag < length $flag) {
+            $max_length_of_flag = length $flag;
+        }
+    }
+    my $flag_space = $max_length_of_flag + 2;
+
+    printf "Flags:\n";
+    foreach my $flag (sort {$a->name ne "help" || $a->name cmp $b->name} values %{$self->flags}) {
+        printf "  %-3s %-${flag_space}s  %s\n",
+            defined $flag->short_name ? "-"  . $flag->short_name . "," : "",
+            "--" . $flag->name,
+            $flag->description;
+    }
+    printf "\n";
+
+    if (scalar @{$self->args} > 0) {
+        my $max_length_of_arg = 0;
+        foreach my $arg (@{$self->args}) {
+            if ($max_length_of_arg < length $arg->name) {
+                $max_length_of_arg = length $arg->name;
+            }
+        }
+        my $arg_space = $max_length_of_arg + 2;
+
+        printf "Args:\n";
+        foreach my $arg (@{$self->args}) {
+            printf "  %-${arg_space}s  %s\n",
+                '<' . $arg->name . '>',
+                $arg->description;
+        }
+        printf "\n";
+    }
 }
 
 
