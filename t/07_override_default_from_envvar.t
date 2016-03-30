@@ -16,6 +16,8 @@ subtest 'default' => sub {
     $kingpin->parse;
 
     is $name, 'name from env var';
+
+    delete $ENV{KINGPIN_TEST_NAME};
 };
 
 subtest 'default arg' => sub {
@@ -30,6 +32,8 @@ subtest 'default arg' => sub {
     $kingpin->parse;
 
     is $name, 'name from env var';
+
+    delete $ENV{KINGPIN_TEST_NAME};
 };
 
 done_testing;
