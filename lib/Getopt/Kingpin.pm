@@ -3,7 +3,7 @@ use 5.008001;
 use strict;
 use warnings;
 use Moo;
-use Getopt::Kingpin::Flag;
+use Getopt::Kingpin::Flags;
 use Getopt::Kingpin::Arg;
 use Carp;
 
@@ -12,12 +12,12 @@ our $VERSION = "0.01";
 has flags => (
     is => 'rw',
     default => sub {
-        return {
-            help => Getopt::Kingpin::Flag->new(
-                name        => 'help',
-                description => 'Show context-sensitive help.',
-            )->bool(),
-        }
+        my $flags = Getopt::Kingpin::Flags->new;
+        $flags->add(
+            name        => 'help',
+            description => 'Show context-sensitive help.',
+        )->bool();
+        return $flags;
     },
 );
 
@@ -29,14 +29,11 @@ has args => (
 sub flag {
     my $self = shift;
     my ($name, $description) = @_;
-    $self->flags({
-            (map {$_ => $self->flags->{$_}} keys %{$self->flags}),
-            $name => Getopt::Kingpin::Flag->new(
-                name        => $name,
-                description => $description,
-            ),
-        });
-    return $self->flags->{$name};
+    my $ret = $self->flags->add(
+        name        => $name,
+        description => $description,
+    );
+    return $ret;
 }
 
 sub arg {
@@ -64,32 +61,39 @@ sub _parse {
     my @argv = @_;
 
     my $required_but_not_found = {
-        map {$_->name => $_} grep {$_->_required} values %{$self->flags}
+        map {$_->name => $_} grep {$_->_required} $self->flags->values,
     };
     my $arg_index = 0;
     while (scalar @argv > 0) {
         my $arg = shift @argv;
-        if ($arg =~ /^(?:--(?<no>no-)?(?<name>\S+?)(?<equal>=(?<value>\S+))?|-(?<short_name>\S+))$/) {
-            my $name;
-            if (defined $+{name}) {
-                if (not exists $self->flags->{$+{name}}) {
-                    croak sprintf "flag --%s is not found", $+{name};
-                }
-                $name = $+{name};
-            } elsif (defined $+{short_name}) {
-                foreach my $f (values %{$self->flags}) {
-                    if (defined $f->short_name and $f->short_name eq $+{short_name}) {
-                        $name = $f->name;
-                    }
-                }
-                if (not defined $name) {
-                    croak sprintf "flag -%s is not found", $+{short_name};
-                }
+        if ($arg =~ /^--(?<no>no-)?(?<name>\S+?)(?<equal>=(?<value>\S+))?$/) {
+            my $name = $+{name};
+
+            delete $required_but_not_found->{$name} if exists $required_but_not_found->{$name};
+            my $v = $self->flags->get($name);
+
+            my $value;
+            if ($v->type eq "bool") {
+                $value = defined $+{no} ? 0 : 1;
+            } elsif (defined $+{equal}) {
+                $value = $+{value}
             } else {
-                croak;
+                $value = shift @argv;
+            }
+
+            $v->set_value($value);
+        } elsif ($arg =~ /^-(?<short_name>\S+)$/) {
+            my $name;
+            foreach my $f ($self->flags->values) {
+                if (defined $f->short_name and $f->short_name eq $+{short_name}) {
+                    $name = $f->name;
+                }
+            }
+            if (not defined $name) {
+                croak sprintf "flag -%s is not found", $+{short_name};
             }
             delete $required_but_not_found->{$name} if exists $required_but_not_found->{$name};
-            my $v = $self->flags->{$name};
+            my $v = $self->flags->get($name);
 
             my $value;
             if ($v->type eq "bool") {
@@ -108,7 +112,7 @@ sub _parse {
             }
         }
     }
-    if ($self->flags->{help}) {
+    if ($self->flags->get("help")) {
         $self->help;
         return;
     }
@@ -126,7 +130,7 @@ sub _parse {
 sub get {
     my $self = shift;
     my ($target) = @_;
-    my $t = $self->flags->{$target};
+    my $t = $self->flags->get($target);
 
     return $t;
 }
@@ -138,7 +142,7 @@ sub help {
     printf "\n";
 
     my $max_length_of_flag = 0;
-    foreach my $flag (keys %{$self->flags}) {
+    foreach my $flag ($self->flags->keys) {
         if ($max_length_of_flag < length $flag) {
             $max_length_of_flag = length $flag;
         }
@@ -146,7 +150,7 @@ sub help {
     my $flag_space = $max_length_of_flag + 2;
 
     printf "Flags:\n";
-    foreach my $flag (sort {$a->name ne "help" || $a->name cmp $b->name} values %{$self->flags}) {
+    foreach my $flag (sort {$a->name ne "help" || $a->name cmp $b->name} $self->flags->values) {
         printf "  %-3s %-${flag_space}s  %s\n",
             defined $flag->short_name ? "-"  . $flag->short_name . "," : "",
             "--" . $flag->name,

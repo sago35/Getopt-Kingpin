@@ -38,6 +38,11 @@ has _required => (
     default => sub {0},
 );
 
+has index => (
+    is => 'rw',
+    default => sub {0},
+);
+
 sub string {
     my $self = shift;
 
