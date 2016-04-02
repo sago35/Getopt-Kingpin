@@ -117,6 +117,8 @@ sub set_value {
         }
     } elsif ($self->type eq "bool") {
         $self->value($value);
+    } else {
+        croak sprintf "type error '%s'", $self->type;
     }
 }
 
