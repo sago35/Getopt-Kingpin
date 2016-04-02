@@ -19,7 +19,7 @@ sub add {
     my ($name, $description) = ($hash->{name}, $hash->{description});
 
     if (exists $self->_flags->{$name}) {
-        croak;
+        croak sprintf "flag %s is already exists", $name;
     }
 
     $self->_flags->{$name} = Getopt::Kingpin::Flag->new(
