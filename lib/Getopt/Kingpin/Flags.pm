@@ -45,12 +45,14 @@ sub get {
 
 sub keys {
     my $self = shift;
-    return sort {$self->_flags->{$a}->index <=> $self->_flags->{$b}->index} keys %{$self->_flags};
+    my @keys = sort {$self->_flags->{$a}->index <=> $self->_flags->{$b}->index} keys %{$self->_flags};
+    return @keys;
 }
 
 sub values {
     my $self = shift;
-    return sort {$a->index <=> $b->index} values %{$self->_flags};
+    my @values = sort {$a->index <=> $b->index} values %{$self->_flags};
+    return @values;
 }
 
 1;
