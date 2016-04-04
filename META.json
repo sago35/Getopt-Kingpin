@@ -50,7 +50,7 @@
          "requires" : {
             "Test::Exception" : "0",
             "Test::More" : "0.98",
-            "Test::Output" : "0"
+            "Test::Trap" : "0"
          }
       }
    },

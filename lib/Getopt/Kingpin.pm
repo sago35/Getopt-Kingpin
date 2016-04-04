@@ -114,7 +114,7 @@ sub _parse {
     }
     if ($self->flags->get("help")) {
         $self->help;
-        return;
+        exit 0;
     }
     foreach my $r (values %$required_but_not_found) {
         croak sprintf "required flag --%s not provided", $r->name;

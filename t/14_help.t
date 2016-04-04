@@ -1,7 +1,7 @@
 use strict;
 use Test::More 0.98;
 use Test::Exception;
-use Test::Output;
+use Test::Trap;
 use Getopt::Kingpin;
 
 
@@ -25,7 +25,9 @@ Args:
 
 ...
 
-    stdout_is {$kingpin->parse} $expected, 'simple help';
+    trap {$kingpin->parse};
+    is $trap->exit, 0;
+    is $trap->stdout, $expected;
 };
 
 
@@ -50,7 +52,9 @@ Args:
 
 ...
 
-    stdout_is {$kingpin->parse} $expected, 'simple help';
+    trap {$kingpin->parse};
+    is $trap->exit, 0;
+    is $trap->stdout, $expected;
 };
 
 subtest 'help max_length_of_flag' => sub {
@@ -72,7 +76,9 @@ Flags:
 
 ...
 
-    stdout_is {$kingpin->parse} $expected, 'simple help';
+    trap {$kingpin->parse};
+    is $trap->exit, 0;
+    is $trap->stdout, $expected;
 };
 
 done_testing;
