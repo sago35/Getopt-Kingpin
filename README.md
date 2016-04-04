@@ -6,11 +6,14 @@ Getopt::Kingpin - command line options parser (like golang kingpin)
 # SYNOPSIS
 
     use Getopt::Kingpin;
-    my $kingpin = Getopt::Kingpin->new;
-    my $name = $kingpin->flag('name', 'set name')->string();
+    my $kingpin = Getopt::Kingpin->new();
+    $kingpin->flags->get("help")->short('h');
+    my $verbose = $kingpin->flag('verbose', 'Verbose mode.')->short('v')->bool();
+    my $name    = $kingpin->arg('name', 'Name of user.')->required()->string();
+
     $kingpin->parse;
 
-    # perl sample.pl --name hello
+    # perl sample.pl hello
     printf "name : %s\n", $name;
 
 # DESCRIPTION
@@ -18,6 +21,8 @@ Getopt::Kingpin - command line options parser (like golang kingpin)
 Getopt::Kingpin は、コマンドラインオプションを扱うモジュールです。
 Golangのkingpinのperl版になるべく作成しています。
 https://github.com/alecthomas/kingpin
+
+Helpは、flag()やarg()から自動生成されます。
 
 # METHOD
 
@@ -40,6 +45,10 @@ Parse @ARGV.
 ## get($name)
 
 Get Getopt::Kingpin::Flag instance of $name.
+
+## help()
+
+Print help.
 
 # LICENSE
 
