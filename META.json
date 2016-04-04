@@ -43,13 +43,14 @@
       "runtime" : {
          "requires" : {
             "Moo" : "0",
-            "Test::Exception" : "0",
             "perl" : "5.008001"
          }
       },
       "test" : {
          "requires" : {
-            "Test::More" : "0.98"
+            "Test::Exception" : "0",
+            "Test::More" : "0.98",
+            "Test::Output" : "0"
          }
       }
    },
