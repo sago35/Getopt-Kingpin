@@ -36,7 +36,7 @@ sub get {
     my ($name) = @_;
 
     if (not exists $self->_flags->{$name}) {
-        croak sprintf "flag --%s is not found", $name;
+        return undef;
     }
 
     return $self->_flags->{$name};

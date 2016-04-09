@@ -72,6 +72,11 @@ sub _parse {
             delete $required_but_not_found->{$name} if exists $required_but_not_found->{$name};
             my $v = $self->flags->get($name);
 
+            if (not defined $v) {
+                printf STDERR "%s: error: unknown long flag '--%s', try --help", $0, $name;
+                exit 1;
+            }
+
             my $value;
             if ($v->type eq "bool") {
                 $value = defined $+{no} ? 0 : 1;
@@ -118,7 +123,8 @@ sub _parse {
         exit 0;
     }
     foreach my $r (values %$required_but_not_found) {
-        croak sprintf "required flag --%s not provided", $r->name;
+        printf STDERR "%s: error: required flag --%s not provided, try --help", $0, $r->name;
+        exit 1;
     }
     for (my $i = 0; $i < scalar @{$self->args}; $i++) {
         my $arg = $self->args->[$i];

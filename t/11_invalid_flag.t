@@ -1,6 +1,6 @@
 use strict;
 use Test::More 0.98;
-use Test::Exception;
+use Test::Trap;
 use Getopt::Kingpin;
 
 
@@ -10,9 +10,12 @@ subtest 'invalid flag' => sub {
 
     my $kingpin = Getopt::Kingpin->new;
 
-    throws_ok {
+    trap {
         $kingpin->parse;
-    } qr/flag --verbose is not found/, 'invalid flag';
+    };
+
+    like $trap->stderr, qr/error: unknown long flag '--verbose', try --help/, 'invalid flag';
+    is $trap->exit, 1;
 };
 
 subtest 'invalid flag 2' => sub {
@@ -21,9 +24,12 @@ subtest 'invalid flag 2' => sub {
 
     my $kingpin = Getopt::Kingpin->new;
 
-    throws_ok {
+    trap {
         $kingpin->parse;
-    } qr/flag -v is not found/, 'invalid flag';
+    };
+
+    like $trap->stderr, qr/error: unknown short flag '-v', try --help/, 'invalid flag';
+    is $trap->exit, 1;
 };
 
 done_testing;
