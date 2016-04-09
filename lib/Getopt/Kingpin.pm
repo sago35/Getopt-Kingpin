@@ -103,9 +103,7 @@ sub _parse {
 
             my $value;
             if ($v->type eq "bool") {
-                $value = defined $+{no} ? 0 : 1;
-            } elsif (defined $+{equal}) {
-                $value = $+{value}
+                $value = 1;
             } else {
                 $value = shift @argv;
             }
