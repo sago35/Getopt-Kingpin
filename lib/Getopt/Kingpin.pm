@@ -90,7 +90,8 @@ sub _parse {
                 }
             }
             if (not defined $name) {
-                croak sprintf "flag -%s is not found", $+{short_name};
+                printf STDERR "%s: error: unknown short flag '-%s', try --help", $0, $+{short_name};
+                exit 1;
             }
             delete $required_but_not_found->{$name} if exists $required_but_not_found->{$name};
             my $v = $self->flags->get($name);

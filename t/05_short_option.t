@@ -1,6 +1,6 @@
 use strict;
 use Test::More 0.98;
-use Test::Exception;
+use Test::Trap;
 use Getopt::Kingpin;
 
 
@@ -28,6 +28,20 @@ subtest 'short and long option' => sub {
 
     is $name, 'kingpin';
     is $xxxx, 3;
+};
+
+subtest 'unknown short flag' => sub {
+    local @ARGV;
+    push @ARGV, qw(-h);
+
+    my $kingpin = Getopt::Kingpin->new;
+
+    trap {
+        $kingpin->parse;
+    };
+
+    like $trap->stderr, qr/error: unknown short flag '-h', try --help/;
+    is $trap->exit, 1;
 };
 
 done_testing;
