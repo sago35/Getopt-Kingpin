@@ -36,7 +36,7 @@ sub get {
     my ($name) = @_;
 
     if (not exists $self->_flags->{$name}) {
-        return undef;
+        return;
     }
 
     return $self->_flags->{$name};
