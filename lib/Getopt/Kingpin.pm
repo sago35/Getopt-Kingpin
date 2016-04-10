@@ -250,13 +250,25 @@ Create a parser object.
 
 Add and return Getopt::Kingpin::Flag object.
 
+=head2 arg($name, $description)
+
+Add and return Getopt::Kingpin::Arg object.
+
 =head2 parse()
 
 Parse @ARGV.
 
+=head2 _parse()
+
+Parse @_. Internal use only.
+
 =head2 get($name)
 
 Get Getopt::Kingpin::Flag instance of $name.
+
+=head2 version($version)
+
+Set application version to $version.
 
 =head2 help()
 

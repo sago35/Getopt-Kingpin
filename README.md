@@ -38,13 +38,25 @@ Create a parser object.
 
 Add and return Getopt::Kingpin::Flag object.
 
+## arg($name, $description)
+
+Add and return Getopt::Kingpin::Arg object.
+
 ## parse()
 
 Parse @ARGV.
 
+## \_parse()
+
+Parse @\_. Internal use only.
+
 ## get($name)
 
 Get Getopt::Kingpin::Flag instance of $name.
+
+## version($version)
+
+Set application version to $version.
 
 ## help()
 
