@@ -26,6 +26,11 @@ has args => (
     default => sub {return []},
 );
 
+has _version => (
+    is => 'rw',
+    default => sub {""},
+);
+
 sub flag {
     my $self = shift;
     my ($name, $description) = @_;
@@ -116,10 +121,17 @@ sub _parse {
             }
         }
     }
+
     if ($self->flags->get("help")) {
         $self->help;
         exit 0;
     }
+
+    if ($self->flags->get("version")) {
+        printf STDERR "%s\n", $self->_version;
+        exit 0;
+    }
+
     foreach my $r (values %$required_but_not_found) {
         printf STDERR "%s: error: required flag --%s not provided, try --help", $0, $r->name;
         exit 1;
@@ -138,6 +150,17 @@ sub get {
     my $t = $self->flags->get($target);
 
     return $t;
+}
+
+sub version {
+    my $self = shift;
+    my ($version) = @_;
+
+    my $f = $self->flags->add(
+        name        => 'version',
+        description => 'Show application version.',
+    )->bool();
+    $self->_version($version);
 }
 
 sub help {
