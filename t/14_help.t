@@ -165,5 +165,26 @@ Args:
     is $trap->stdout, $expected;
 };
 
+subtest 'app info' => sub {
+    local @ARGV;
+    push @ARGV, qw(--help);
+
+    my $kingpin = Getopt::Kingpin->new("app_name", "app_description");
+
+    my $expected = sprintf <<'...';
+usage: app_name [<flags>]
+
+app_description
+
+Flags:
+      --help  Show context-sensitive help.
+
+...
+
+    trap {$kingpin->parse};
+    is $trap->exit, 0;
+    is $trap->stdout, $expected;
+};
+
 done_testing;
 

@@ -31,6 +31,29 @@ has _version => (
     default => sub {""},
 );
 
+has _name => (
+    is => 'rw',
+    default => sub {$0},
+);
+
+has _description => (
+    is      => 'rw',
+    default => sub {""},
+);
+
+around BUILDARGS => sub {
+    my ($orig, $class, @args) = @_;
+
+    if (@args == 2 and not ref $args[0]) {
+        return +{
+            _name => $args[0],
+            _description => $args[1],
+        };
+    } else {
+        return $class->$orig(@args);
+    }
+};
+
 sub flag {
     my $self = shift;
     my ($name, $description) = @_;
@@ -78,7 +101,7 @@ sub _parse {
             my $v = $self->flags->get($name);
 
             if (not defined $v) {
-                printf STDERR "%s: error: unknown long flag '--%s', try --help", $0, $name;
+                printf STDERR "%s: error: unknown long flag '--%s', try --help", $self->_name, $name;
                 exit 1;
             }
 
@@ -100,7 +123,7 @@ sub _parse {
                 }
             }
             if (not defined $name) {
-                printf STDERR "%s: error: unknown short flag '-%s', try --help", $0, $+{short_name};
+                printf STDERR "%s: error: unknown short flag '-%s', try --help", $self->_name, $+{short_name};
                 exit 1;
             }
             delete $required_but_not_found->{$name} if exists $required_but_not_found->{$name};
@@ -133,7 +156,7 @@ sub _parse {
     }
 
     foreach my $r (values %$required_but_not_found) {
-        printf STDERR "%s: error: required flag --%s not provided, try --help", $0, $r->name;
+        printf STDERR "%s: error: required flag --%s not provided, try --help", $self->_name, $r->name;
         exit 1;
     }
     for (my $i = 0; $i < scalar @{$self->args}; $i++) {
@@ -166,8 +189,13 @@ sub version {
 sub help {
     my $self = shift;
 
-    printf "usage: %s\n", join " ", $0, "[<flags>]", map {sprintf "<%s>", $_->name} @{$self->args};
+    printf "usage: %s\n", join " ", $self->_name, "[<flags>]", map {sprintf "<%s>", $_->name} @{$self->args};
     printf "\n";
+
+    if ($self->_description ne "") {
+        printf "%s\n", $self->_description;
+        printf "\n";
+    }
 
     my $max_length_of_flag = 0;
     foreach my $flag ($self->flags->keys) {
