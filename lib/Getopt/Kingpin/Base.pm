@@ -178,6 +178,11 @@ short optionを作成します。
 
 そのオプションを必須とする。
 
+=head2 set_value($value)
+
+$self->valueに値を設定します。
+
+
 =head1 LICENSE
 
 Copyright (C) sago35.
