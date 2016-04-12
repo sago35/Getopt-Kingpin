@@ -206,7 +206,7 @@ sub help {
     my $flag_space = $max_length_of_flag + 2;
 
     printf "Flags:\n";
-    foreach my $flag (sort {$a->name ne "help" || $a->name cmp $b->name} $self->flags->values) {
+    foreach my $flag ($self->flags->values) {
         printf "  %-3s %-${flag_space}s  %s\n",
             defined $flag->short_name ? "-"  . $flag->short_name . "," : "",
             "--" . $flag->name,
