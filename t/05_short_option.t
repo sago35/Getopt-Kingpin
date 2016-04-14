@@ -44,5 +44,33 @@ subtest 'unknown short flag' => sub {
     is $trap->exit, 1;
 };
 
+subtest 'POSIX-style short flag combining 1' => sub {
+    local @ARGV;
+    push @ARGV, qw();
+
+    my $kingpin = Getopt::Kingpin->new;
+    my $x = $kingpin->flag("long_x", "")->short("x")->bool();
+    my $y = $kingpin->flag("long_y", "")->short("y")->bool();
+
+    $kingpin->parse;
+
+    is $x, 0;
+    is $y, 0;
+};
+
+subtest 'POSIX-style short flag combining 2' => sub {
+    local @ARGV;
+    push @ARGV, qw(-xy);
+
+    my $kingpin = Getopt::Kingpin->new;
+    my $x = $kingpin->flag("long_x", "")->short("x")->bool();
+    my $y = $kingpin->flag("long_y", "")->short("y")->bool();
+
+    $kingpin->parse;
+
+    is $x, 1;
+    is $y, 1;
+};
+
 done_testing;
 

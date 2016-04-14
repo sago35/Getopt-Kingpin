@@ -116,27 +116,30 @@ sub _parse {
 
             $v->set_value($value);
         } elsif ($arg =~ /^-(?<short_name>\S+)$/) {
-            my $name;
-            foreach my $f ($self->flags->values) {
-                if (defined $f->short_name and $f->short_name eq $+{short_name}) {
-                    $name = $f->name;
+            my $short_name = $+{short_name};
+            foreach my $s (split //, $short_name) {
+                my $name;
+                foreach my $f ($self->flags->values) {
+                    if (defined $f->short_name and $f->short_name eq $s) {
+                        $name = $f->name;
+                    }
                 }
-            }
-            if (not defined $name) {
-                printf STDERR "%s: error: unknown short flag '-%s', try --help", $self->_name, $+{short_name};
-                exit 1;
-            }
-            delete $required_but_not_found->{$name} if exists $required_but_not_found->{$name};
-            my $v = $self->flags->get($name);
+                if (not defined $name) {
+                    printf STDERR "%s: error: unknown short flag '-%s', try --help", $self->_name, $s;
+                    exit 1;
+                }
+                delete $required_but_not_found->{$name} if exists $required_but_not_found->{$name};
+                my $v = $self->flags->get($name);
 
-            my $value;
-            if ($v->type eq "bool") {
-                $value = 1;
-            } else {
-                $value = shift @argv;
-            }
+                my $value;
+                if ($v->type eq "bool") {
+                    $value = 1;
+                } else {
+                    $value = shift @argv;
+                }
 
-            $v->set_value($value);
+                $v->set_value($value);
+            }
         } else {
             if ($arg_index < scalar @{$self->args}) {
                 $self->args->[$arg_index]->value($arg);
