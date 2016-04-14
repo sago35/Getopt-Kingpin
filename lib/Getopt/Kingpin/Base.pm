@@ -63,6 +63,9 @@ sub bool {
     my $self = shift;
 
     $self->type("bool");
+    if (not defined $self->value) {
+        $self->value(0);
+    }
 
     return $self;
 }

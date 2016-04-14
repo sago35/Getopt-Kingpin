@@ -13,6 +13,7 @@ subtest 'bool' => sub {
     $kingpin->parse;
 
     ok $x;
+    is $x, 1;
 };
 
 subtest 'bool negative' => sub {
@@ -24,6 +25,7 @@ subtest 'bool negative' => sub {
     $kingpin->parse;
 
     ok not $x;
+    is $x, 0;
 };
 
 subtest 'bool default' => sub {
@@ -35,6 +37,7 @@ subtest 'bool default' => sub {
     $kingpin->parse;
 
     ok $x;
+    is $x, 1;
 };
 
 subtest 'bool default 2' => sub {
@@ -46,6 +49,7 @@ subtest 'bool default 2' => sub {
     $kingpin->parse;
 
     ok not $x;
+    is $x, 0;
 };
 
 subtest 'bool required' => sub {
@@ -57,6 +61,7 @@ subtest 'bool required' => sub {
     $kingpin->parse;
 
     ok $x;
+    is $x, 1;
 };
 
 subtest 'bool required 2' => sub {
@@ -68,6 +73,7 @@ subtest 'bool required 2' => sub {
     $kingpin->parse;
 
     ok not $x;
+    is $x, 0;
 };
 
 subtest 'bool required 3' => sub {
