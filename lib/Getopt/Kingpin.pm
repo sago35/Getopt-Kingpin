@@ -142,7 +142,7 @@ sub _parse {
             }
         } else {
             if ($arg_index < scalar @{$self->args}) {
-                $self->args->[$arg_index]->value($arg);
+                $self->args->[$arg_index]->set_value($arg);
                 $arg_index++;
             }
         }
