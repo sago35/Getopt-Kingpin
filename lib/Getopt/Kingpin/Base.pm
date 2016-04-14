@@ -192,6 +192,15 @@ Create Getopt::Kingpin::Flag object.
 
 自分自身をboolとして定義します。
 
+=head2 file()
+
+自分自身をfileとして定義します。
+
+=head2 existing_file()
+
+自分自身を存在しているfileとして定義します。
+存在しない場合はエラーとなります。
+
 =head2 short($short_name)
 
 short optionを作成します。
