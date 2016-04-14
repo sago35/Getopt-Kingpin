@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Moo;
 use Carp;
+use Path::Tiny;
 
 our $VERSION = "0.01";
 
@@ -70,6 +71,22 @@ sub bool {
     return $self;
 }
 
+sub file {
+    my $self = shift;
+
+    $self->type("file");
+
+    return $self;
+}
+
+sub existing_file {
+    my $self = shift;
+
+    $self->type("existing_file");
+
+    return $self;
+}
+
 sub short {
     my $self = shift;
     my ($short_name) = @_;
@@ -120,6 +137,16 @@ sub set_value {
         }
     } elsif ($self->type eq "bool") {
         $self->value($value);
+    } elsif ($self->type eq "file") {
+        my $p = path($value);
+        $self->value($p);
+    } elsif ($self->type eq "existing_file") {
+        my $p = path($value);
+        if ($p->is_file) {
+            $self->value($p);
+        } else {
+            croak sprintf "error: path '%s' does not exist, try --help", $value;
+        }
     } else {
         croak sprintf "type error '%s'", $self->type;
     }
