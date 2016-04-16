@@ -117,7 +117,8 @@ sub _parse {
             $v->set_value($value);
         } elsif ($arg =~ /^-(?<short_name>\S+)$/) {
             my $short_name = $+{short_name};
-            foreach my $s (split //, $short_name) {
+            while (length $short_name > 0) {
+                my ($s, $remain) = split //, $short_name, 2;
                 my $name;
                 foreach my $f ($self->flags->values) {
                     if (defined $f->short_name and $f->short_name eq $s) {
@@ -135,10 +136,16 @@ sub _parse {
                 if ($v->type eq "bool") {
                     $value = 1;
                 } else {
-                    $value = shift @argv;
+                    if (length $remain > 0) {
+                        $value = $remain;
+                        $remain = "";
+                    } else {
+                        $value = shift @argv;
+                    }
                 }
 
                 $v->set_value($value);
+                $short_name = $remain;
             }
         } else {
             if ($arg_index < scalar @{$self->args}) {

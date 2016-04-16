@@ -72,5 +72,29 @@ subtest 'POSIX-style short flag combining 2' => sub {
     is $y, 1;
 };
 
+subtest 'Short-flag+parameter combining 1' => sub {
+    local @ARGV;
+    push @ARGV, qw(-x 12);
+
+    my $kingpin = Getopt::Kingpin->new;
+    my $x = $kingpin->flag("long_x", "")->short("x")->int();
+
+    $kingpin->parse;
+
+    is $x, 12;
+};
+
+subtest 'Short-flag+parameter combining 2' => sub {
+    local @ARGV;
+    push @ARGV, qw(-x12);
+
+    my $kingpin = Getopt::Kingpin->new;
+    my $x = $kingpin->flag("long_x", "")->short("x")->int();
+
+    $kingpin->parse;
+
+    is $x, 12;
+};
+
 done_testing;
 
