@@ -268,11 +268,13 @@ Getopt::Kingpin - command line options parser (like golang kingpin)
 
 =head1 DESCRIPTION
 
-Getopt::Kingpin は、コマンドラインオプションを扱うモジュールです。
-Golangのkingpinのperl版になるべく作成しています。
-https://github.com/alecthomas/kingpin
+Getopt::Kingpin is a command line parser.
+It supports flags and positional arguments.
 
-Helpは、flag()やarg()から自動生成されます。
+Automatically generate help flag (--help).
+
+This module is inspired by Kingpin written in golang.
+https://github.com/alecthomas/kingpin
 
 =head1 METHOD
 
