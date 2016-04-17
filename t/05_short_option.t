@@ -1,6 +1,7 @@
 use strict;
 use Test::More 0.98;
 use Test::Trap;
+use Test::Exception;
 use Getopt::Kingpin;
 
 
@@ -94,6 +95,33 @@ subtest 'Short-flag+parameter combining 2' => sub {
     $kingpin->parse;
 
     is $x, 12;
+};
+
+subtest 'Short-flag+parameter combining 3' => sub {
+    local @ARGV;
+    push @ARGV, qw(-yx12);
+
+    my $kingpin = Getopt::Kingpin->new;
+    my $x = $kingpin->flag("long_x", "")->short("x")->int();
+    my $y = $kingpin->flag("long_y", "")->short("y")->bool();
+
+    $kingpin->parse;
+
+    is $x, 12;
+    is $y, 1;
+};
+
+subtest 'Short-flag+parameter combining 4 error' => sub {
+    local @ARGV;
+    push @ARGV, qw(-x12y);
+
+    my $kingpin = Getopt::Kingpin->new;
+    my $x = $kingpin->flag("long_x", "")->short("x")->int();
+    my $y = $kingpin->flag("long_y", "")->short("y")->bool();
+
+    throws_ok {
+        $kingpin->parse;
+    } qr/int parse error/;
 };
 
 done_testing;
