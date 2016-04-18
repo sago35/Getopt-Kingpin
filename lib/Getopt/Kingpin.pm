@@ -92,9 +92,12 @@ sub _parse {
         map {$_->name => $_} grep {$_->_required} $self->flags->values,
     };
     my $arg_index = 0;
+    my $arg_only = 0;
     while (scalar @argv > 0) {
         my $arg = shift @argv;
-        if ($arg =~ /^--(?<no>no-)?(?<name>\S+?)(?<equal>=(?<value>\S+))?$/) {
+        if ($arg eq "--") {
+            $arg_only = 1;
+        } elsif ($arg_only == 0 and $arg =~ /^--(?<no>no-)?(?<name>\S+?)(?<equal>=(?<value>\S+))?$/) {
             my $name = $+{name};
 
             delete $required_but_not_found->{$name} if exists $required_but_not_found->{$name};
@@ -115,7 +118,7 @@ sub _parse {
             }
 
             $v->set_value($value);
-        } elsif ($arg =~ /^-(?<short_name>\S+)$/) {
+        } elsif ($arg_only == 0 and $arg =~ /^-(?<short_name>\S+)$/) {
             my $short_name = $+{short_name};
             while (length $short_name > 0) {
                 my ($s, $remain) = split //, $short_name, 2;
