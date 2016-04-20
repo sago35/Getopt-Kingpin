@@ -34,8 +34,8 @@ subtest 'version help' => sub {
 usage: %s [<flags>]
 
 Flags:
-      --help     Show context-sensitive help.
-      --version  Show application version.
+  --help     Show context-sensitive help.
+  --version  Show application version.
 
 ...
 

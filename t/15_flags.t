@@ -34,10 +34,10 @@ subtest 'flags ordered help' => sub {
 usage: %s [<flags>]
 
 Flags:
-      --help      Show context-sensitive help.
-      --verbose3  Verbose mode.
-      --verbose1  Verbose mode.
-      --verbose2  Verbose mode.
+  --help      Show context-sensitive help.
+  --verbose3  Verbose mode.
+  --verbose1  Verbose mode.
+  --verbose2  Verbose mode.
 
 ...
 };

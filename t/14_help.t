@@ -72,7 +72,7 @@ usage: %s [<flags>]
 Flags:
   -h, --help     Show context-sensitive help.
   -v, --verbose  Verbose mode.
-      --ip       IP address.
+      --ip=IP    IP address.
 
 ...
 
@@ -94,9 +94,9 @@ subtest 'help max_length_of_flag 2' => sub {
 usage: %s [<flags>]
 
 Flags:
-  -h, --help       Show context-sensitive help.
-  -v, --verbose    Verbose mode.
-      --ipaddress  IP address.
+  -h, --help                 Show context-sensitive help.
+  -v, --verbose              Verbose mode.
+      --ipaddress=IPADDRESS  IP address.
 
 ...
 
@@ -152,7 +152,7 @@ usage: %s [<flags>] <age> <name>
 Flags:
   -h, --help     Show context-sensitive help.
   -v, --verbose  Verbose mode.
-      --ip       IP address.
+      --ip=IP    IP address.
 
 Args:
   <age>   Age of user.
@@ -177,12 +177,32 @@ usage: app_name [<flags>]
 app_description
 
 Flags:
-      --help  Show context-sensitive help.
+  --help  Show context-sensitive help.
 
 ...
 
     trap {$kingpin->parse};
     is $trap->exit, 0;
+    is $trap->stdout, $expected;
+};
+
+subtest 'place holder' => sub {
+    local @ARGV;
+    push @ARGV, qw(--help);
+
+    my $kingpin = Getopt::Kingpin->new;
+    $kingpin->flag("name", "Set name.")->string();
+
+    my $expected = sprintf <<'...', $0;
+usage: %s [<flags>]
+
+Flags:
+  --help       Show context-sensitive help.
+  --name=NAME  Set name.
+
+...
+
+    trap {$kingpin->parse};
     is $trap->stdout, $expected;
 };
 
