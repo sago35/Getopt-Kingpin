@@ -64,7 +64,7 @@ subtest 'help max_length_of_flag' => sub {
     my $kingpin = Getopt::Kingpin->new();
     $kingpin->flags->get("help")->short('h');
     my $verbose = $kingpin->flag('verbose', 'Verbose mode.')->short('v')->bool();
-    my $ip      = $kingpin->flag('ip', 'IP address.')->bool();
+    my $ip      = $kingpin->flag('ip', 'IP address.')->string();
 
     my $expected = sprintf <<'...', $0;
 usage: %s [<flags>]
@@ -88,7 +88,7 @@ subtest 'help max_length_of_flag 2' => sub {
     my $kingpin = Getopt::Kingpin->new();
     $kingpin->flags->get("help")->short('h');
     my $verbose = $kingpin->flag('verbose', 'Verbose mode.')->short('v')->bool();
-    my $ip      = $kingpin->flag('ipaddress', 'IP address.')->bool();
+    my $ip      = $kingpin->flag('ipaddress', 'IP address.')->string();
 
     my $expected = sprintf <<'...', $0;
 usage: %s [<flags>]
@@ -142,7 +142,7 @@ subtest 'help max_length_of_arg 2' => sub {
     my $kingpin = Getopt::Kingpin->new();
     $kingpin->flags->get("help")->short('h');
     my $verbose = $kingpin->flag('verbose', 'Verbose mode.')->short('v')->bool();
-    my $ip      = $kingpin->flag('ip', 'IP address.')->bool();
+    my $ip      = $kingpin->flag('ip', 'IP address.')->string();
     my $name    = $kingpin->arg('age', 'Age of user.')->required()->int();
     my $name    = $kingpin->arg('name', 'Name of user.')->required()->string();
 
