@@ -211,18 +211,40 @@ sub help {
     }
 
     my $max_length_of_flag = 0;
-    foreach my $flag ($self->flags->keys) {
-        if ($max_length_of_flag < length $flag) {
-            $max_length_of_flag = length $flag;
+    my $max_length_of_short_flag = 0;
+    foreach my $flag ($self->flags->values) {
+        my $flag_len = length $flag->name;
+        if ($flag->type ne "bool") {
+            $flag_len += (length "=") + (length $flag->name); # for placeholder
+        }
+        if ($max_length_of_flag < $flag_len) {
+            $max_length_of_flag = $flag_len;
+        }
+        if ($max_length_of_short_flag < length $flag->short_name) {
+            $max_length_of_short_flag = length $flag->short_name;
         }
     }
+
     my $flag_space = $max_length_of_flag + 2;
+    if ($max_length_of_short_flag > 0) {
+        $flag_space += 2 + 1 + $max_length_of_short_flag;
+    }
 
     printf "Flags:\n";
     foreach my $flag ($self->flags->values) {
-        printf "  %-3s %-${flag_space}s  %s\n",
-            defined $flag->short_name ? "-"  . $flag->short_name . "," : "",
-            "--" . $flag->name,
+        my $info;
+        if (defined $flag->short_name) {
+            $info = sprintf "-%s, --%s", $flag->short_name, $flag->name;
+        } elsif ($max_length_of_short_flag > 0) {
+            $info = sprintf "    --%s", $flag->name;
+        } else {
+            $info = sprintf "--%s", $flag->name,
+        }
+        if ($flag->type ne "bool") {
+            $info .= sprintf "=%s", uc $flag->name;
+        }
+        printf "  %-${flag_space}s  %s\n",
+            $info,
             $flag->description;
     }
     printf "\n";
