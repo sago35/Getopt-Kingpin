@@ -42,5 +42,65 @@ Flags:
 ...
 };
 
+subtest 'get max length' => sub {
+    my $kingpin = Getopt::Kingpin->new();
+
+    is $kingpin->flags->_help_length->[0], 0;
+    is $kingpin->flags->_help_length->[1], length "--help";
+    is $kingpin->flags->help, <<HELP;
+  --help  Show context-sensitive help.
+HELP
+
+    $kingpin->flag('a')->bool();
+    is $kingpin->flags->_help_length->[0], 0;
+    is $kingpin->flags->_help_length->[1], length "--help";
+    is $kingpin->flags->help, <<HELP;
+  --help  Show context-sensitive help.
+  --a
+HELP
+
+    $kingpin->flag('bbbbbb')->bool();
+    is $kingpin->flags->_help_length->[0], 0;
+    is $kingpin->flags->_help_length->[1], length "--bbbbbb";
+    is $kingpin->flags->help, <<HELP;
+  --help    Show context-sensitive help.
+  --a
+  --bbbbbb
+HELP
+
+    $kingpin->flag('cc', 'description of cc')->bool();
+    is $kingpin->flags->_help_length->[0], 0;
+    is $kingpin->flags->_help_length->[1], length "--bbbbbb";
+    is $kingpin->flags->help, <<HELP;
+  --help    Show context-sensitive help.
+  --a
+  --bbbbbb
+  --cc      description of cc
+HELP
+
+    $kingpin->flag('ddd')->string();
+    is $kingpin->flags->_help_length->[0], 0;
+    is $kingpin->flags->_help_length->[1], length "--ddd=DDD";
+    is $kingpin->flags->help, <<HELP;
+  --help     Show context-sensitive help.
+  --a
+  --bbbbbb
+  --cc       description of cc
+  --ddd=DDD
+HELP
+
+    $kingpin->flag('eee', 'description of eee')->short('e')->string();
+    is $kingpin->flags->_help_length->[0], length "-e";
+    is $kingpin->flags->_help_length->[1], length "--eee=EEE";
+    is $kingpin->flags->help, <<HELP;
+      --help     Show context-sensitive help.
+      --a
+      --bbbbbb
+      --cc       description of cc
+      --ddd=DDD
+  -e, --eee=EEE  description of eee
+HELP
+};
+
 done_testing;
 

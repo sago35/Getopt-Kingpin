@@ -55,6 +55,53 @@ sub values {
     return @values;
 }
 
+sub _help_length {
+    my $self = shift;
+
+    my $len = [0, 0, 0];
+    foreach my $f ($self->values) {
+        my $str = $f->help_str;
+
+        if ($len->[0] < length $str->[0]) {
+            $len->[0] = length $str->[0];
+        }
+
+        if ($len->[1] < length $str->[1]) {
+            $len->[1] = length $str->[1];
+        }
+
+        if ($len->[2] < length $str->[2]) {
+            $len->[2] = length $str->[2];
+        }
+    }
+
+    return $len;
+}
+
+sub help {
+    my $self = shift;
+    my $ret = "";
+
+    my $len = $self->_help_length;
+    foreach my $f ($self->values) {
+        my $x = "";
+
+        my $long = $len->[1];
+        if ($len->[0] > 0) {
+            if (defined $f->short_name) {
+                $x .= sprintf "  %s, %-${long}s  %s\n", @{$f->help_str};
+            } else {
+                $x .= sprintf "      %-${long}s  %s\n", @{$f->help_str}[1, 2];
+            }
+        } else {
+            $x .= sprintf "  %-${long}s  %s\n", @{$f->help_str}[1, 2];
+        }
+        $x =~ s/ +$//;
+        $ret .= $x;
+    }
+    return $ret;
+}
+
 1;
 __END__
 
