@@ -8,6 +8,26 @@ our $VERSION = "0.01";
 
 extends 'Getopt::Kingpin::Base';
 
+sub help_str {
+    my $self = shift;
+
+    my $ret = ["", "", ""];
+
+    if (defined $self->short_name) {
+        $ret->[0] = sprintf "-%s", $self->short_name;
+    }
+
+    if ($self->type eq "bool") {
+        $ret->[1] = sprintf "--%s", $self->name;
+    } else {
+        $ret->[1] = sprintf "--%s=%s", $self->name, uc $self->name;
+    }
+
+    $ret->[2] = $self->description // "";
+
+    return $ret;
+}
+
 1;
 __END__
 
@@ -63,6 +83,10 @@ short optionを作成します。
 =head2 required()
 
 そのオプションを必須とする。
+
+=head2 help_str()
+
+ヘルプ表示用の文字列をarray refで返します。
 
 =head1 LICENSE
 

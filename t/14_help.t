@@ -64,7 +64,7 @@ subtest 'help max_length_of_flag' => sub {
     my $kingpin = Getopt::Kingpin->new();
     $kingpin->flags->get("help")->short('h');
     my $verbose = $kingpin->flag('verbose', 'Verbose mode.')->short('v')->bool();
-    my $ip      = $kingpin->flag('ip', 'IP address.')->bool();
+    my $ip      = $kingpin->flag('ip', 'IP address.')->string();
 
     my $expected = sprintf <<'...', $0;
 usage: %s [<flags>]
@@ -72,7 +72,7 @@ usage: %s [<flags>]
 Flags:
   -h, --help     Show context-sensitive help.
   -v, --verbose  Verbose mode.
-      --ip       IP address.
+      --ip=IP    IP address.
 
 ...
 
@@ -88,15 +88,15 @@ subtest 'help max_length_of_flag 2' => sub {
     my $kingpin = Getopt::Kingpin->new();
     $kingpin->flags->get("help")->short('h');
     my $verbose = $kingpin->flag('verbose', 'Verbose mode.')->short('v')->bool();
-    my $ip      = $kingpin->flag('ipaddress', 'IP address.')->bool();
+    my $ip      = $kingpin->flag('ipaddress', 'IP address.')->string();
 
     my $expected = sprintf <<'...', $0;
 usage: %s [<flags>]
 
 Flags:
-  -h, --help       Show context-sensitive help.
-  -v, --verbose    Verbose mode.
-      --ipaddress  IP address.
+  -h, --help                 Show context-sensitive help.
+  -v, --verbose              Verbose mode.
+      --ipaddress=IPADDRESS  IP address.
 
 ...
 
@@ -142,7 +142,7 @@ subtest 'help max_length_of_arg 2' => sub {
     my $kingpin = Getopt::Kingpin->new();
     $kingpin->flags->get("help")->short('h');
     my $verbose = $kingpin->flag('verbose', 'Verbose mode.')->short('v')->bool();
-    my $ip      = $kingpin->flag('ip', 'IP address.')->bool();
+    my $ip      = $kingpin->flag('ip', 'IP address.')->string();
     my $name    = $kingpin->arg('age', 'Age of user.')->required()->int();
     my $name    = $kingpin->arg('name', 'Name of user.')->required()->string();
 
@@ -152,7 +152,7 @@ usage: %s [<flags>] <age> <name>
 Flags:
   -h, --help     Show context-sensitive help.
   -v, --verbose  Verbose mode.
-      --ip       IP address.
+      --ip=IP    IP address.
 
 Args:
   <age>   Age of user.
@@ -177,12 +177,32 @@ usage: app_name [<flags>]
 app_description
 
 Flags:
-      --help  Show context-sensitive help.
+  --help  Show context-sensitive help.
 
 ...
 
     trap {$kingpin->parse};
     is $trap->exit, 0;
+    is $trap->stdout, $expected;
+};
+
+subtest 'place holder' => sub {
+    local @ARGV;
+    push @ARGV, qw(--help);
+
+    my $kingpin = Getopt::Kingpin->new;
+    $kingpin->flag("name", "Set name.")->string();
+
+    my $expected = sprintf <<'...', $0;
+usage: %s [<flags>]
+
+Flags:
+  --help       Show context-sensitive help.
+  --name=NAME  Set name.
+
+...
+
+    trap {$kingpin->parse};
     is $trap->stdout, $expected;
 };
 
