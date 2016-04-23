@@ -62,16 +62,10 @@ sub _help_length {
     foreach my $f ($self->values) {
         my $str = $f->help_str;
 
-        if ($len->[0] < length $str->[0]) {
-            $len->[0] = length $str->[0];
-        }
-
-        if ($len->[1] < length $str->[1]) {
-            $len->[1] = length $str->[1];
-        }
-
-        if ($len->[2] < length $str->[2]) {
-            $len->[2] = length $str->[2];
+        for (my $i = 0; $i < scalar @{$len}; $i++) {
+            if ($len->[$i] < length $str->[$i]) {
+                $len->[$i] = length $str->[$i];
+            }
         }
     }
 
