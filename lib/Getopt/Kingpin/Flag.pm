@@ -84,6 +84,10 @@ short optionを作成します。
 
 そのオプションを必須とする。
 
+=head2 help_str()
+
+ヘルプ表示用の文字列をarray refで返します。
+
 =head1 LICENSE
 
 Copyright (C) sago35.

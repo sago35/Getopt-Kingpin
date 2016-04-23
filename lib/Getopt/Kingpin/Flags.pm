@@ -149,6 +149,14 @@ add()した順で出力されます。
 定義されているGetopt::Kingpin::Flagをすべて出力します。
 add()した順で出力されます。
 
+=head2 _help_length()
+
+short_name、name、descriptionの文字列長を返します。
+
+=head2 help()
+
+ヘルプを表示します。
+
 =head1 LICENSE
 
 Copyright (C) sago35.
