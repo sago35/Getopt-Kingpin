@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Moo;
 use Getopt::Kingpin::Flags;
-use Getopt::Kingpin::Arg;
+use Getopt::Kingpin::Args;
 use Carp;
 
 our $VERSION = "0.01";
@@ -23,7 +23,10 @@ has flags => (
 
 has args => (
     is => 'rw',
-    default => sub {return []},
+    default => sub {
+        my $args = Getopt::Kingpin::Args->new;
+        return $args;
+    },
 );
 
 has _version => (
@@ -67,15 +70,11 @@ sub flag {
 sub arg {
     my $self = shift;
     my ($name, $description) = @_;
-    my $arg = Getopt::Kingpin::Arg->new(
+    my $ret = $self->args->add(
         name        => $name,
         description => $description,
     );
-    $self->args([
-            @{$self->args},
-            $arg,
-        ]);
-    return $arg;
+    return $ret;
 }
 
 sub parse {
@@ -151,8 +150,8 @@ sub _parse {
                 $short_name = $remain;
             }
         } else {
-            if ($arg_index < scalar @{$self->args}) {
-                $self->args->[$arg_index]->set_value($arg);
+            if ($arg_index < $self->args->count) {
+                $self->args->get($arg_index)->set_value($arg);
                 $arg_index++;
             }
         }
@@ -172,8 +171,8 @@ sub _parse {
         printf STDERR "%s: error: required flag --%s not provided, try --help", $self->_name, $r->name;
         exit 1;
     }
-    for (my $i = 0; $i < scalar @{$self->args}; $i++) {
-        my $arg = $self->args->[$i];
+    for (my $i = 0; $i < $self->args->count; $i++) {
+        my $arg = $self->args->get($i);
         if ($arg->_required and $i + 1 > $arg_index) {
             croak sprintf "required arg '%s' not provided", $arg->name;
         }
@@ -202,7 +201,7 @@ sub version {
 sub help {
     my $self = shift;
 
-    printf "usage: %s\n", join " ", $self->_name, "[<flags>]", map {sprintf "<%s>", $_->name} @{$self->args};
+    printf "usage: %s\n", join " ", $self->_name, "[<flags>]", map {sprintf "<%s>", $_->name} $self->args->get_all;
     printf "\n";
 
     if ($self->_description ne "") {
@@ -212,9 +211,9 @@ sub help {
 
     printf "%s\n", $self->flags->help;
 
-    if (scalar @{$self->args} > 0) {
+    if ($self->args->count > 0) {
         my $max_length_of_arg = 0;
-        foreach my $arg (@{$self->args}) {
+        foreach my $arg ($self->args->get_all) {
             if ($max_length_of_arg < length $arg->name) {
                 $max_length_of_arg = length $arg->name;
             }
@@ -222,7 +221,7 @@ sub help {
         my $arg_space = $max_length_of_arg + 2;
 
         printf "Args:\n";
-        foreach my $arg (@{$self->args}) {
+        foreach my $arg ($self->args->get_all) {
             printf "  %-${arg_space}s  %s\n",
                 '<' . $arg->name . '>',
                 $arg->description;
