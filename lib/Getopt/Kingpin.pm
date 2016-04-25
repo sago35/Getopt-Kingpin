@@ -210,7 +210,6 @@ sub help {
         printf "\n";
     }
 
-    printf "Flags:\n";
     printf "%s\n", $self->flags->help;
 
     if (scalar @{$self->args} > 0) {

@@ -48,6 +48,7 @@ subtest 'get max length' => sub {
     is $kingpin->flags->_help_length->[0], 0;
     is $kingpin->flags->_help_length->[1], length "--help";
     is $kingpin->flags->help, <<HELP;
+Flags:
   --help  Show context-sensitive help.
 HELP
 
@@ -55,6 +56,7 @@ HELP
     is $kingpin->flags->_help_length->[0], 0;
     is $kingpin->flags->_help_length->[1], length "--help";
     is $kingpin->flags->help, <<HELP;
+Flags:
   --help  Show context-sensitive help.
   --a
 HELP
@@ -63,6 +65,7 @@ HELP
     is $kingpin->flags->_help_length->[0], 0;
     is $kingpin->flags->_help_length->[1], length "--bbbbbb";
     is $kingpin->flags->help, <<HELP;
+Flags:
   --help    Show context-sensitive help.
   --a
   --bbbbbb
@@ -72,6 +75,7 @@ HELP
     is $kingpin->flags->_help_length->[0], 0;
     is $kingpin->flags->_help_length->[1], length "--bbbbbb";
     is $kingpin->flags->help, <<HELP;
+Flags:
   --help    Show context-sensitive help.
   --a
   --bbbbbb
@@ -82,6 +86,7 @@ HELP
     is $kingpin->flags->_help_length->[0], 0;
     is $kingpin->flags->_help_length->[1], length "--ddd=DDD";
     is $kingpin->flags->help, <<HELP;
+Flags:
   --help     Show context-sensitive help.
   --a
   --bbbbbb
@@ -93,6 +98,7 @@ HELP
     is $kingpin->flags->_help_length->[0], length "-e";
     is $kingpin->flags->_help_length->[1], length "--eee=EEE";
     is $kingpin->flags->help, <<HELP;
+Flags:
       --help     Show context-sensitive help.
       --a
       --bbbbbb

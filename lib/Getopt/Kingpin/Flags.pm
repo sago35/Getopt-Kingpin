@@ -76,6 +76,8 @@ sub help {
     my $self = shift;
     my $ret = "";
 
+    $ret .= "Flags:\n";
+
     my $len = $self->_help_length;
     foreach my $f ($self->values) {
         my $x = "";
