@@ -212,21 +212,7 @@ sub help {
     printf "%s\n", $self->flags->help;
 
     if ($self->args->count > 0) {
-        my $max_length_of_arg = 0;
-        foreach my $arg ($self->args->get_all) {
-            if ($max_length_of_arg < length $arg->name) {
-                $max_length_of_arg = length $arg->name;
-            }
-        }
-        my $arg_space = $max_length_of_arg + 2;
-
-        printf "Args:\n";
-        foreach my $arg ($self->args->get_all) {
-            printf "  %-${arg_space}s  %s\n",
-                '<' . $arg->name . '>',
-                $arg->description;
-        }
-        printf "\n";
+        printf "%s\n", $self->args->help;
     }
 }
 

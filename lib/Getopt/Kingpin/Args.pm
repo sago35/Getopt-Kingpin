@@ -48,6 +48,35 @@ sub get_all {
     return @{$self->_args};
 }
 
+sub _help_length {
+    my $self = shift;
+
+    my $max_length_of_arg = 0;
+    foreach my $arg ($self->get_all) {
+        if ($max_length_of_arg < length $arg->name) {
+            $max_length_of_arg = length $arg->name;
+        }
+    }
+    my $arg_space = $max_length_of_arg + 2;
+    return $arg_space;
+
+}
+
+sub help {
+    my $self = shift;
+    my $ret = "";
+
+    $ret .= "Args:\n";
+
+    my $len = $self->_help_length;
+    foreach my $arg ($self->get_all) {
+        $ret .= sprintf "  %-${len}s  %s\n",
+            '<' . $arg->name . '>',
+            $arg->description;
+    }
+
+    return $ret;
+}
 
 1;
 __END__
