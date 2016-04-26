@@ -48,48 +48,6 @@ sub get_all {
     return @{$self->_args};
 }
 
-#sub _help_length {
-#    my $self = shift;
-#
-#    my $len = [0, 0, 0];
-#    foreach my $f ($self->values) {
-#        my $str = $f->help_str;
-#
-#        for (my $i = 0; $i < scalar @{$len}; $i++) {
-#            if ($len->[$i] < length $str->[$i]) {
-#                $len->[$i] = length $str->[$i];
-#            }
-#        }
-#    }
-#
-#    return $len;
-#}
-#
-#sub help {
-#    my $self = shift;
-#    my $ret = "";
-#
-#    $ret .= "Flags:\n";
-#
-#    my $len = $self->_help_length;
-#    foreach my $f ($self->values) {
-#        my $x = "";
-#
-#        my $long = $len->[1];
-#        if ($len->[0] > 0) {
-#            if (defined $f->short_name) {
-#                $x .= sprintf "  %s, %-${long}s  %s\n", @{$f->help_str};
-#            } else {
-#                $x .= sprintf "      %-${long}s  %s\n", @{$f->help_str}[1, 2];
-#            }
-#        } else {
-#            $x .= sprintf "  %-${long}s  %s\n", @{$f->help_str}[1, 2];
-#        }
-#        $x =~ s/ +$//;
-#        $ret .= $x;
-#    }
-#    return $ret;
-#}
 
 1;
 __END__
