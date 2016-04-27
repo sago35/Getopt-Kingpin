@@ -13,6 +13,11 @@ has _args => (
     default => sub {return []},
 );
 
+has _args_remain => (
+    is => 'rw',
+    default => sub {return []},
+);
+
 sub add {
     my $self = shift;
     my $hash = {@_};
@@ -25,6 +30,13 @@ sub add {
     push @{$self->_args}, $arg;
 
     return $arg;
+}
+
+sub add_remain {
+    my $self = shift;
+    my $arg = shift;
+
+    push @{$self->_args_remain}, $arg;
 }
 
 sub count {
@@ -46,6 +58,11 @@ sub get {
 sub get_all {
     my $self = shift;
     return @{$self->_args};
+}
+
+sub get_remain {
+    my $self = shift;
+    return @{$self->_args_remain};
 }
 
 sub _help_length {

@@ -153,6 +153,8 @@ sub _parse {
             if ($arg_index < $self->args->count) {
                 $self->args->get($arg_index)->set_value($arg);
                 $arg_index++;
+            } else {
+                $self->args->add_remain($arg);
             }
         }
     }
