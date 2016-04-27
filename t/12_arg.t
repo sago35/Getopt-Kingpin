@@ -80,6 +80,20 @@ subtest 'arg num' => sub {
     is $arg1, 'arg1';
 };
 
+subtest 'arg get' => sub {
+    local @ARGV;
+    push @ARGV, qw(arg1 arg2 arg3);
+
+    my $kingpin = Getopt::Kingpin->new;
+    my $arg1 = $kingpin->arg('arg1', 'set arg1')->string();
+
+    $kingpin->parse;
+
+    is $kingpin->args->get(0), 'arg1';
+    is $kingpin->args->get(1), undef;
+    is $kingpin->args->get(2), undef;
+};
+
 subtest 'consuming all remaining arguments 1' => sub {
     local @ARGV;
     push @ARGV, qw(name arg1 arg2 arg3);
