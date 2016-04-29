@@ -206,5 +206,25 @@ Flags:
     is $trap->stdout, $expected;
 };
 
+subtest 'default' => sub {
+    local @ARGV;
+    push @ARGV, qw(--help);
+
+    my $kingpin = Getopt::Kingpin->new;
+    my $name = $kingpin->flag('name', 'Set name.')->default("default name")->string();
+
+    my $expected = sprintf <<'...', $0;
+usage: %s [<flags>]
+
+Flags:
+  --help                 Show context-sensitive help.
+  --name="default name"  Set name.
+
+...
+
+    trap {$kingpin->parse};
+    is $trap->stdout, $expected;
+};
+
 done_testing;
 
