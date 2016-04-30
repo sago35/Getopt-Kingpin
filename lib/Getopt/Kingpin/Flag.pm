@@ -20,7 +20,11 @@ sub help_str {
     if ($self->type eq "bool") {
         $ret->[1] = sprintf "--%s", $self->name;
     } else {
-        $ret->[1] = sprintf "--%s=%s", $self->name, uc $self->name;
+        if ($self->_default) {
+            $ret->[1] = sprintf '--%s="%s"', $self->name, $self->_default;
+        } else {
+            $ret->[1] = sprintf "--%s=%s", $self->name, uc $self->name;
+        }
     }
 
     $ret->[2] = $self->description // "";

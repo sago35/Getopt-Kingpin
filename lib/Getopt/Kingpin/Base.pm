@@ -29,6 +29,10 @@ has value => (
     is => 'rw',
 );
 
+has _default => (
+    is => 'rw',
+);
+
 has type => (
     is => 'rw',
     default => sub {"string"},
@@ -100,6 +104,7 @@ sub default {
     my $self = shift;
     my ($default) = @_;
 
+    $self->_default($default);
     $self->value($default);
 
     return $self;
