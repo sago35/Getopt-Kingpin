@@ -226,5 +226,45 @@ Flags:
     is $trap->stdout, $expected;
 };
 
+subtest 'place holder' => sub {
+    local @ARGV;
+    push @ARGV, qw(--help);
+
+    my $kingpin = Getopt::Kingpin->new;
+    my $name = $kingpin->flag('name', 'Set name.')->placeholder("place_holder_name")->string();
+
+    my $expected = sprintf <<'...', $0;
+usage: %s [<flags>]
+
+Flags:
+  --help                    Show context-sensitive help.
+  --name=place_holder_name  Set name.
+
+...
+
+    trap {$kingpin->parse};
+    is $trap->stdout, $expected;
+};
+
+subtest 'place holder with default' => sub {
+    local @ARGV;
+    push @ARGV, qw(--help);
+
+    my $kingpin = Getopt::Kingpin->new;
+    my $name = $kingpin->flag('name', 'Set name.')->placeholder("place_holder_name")->default("default name")->string();
+
+    my $expected = sprintf <<'...', $0;
+usage: %s [<flags>]
+
+Flags:
+  --help                    Show context-sensitive help.
+  --name=place_holder_name  Set name.
+
+...
+
+    trap {$kingpin->parse};
+    is $trap->stdout, $expected;
+};
+
 done_testing;
 
