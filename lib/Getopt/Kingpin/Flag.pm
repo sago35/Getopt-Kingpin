@@ -8,6 +8,19 @@ our $VERSION = "0.01";
 
 extends 'Getopt::Kingpin::Base';
 
+has _placeholder => (
+    is => 'rw',
+);
+
+sub placeholder {
+    my $self = shift;
+    my $placeholder = shift;
+
+    $self->_placeholder($placeholder);
+
+    return $self;
+}
+
 sub help_str {
     my $self = shift;
 
@@ -20,7 +33,9 @@ sub help_str {
     if ($self->type eq "bool") {
         $ret->[1] = sprintf "--%s", $self->name;
     } else {
-        if ($self->_default) {
+        if ($self->_placeholder) {
+            $ret->[1] = sprintf '--%s=%s', $self->name, $self->_placeholder;
+        } elsif ($self->_default) {
             $ret->[1] = sprintf '--%s="%s"', $self->name, $self->_default;
         } else {
             $ret->[1] = sprintf "--%s=%s", $self->name, uc $self->name;
