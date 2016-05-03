@@ -58,6 +58,19 @@ subtest 'existsing_file' => sub {
     is ref $y, "Path::Tiny";
 };
 
+subtest 'existsing_file is dir' => sub {
+    local @ARGV;
+    push @ARGV, qw(lib);
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $path = $kingpin->arg("path", "")->existing_file();
+
+    throws_ok {
+        $kingpin->parse;
+    } qr/error: 'lib' is a directory, try --help/
+
+};
+
 subtest 'existsing_file error' => sub {
     local @ARGV;
     push @ARGV, qw(kingpin Build.PL NOT_FOUND_FILE);
