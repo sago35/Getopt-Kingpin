@@ -169,6 +169,26 @@ sub _parse {
         exit 0;
     }
 
+    foreach my $f ($self->flags->values) {
+        if (defined $f->value) {
+            next;
+        } elsif (defined $f->_envar) {
+            $f->set_value($f->_envar);
+        } elsif (defined $f->_default) {
+            $f->set_value($f->_default);
+        }
+    }
+    for (my $i = 0; $i < $self->args->count; $i++) {
+        my $arg = $self->args->get($i);
+        if (defined $arg->value) {
+            next;
+        } elsif (defined $arg->_envar) {
+            $arg->set_value($arg->_envar);
+        } elsif (defined $arg->_default) {
+            $arg->set_value($arg->_default);
+        }
+    }
+
     foreach my $r (values %$required_but_not_found) {
         printf STDERR "%s: error: required flag --%s not provided, try --help", $self->_name, $r->name;
         exit 1;

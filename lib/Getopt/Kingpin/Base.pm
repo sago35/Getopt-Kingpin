@@ -33,6 +33,10 @@ has _default => (
     is => 'rw',
 );
 
+has _envar => (
+    is => 'rw',
+);
+
 has type => (
     is => 'rw',
     default => sub {"string"},
@@ -68,8 +72,8 @@ sub bool {
     my $self = shift;
 
     $self->type("bool");
-    if (not defined $self->value) {
-        $self->value(0);
+    if (not defined $self->_default) {
+        $self->_default(0);
     }
 
     return $self;
@@ -105,7 +109,6 @@ sub default {
     my ($default) = @_;
 
     $self->_default($default);
-    $self->value($default);
 
     return $self;
 }
@@ -115,7 +118,7 @@ sub override_default_from_envar {
     my ($envar_name) = @_;
 
     if (exists $ENV{$envar_name}) {
-        $self->value($ENV{$envar_name});
+        $self->_envar($ENV{$envar_name});
     }
 
     return $self;
