@@ -147,7 +147,9 @@ sub set_value {
         $self->value($p);
     } elsif ($self->type eq "existing_file") {
         my $p = path($value);
-        if ($p->is_file) {
+        if ($p->is_dir) {
+            croak sprintf "error: '%s' is a directory, try --help", $value;
+        } elsif ($p->is_file) {
             $self->value($p);
         } else {
             croak sprintf "error: path '%s' does not exist, try --help", $value;
