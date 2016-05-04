@@ -87,5 +87,17 @@ subtest 'existsing_file error' => sub {
 
 };
 
+subtest 'file with default' => sub {
+    local @ARGV;
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $path = $kingpin->flag("path", "")->default("Build.PL")->file();
+
+    $kingpin->parse;
+
+    is $path, "Build.PL";
+    is ref $path->value, "Path::Tiny";
+};
+
 done_testing;
 
