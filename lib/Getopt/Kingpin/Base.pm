@@ -95,6 +95,14 @@ sub existing_file {
     return $self;
 }
 
+sub existing_dir {
+    my $self = shift;
+
+    $self->type("existing_dir");
+
+    return $self;
+}
+
 sub short {
     my $self = shift;
     my ($short_name) = @_;
@@ -153,6 +161,15 @@ sub set_value {
         if ($p->is_dir) {
             croak sprintf "error: '%s' is a directory, try --help", $value;
         } elsif ($p->is_file) {
+            $self->value($p);
+        } else {
+            croak sprintf "error: path '%s' does not exist, try --help", $value;
+        }
+    } elsif ($self->type eq "existing_dir") {
+        my $p = path($value);
+        if ($p->is_file) {
+            croak sprintf "error: '%s' is a file, try --help", $value;
+        } elsif ($p->is_dir) {
             $self->value($p);
         } else {
             croak sprintf "error: path '%s' does not exist, try --help", $value;
