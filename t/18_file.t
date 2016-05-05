@@ -31,7 +31,7 @@ subtest 'file' => sub {
     is ref $y, "Path::Tiny";
 };
 
-subtest 'existsing_file' => sub {
+subtest 'existing_file' => sub {
     local @ARGV;
     push @ARGV, qw(kingpin Build.PL);
 
@@ -58,7 +58,7 @@ subtest 'existsing_file' => sub {
     is ref $y, "Path::Tiny";
 };
 
-subtest 'existsing_file is dir' => sub {
+subtest 'existing_file is dir' => sub {
     local @ARGV;
     push @ARGV, qw(lib);
 
@@ -67,11 +67,10 @@ subtest 'existsing_file is dir' => sub {
 
     throws_ok {
         $kingpin->parse;
-    } qr/error: 'lib' is a directory, try --help/
-
+    } qr/error: 'lib' is a directory, try --help/;
 };
 
-subtest 'existsing_file error' => sub {
+subtest 'existing_file error' => sub {
     local @ARGV;
     push @ARGV, qw(kingpin Build.PL NOT_FOUND_FILE);
 
@@ -83,8 +82,6 @@ subtest 'existsing_file error' => sub {
     throws_ok {
         $kingpin->parse;
     } qr/error: path 'NOT_FOUND_FILE' does not exist, try --help/;
-
-
 };
 
 subtest 'file with default' => sub {
