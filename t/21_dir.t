@@ -61,5 +61,19 @@ subtest 'existing_dir with default' => sub {
     is $path->value->is_dir, 1;
 };
 
+subtest 'existing_dir with envar' => sub {
+    local @ARGV;
+    $ENV{KINGPIN_TEST_PATH} = "lib";
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $path = $kingpin->arg("path", "")->override_default_from_envar("KINGPIN_TEST_PATH")->existing_dir();
+
+    $kingpin->parse;
+
+    is $path, "lib";
+    is ref $path->value, "Path::Tiny";
+    is $path->value->is_dir, 1;
+};
+
 done_testing;
 
