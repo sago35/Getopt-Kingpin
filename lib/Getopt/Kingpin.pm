@@ -108,7 +108,7 @@ sub _parse {
             }
 
             my $value;
-            if ($v->type eq "bool") {
+            if ($v->type eq "Bool") {
                 $value = defined $+{no} ? 0 : 1;
             } elsif (defined $+{equal}) {
                 $value = $+{value}
@@ -135,7 +135,7 @@ sub _parse {
                 my $v = $self->flags->get($name);
 
                 my $value;
-                if ($v->type eq "bool") {
+                if ($v->type eq "Bool") {
                     $value = 1;
                 } else {
                     if (length $remain > 0) {

@@ -23,7 +23,7 @@ sub AUTOLOAD {
         };
     }
 
-    if ($func eq "bool") {
+    if ($func eq "Bool") {
         if (not defined $self->_default) {
             $self->_default(0);
         }
@@ -71,7 +71,7 @@ has _envar => (
 
 has type => (
     is => 'rw',
-    default => sub {"string"},
+    default => sub {"String"},
 );
 
 has _required => (

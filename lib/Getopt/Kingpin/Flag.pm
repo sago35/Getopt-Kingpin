@@ -30,7 +30,7 @@ sub help_str {
         $ret->[0] = sprintf "-%s", $self->short_name;
     }
 
-    if ($self->type eq "bool") {
+    if ($self->type eq "Bool") {
         $ret->[1] = sprintf "--%s", $self->name;
     } else {
         if ($self->_placeholder) {
