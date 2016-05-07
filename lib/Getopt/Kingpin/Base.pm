@@ -13,23 +13,23 @@ sub AUTOLOAD {
     my $self = shift;
     my $func = our $AUTOLOAD;
     $func =~ s/.*:://;
-    $func = _camelize($func);
-    if (not exists $types->{$func}) {
-        my $module = sprintf "Getopt::Kingpin::Type::%s", $func;
+    my $type = _camelize($func);
+    if (not exists $types->{$type}) {
+        my $module = sprintf "Getopt::Kingpin::Type::%s", $type;
         croak "type error '$func'" unless eval "require $module"; ## no critic
-        $types->{$func} = {
+        $types->{$type} = {
             type      => \&{"${module}::type"},
             set_value => \&{"${module}::set_value"},
         };
     }
 
-    if ($func eq "Bool") {
+    if ($type eq "Bool") {
         if (not defined $self->_default) {
             $self->_default(0);
         }
     }
 
-    $self->type($func);
+    $self->type($type);
 
     return $self;
 }
