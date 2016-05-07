@@ -7,6 +7,38 @@ use Carp;
 use Path::Tiny;
 
 our $VERSION = "0.01";
+our $types;
+sub AUTOLOAD {
+    no overloading;
+    my $self = shift;
+    my $func = our $AUTOLOAD;
+    $func =~ s/.*:://;
+    $func = _camelize($func);
+    if (not exists $types->{$func}) {
+        my $module = sprintf "Getopt::Kingpin::Type::%s", $func;
+        croak "type error '$func'" unless eval "require $module";
+        $types->{$func} = {
+            type      => \&{"${module}::type"},
+            set_value => \&{"${module}::set_value"},
+        };
+    }
+
+    if ($func eq "bool") {
+        if (not defined $self->_default) {
+            $self->_default(0);
+        }
+    }
+
+    $self->type($func);
+
+    return $self;
+}
+
+sub _camelize {
+    my $c = shift;
+    $c =~ s/(^|_)(.)/uc($2)/ge;
+    return $c;
+}
 
 use overload (
     '""' => sub {$_[0]->value // ""},
@@ -52,56 +84,6 @@ has index => (
     default => sub {0},
 );
 
-sub string {
-    my $self = shift;
-
-    $self->type("string");
-
-    return $self;
-}
-
-sub int {
-    my $self = shift;
-
-    $self->type("int");
-
-    return $self;
-}
-
-sub bool {
-    my $self = shift;
-
-    $self->type("bool");
-    if (not defined $self->_default) {
-        $self->_default(0);
-    }
-
-    return $self;
-}
-
-sub file {
-    my $self = shift;
-
-    $self->type("file");
-
-    return $self;
-}
-
-sub existing_file {
-    my $self = shift;
-
-    $self->type("existing_file");
-
-    return $self;
-}
-
-sub existing_dir {
-    my $self = shift;
-
-    $self->type("existing_dir");
-
-    return $self;
-}
 
 sub short {
     my $self = shift;
@@ -140,43 +122,16 @@ sub required {
 }
 
 sub set_value {
-    my $self = shift;
-    my ($value) = @_;
-
-    if ($self->type eq "string") {
-        $self->value($value);
-    } elsif ($self->type eq "int") {
-        if ($value =~ /^-?[0-9]+$/) {
-            $self->value($value);
-        } else {
-            croak "int parse error";
-        }
-    } elsif ($self->type eq "bool") {
-        $self->value($value);
-    } elsif ($self->type eq "file") {
-        my $p = path($value);
-        $self->value($p);
-    } elsif ($self->type eq "existing_file") {
-        my $p = path($value);
-        if ($p->is_dir) {
-            croak sprintf "error: '%s' is a directory, try --help", $value;
-        } elsif ($p->is_file) {
-            $self->value($p);
-        } else {
-            croak sprintf "error: path '%s' does not exist, try --help", $value;
-        }
-    } elsif ($self->type eq "existing_dir") {
-        my $p = path($value);
-        if ($p->is_file) {
-            croak sprintf "error: '%s' is a file, try --help", $value;
-        } elsif ($p->is_dir) {
-            $self->value($p);
-        } else {
-            croak sprintf "error: path '%s' does not exist, try --help", $value;
-        }
-    } else {
-        croak sprintf "type error '%s'", $self->type;
+    my $type = $_[0]->type;
+    if (not exists $types->{$type}) {
+        my $module = sprintf "Getopt::Kingpin::Type::%s", $type;
+        croak "type error '$type'" unless eval "require $module";
+        $types->{$type} = {
+            type      => \&{"${module}::type"},
+            set_value => \&{"${module}::set_value"},
+        };
     }
+    $types->{$type}->{set_value}->(@_);
 }
 
 1;
