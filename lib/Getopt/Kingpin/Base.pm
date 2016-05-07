@@ -16,7 +16,7 @@ sub AUTOLOAD {
     $func = _camelize($func);
     if (not exists $types->{$func}) {
         my $module = sprintf "Getopt::Kingpin::Type::%s", $func;
-        croak "type error '$func'" unless eval "require $module";
+        croak "type error '$func'" unless eval "require $module"; ## no critic
         $types->{$func} = {
             type      => \&{"${module}::type"},
             set_value => \&{"${module}::set_value"},
@@ -125,7 +125,7 @@ sub set_value {
     my $type = $_[0]->type;
     if (not exists $types->{$type}) {
         my $module = sprintf "Getopt::Kingpin::Type::%s", $type;
-        croak "type error '$type'" unless eval "require $module";
+        croak "type error '$type'" unless eval "require $module"; ## no critic
         $types->{$type} = {
             type      => \&{"${module}::type"},
             set_value => \&{"${module}::set_value"},
