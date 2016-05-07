@@ -16,5 +16,14 @@ subtest 'type error' => sub {
     } qr/type error '__type_error__'/;
 };
 
+subtest 'type error 2' => sub {
+    local @ARGV;
+
+    my $kingpin = Getopt::Kingpin->new();
+    throws_ok {
+        $kingpin->flag('verbose', 'Verbose mode.')->short('v')->type_error();
+    } qr/type error 'type_error'/;
+};
+
 done_testing;
 
