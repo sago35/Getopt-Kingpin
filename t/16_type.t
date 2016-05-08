@@ -22,7 +22,7 @@ subtest 'type error 2' => sub {
     my $kingpin = Getopt::Kingpin->new();
     throws_ok {
         $kingpin->flag('verbose', 'Verbose mode.')->short('v')->type_error();
-    } qr/type error 'type_error'/;
+    } qr/type error 'TypeError'/;
 };
 
 done_testing;
