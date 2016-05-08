@@ -28,68 +28,28 @@ __END__
 
 =head1 NAME
 
-Getopt::Kingpin::Flag - command line option object
+Getopt::Kingpin::Type::ExistingDir - command line option object
 
 =head1 SYNOPSIS
 
     use Getopt::Kingpin;
     my $kingpin = Getopt::Kingpin->new;
-    my $name = $kingpin->flag('name', 'set name')->string();
+    my $lib_dir = $kingpin->flag('lib_dir', 'set lib_dir')->existing_dir();
     $kingpin->parse;
 
-    printf "name : %s\n", $name;
+    printf "lib_dir : %s\n", $lib_dir;
 
 =head1 DESCRIPTION
 
-Getopt::Kingpin::Flag は、Getopt::Kingpinから使用するモジュールです。
+Getopt::Kingpin::Type::ExistingDir は、Getopt::Kingpin内で使用する型定義です。
 
 =head1 METHOD
-
-=head2 new()
-
-Create Getopt::Kingpin::Flag object.
-
-=head2 string()
-
-自分自身をstringとして定義します。
-
-=head2 int()
-
-自分自身をintegerとして定義します。
-
-=head2 bool()
-
-自分自身をboolとして定義します。
-
-=head2 file()
-
-自分自身をfileとして定義します。
-
-=head2 existing_file()
-
-自分自身を存在しているfileとして定義します。
-存在しない場合はエラーとなります。
-
-=head2 short($short_name)
-
-short optionを作成します。
-
-=head2 default($default_value)
-
-デフォルト値を設定します。
-
-=head2 override_default_from_envar($env_var_name)
-
-デフォルト値を環境変数で上書きします。
-
-=head2 required()
-
-そのオプションを必須とする。
 
 =head2 set_value($value)
 
 $self->valueに値を設定します。
-
+値は、Path::Tinyによって処理されます。
+必ず存在するdirectoryである必要があります。
 
 =head1 LICENSE
 
