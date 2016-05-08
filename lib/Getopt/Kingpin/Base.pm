@@ -14,9 +14,21 @@ sub AUTOLOAD {
     my $func = our $AUTOLOAD;
     $func =~ s/.*:://;
     my $type = _camelize($func);
+
+    $self->_set_types($type);
+
+    $self->type($type);
+
+    return $self;
+}
+
+sub _set_types {
+    my $self = shift;
+    my ($type) = @_;
+
     if (not exists $types->{$type}) {
         my $module = sprintf "Getopt::Kingpin::Type::%s", $type;
-        croak "type error '$func'" unless eval "require $module"; ## no critic
+        croak "type error '$type'" unless eval "require $module"; ## no critic
         $types->{$type} = {
             type      => \&{"${module}::type"},
             set_value => \&{"${module}::set_value"},
@@ -28,10 +40,6 @@ sub AUTOLOAD {
             $self->_default(0);
         }
     }
-
-    $self->type($type);
-
-    return $self;
 }
 
 sub _camelize {
@@ -123,14 +131,9 @@ sub required {
 
 sub set_value {
     my $type = $_[0]->type;
-    if (not exists $types->{$type}) {
-        my $module = sprintf "Getopt::Kingpin::Type::%s", $type;
-        croak "type error '$type'" unless eval "require $module"; ## no critic
-        $types->{$type} = {
-            type      => \&{"${module}::type"},
-            set_value => \&{"${module}::set_value"},
-        };
-    }
+
+    $_[0]->_set_types($type);
+
     $types->{$type}->{set_value}->(@_);
 }
 
