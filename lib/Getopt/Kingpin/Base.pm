@@ -165,27 +165,6 @@ Getopt::Kingpin::Flag は、Getopt::Kingpinから使用するモジュールで�
 
 Create Getopt::Kingpin::Flag object.
 
-=head2 string()
-
-自分自身をstringとして定義します。
-
-=head2 int()
-
-自分自身をintegerとして定義します。
-
-=head2 bool()
-
-自分自身をboolとして定義します。
-
-=head2 file()
-
-自分自身をfileとして定義します。
-
-=head2 existing_file()
-
-自分自身を存在しているfileとして定義します。
-存在しない場合はエラーとなります。
-
 =head2 short($short_name)
 
 short optionを作成します。
@@ -205,7 +184,7 @@ short optionを作成します。
 =head2 set_value($value)
 
 $self->valueに値を設定します。
-
+実際の処理ではGetopt::Kingpin::Type::以下のモジュールが使われます。
 
 =head1 LICENSE
 
