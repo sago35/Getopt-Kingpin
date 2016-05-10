@@ -28,7 +28,7 @@ __END__
 
 =head1 NAME
 
-Getopt::Kingpin::Flag - command line option object
+Getopt::Kingpin::Type::ExistingFile - command line option object
 
 =head1 SYNOPSIS
 
