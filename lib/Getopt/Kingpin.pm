@@ -5,6 +5,7 @@ use warnings;
 use Moo;
 use Getopt::Kingpin::Flags;
 use Getopt::Kingpin::Args;
+use Getopt::Kingpin::Commands;
 use Carp;
 
 our $VERSION = "0.01";
@@ -26,6 +27,14 @@ has args => (
     default => sub {
         my $args = Getopt::Kingpin::Args->new;
         return $args;
+    },
+);
+
+has commands => (
+    is => 'rw',
+    default => sub {
+        my $commands = Getopt::Kingpin::Commands->new;
+        return $commands;
     },
 );
 
@@ -71,6 +80,16 @@ sub arg {
     my $self = shift;
     my ($name, $description) = @_;
     my $ret = $self->args->add(
+        name        => $name,
+        description => $description,
+    );
+    return $ret;
+}
+
+sub command {
+    my $self = shift;
+    my ($name, $description) = @_;
+    my $ret = $self->commands->add(
         name        => $name,
         description => $description,
     );
@@ -150,6 +169,16 @@ sub _parse {
                 $short_name = $remain;
             }
         } else {
+            if ($arg_index == 0) {
+                my $cmd = $self->commands->get($arg);
+                if (defined $cmd) {
+                    my @argv_for_command = @argv;
+                    @argv = ();
+                    $cmd->_parse(@argv_for_command);
+                    next;
+                }
+            }
+
             if ($arg_index < $self->args->count) {
                 $self->args->get($arg_index)->set_value($arg);
                 $arg_index++;
