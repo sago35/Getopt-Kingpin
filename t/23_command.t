@@ -23,5 +23,43 @@ subtest 'command (flag)' => sub {
     is $image, "abc.jpg";
 };
 
+subtest 'command (arg)' => sub {
+    local @ARGV;
+    push @ARGV, qw(post 127.0.0.1 abc.jpg);
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $post = $kingpin->command("post", "post image");
+    my $server = $post->arg("server", "")->string();
+    my $image = $post->arg("image", "")->file();
+
+    $kingpin->parse;
+
+    is ref $post, "Getopt::Kingpin::Command";
+    is ref $server, "Getopt::Kingpin::Arg";
+    is ref $image, "Getopt::Kingpin::Arg";
+
+    is $server, "127.0.0.1";
+    is $image, "abc.jpg";
+};
+
+subtest 'command (flag and arg)' => sub {
+    local @ARGV;
+    push @ARGV, qw(post --server 127.0.0.1 abc.jpg);
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $post = $kingpin->command("post", "post image");
+    my $server = $post->flag("server", "")->string();
+    my $image = $post->arg("image", "")->file();
+
+    $kingpin->parse;
+
+    is ref $post, "Getopt::Kingpin::Command";
+    is ref $server, "Getopt::Kingpin::Flag";
+    is ref $image, "Getopt::Kingpin::Arg";
+
+    is $server, "127.0.0.1";
+    is $image, "abc.jpg";
+};
+
 done_testing;
 
