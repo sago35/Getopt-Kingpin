@@ -1,6 +1,7 @@
 use strict;
 use Test::More 0.98;
 use Test::Exception;
+use Test::Trap;
 use Getopt::Kingpin;
 use Getopt::Kingpin::Command;
 
@@ -59,6 +60,35 @@ subtest 'command (flag and arg)' => sub {
 
     is $server, "127.0.0.1";
     is $image, "abc.jpg";
+};
+
+subtest 'command help' => sub {
+    local @ARGV;
+    push @ARGV, qw(--help);
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $post = $kingpin->command("post", "post image");
+    my $server = $post->flag("server", "")->string();
+    my $image = $post->arg("image", "")->file();
+
+    my $expected = sprintf <<'...', $0;
+usage: %s [<flags>] <command> [<args> ...]
+
+Flags:
+  --help  Show context-sensitive help.
+
+Commands:
+  help [<command>...]
+    Show help.
+
+  post [<flags>] [<image>]
+    post image
+
+...
+
+    trap {$kingpin->parse};
+    is $trap->exit, 0;
+    is $trap->stdout, $expected;
 };
 
 done_testing;
