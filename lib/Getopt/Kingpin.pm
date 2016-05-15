@@ -262,8 +262,12 @@ sub help {
 
     printf "%s\n", $self->flags->help;
 
-    if ($self->args->count > 0) {
-        printf "%s\n", $self->args->help;
+    if ($self->commands->count > 0) {
+        printf "%s\n", $self->commands->help;
+    } else {
+        if ($self->args->count > 0) {
+            printf "%s\n", $self->args->help;
+        }
     }
 }
 

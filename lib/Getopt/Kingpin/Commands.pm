@@ -40,6 +40,25 @@ sub get {
     return;
 }
 
+sub get_all {
+    my $self = shift;
+    return @{$self->_commands};
+}
+
+sub help {
+    my $self = shift;
+    my $ret = "";
+
+    $ret .= "Commands:\n";
+
+    foreach my $cmd ($self->get_all) {
+        $ret .= sprintf "  %s  %s\n", $cmd->_name;
+        $ret .= sprintf "    %s\n", $cmd->_description;
+    }
+
+    return $ret;
+}
+
 1;
 __END__
 
