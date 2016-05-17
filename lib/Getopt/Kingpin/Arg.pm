@@ -8,6 +8,16 @@ our $VERSION = "0.01";
 
 extends 'Getopt::Kingpin::Base';
 
+sub help_name {
+    my $self = shift;
+
+    my $ret = '<' . $self->name . '>';
+    if (not $self->_required) {
+        $ret = '[' . $ret . ']';
+    }
+    return $ret;
+}
+
 1;
 __END__
 

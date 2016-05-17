@@ -70,12 +70,11 @@ sub _help_length {
 
     my $max_length_of_arg = 0;
     foreach my $arg ($self->get_all) {
-        if ($max_length_of_arg < length $arg->name) {
-            $max_length_of_arg = length $arg->name;
+        if ($max_length_of_arg < length $arg->help_name) {
+            $max_length_of_arg = length $arg->help_name;
         }
     }
-    my $arg_space = $max_length_of_arg + 2;
-    return $arg_space;
+    return $max_length_of_arg;
 
 }
 
@@ -88,7 +87,7 @@ sub help {
     my $len = $self->_help_length;
     foreach my $arg ($self->get_all) {
         $ret .= sprintf "  %-${len}s  %s\n",
-            '<' . $arg->name . '>',
+            $arg->help_name,
             $arg->description;
     }
 
