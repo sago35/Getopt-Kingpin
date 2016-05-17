@@ -16,7 +16,7 @@ sub help_short {
     if ($self->_name eq "help") {
         push @help, "[<command>...]";
     } else {
-        if ($self->flags->count > 0) {
+        if ($self->flags->count > 1) {
             push @help, "[<flags>]";
         }
 

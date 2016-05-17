@@ -259,9 +259,7 @@ sub help_short {
     my $self = shift;
     my @help = ($self->_name);
 
-    if ($self->flags->count > 0) {
-        push @help, "[<flags>]";
-    }
+    push @help, "[<flags>]";
 
     if ($self->commands->count > 1) {
         push @help, "<command>";
@@ -272,9 +270,8 @@ sub help_short {
                 $has_args = 1;
             }
         }
-        if ($has_args > 0) {
-            push @help, "[<args> ...]";
-        }
+
+        push @help, "[<args> ...]";
     } else {
         foreach my $arg ($self->args->get_all) {
             push @help, sprintf "<%s>", $arg->name;
