@@ -55,6 +55,11 @@ sub values {
     return @values;
 }
 
+sub count {
+    my $self = shift;
+    return scalar $self->values;
+}
+
 sub _help_length {
     my $self = shift;
 
