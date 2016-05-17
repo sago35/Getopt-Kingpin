@@ -255,10 +255,38 @@ sub version {
     $self->_version($version);
 }
 
+sub help_short {
+    my $self = shift;
+    my @help = ($self->_name);
+
+    if ($self->flags->count > 0) {
+        push @help, "[<flags>]";
+    }
+
+    if ($self->commands->count > 1) {
+        push @help, "<command>";
+
+        my $has_args = 0;
+        foreach my $cmd ($self->commands->get_all) {
+            if ($cmd->args->count > 0) {
+                $has_args = 1;
+            }
+        }
+        if ($has_args > 0) {
+            push @help, "[<args> ...]";
+        }
+    } else {
+        foreach my $arg ($self->args->get_all) {
+            push @help, sprintf "<%s>", $arg->name;
+        }
+    }
+
+    return join " ", @help;
+}
+
 sub help {
     my $self = shift;
-
-    printf "usage: %s\n", join " ", $self->_name, "[<flags>]", map {sprintf "<%s>", $_->name} $self->args->get_all;
+    printf "usage: %s\n", $self->help_short;
     printf "\n";
 
     if ($self->_description ne "") {

@@ -52,7 +52,7 @@ sub help {
     $ret .= "Commands:\n";
 
     foreach my $cmd ($self->get_all) {
-        $ret .= sprintf "  %s  %s\n", $cmd->_name;
+        $ret .= sprintf "  %s\n", $cmd->help_short;
         $ret .= sprintf "    %s\n", $cmd->_description;
         $ret .= sprintf "\n";
     }
