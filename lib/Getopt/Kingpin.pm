@@ -89,6 +89,12 @@ sub arg {
 sub command {
     my $self = shift;
     my ($name, $description) = @_;
+    if ($self->commands->count == 0) {
+        $self->commands->add(
+            name => "help",
+            description => "Show help.",
+        );
+    }
     my $ret = $self->commands->add(
         name        => $name,
         description => $description,
@@ -262,7 +268,7 @@ sub help {
 
     printf "%s\n", $self->flags->help;
 
-    if ($self->commands->count > 0) {
+    if ($self->commands->count > 1) {
         printf "%s\n", $self->commands->help;
     } else {
         if ($self->args->count > 0) {
