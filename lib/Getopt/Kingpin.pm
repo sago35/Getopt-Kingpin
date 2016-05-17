@@ -89,6 +89,12 @@ sub arg {
 sub command {
     my $self = shift;
     my ($name, $description) = @_;
+    if ($self->commands->count == 0) {
+        $self->commands->add(
+            name => "help",
+            description => "Show help.",
+        );
+    }
     my $ret = $self->commands->add(
         name        => $name,
         description => $description,
@@ -249,10 +255,35 @@ sub version {
     $self->_version($version);
 }
 
+sub help_short {
+    my $self = shift;
+    my @help = ($self->_name);
+
+    push @help, "[<flags>]";
+
+    if ($self->commands->count > 1) {
+        push @help, "<command>";
+
+        my $has_args = 0;
+        foreach my $cmd ($self->commands->get_all) {
+            if ($cmd->args->count > 0) {
+                $has_args = 1;
+            }
+        }
+
+        push @help, "[<args> ...]";
+    } else {
+        foreach my $arg ($self->args->get_all) {
+            push @help, sprintf "<%s>", $arg->name;
+        }
+    }
+
+    return join " ", @help;
+}
+
 sub help {
     my $self = shift;
-
-    printf "usage: %s\n", join " ", $self->_name, "[<flags>]", map {sprintf "<%s>", $_->name} $self->args->get_all;
+    printf "usage: %s\n", $self->help_short;
     printf "\n";
 
     if ($self->_description ne "") {
@@ -262,8 +293,12 @@ sub help {
 
     printf "%s\n", $self->flags->help;
 
-    if ($self->args->count > 0) {
-        printf "%s\n", $self->args->help;
+    if ($self->commands->count > 1) {
+        printf "%s\n", $self->commands->help;
+    } else {
+        if ($self->args->count > 0) {
+            printf "%s\n", $self->args->help;
+        }
     }
 }
 

@@ -165,6 +165,36 @@ Args:
     is $trap->stdout, $expected;
 };
 
+subtest 'help required' => sub {
+    local @ARGV;
+    push @ARGV, qw(-h);
+
+    my $kingpin = Getopt::Kingpin->new();
+    $kingpin->flags->get("help")->short('h');
+    my $verbose = $kingpin->flag('verbose', 'Verbose mode.')->short('v')->bool();
+    my $ip      = $kingpin->flag('ip', 'IP address.')->string();
+    my $name    = $kingpin->arg('age', 'Age of user.')->required()->int();
+    my $name    = $kingpin->arg('name', 'Name of user.')->string();
+
+    my $expected = sprintf <<'...', $0;
+usage: %s [<flags>] <age> <name>
+
+Flags:
+  -h, --help     Show context-sensitive help.
+  -v, --verbose  Verbose mode.
+      --ip=IP    IP address.
+
+Args:
+  <age>     Age of user.
+  [<name>]  Name of user.
+
+...
+
+    trap {$kingpin->parse};
+    is $trap->exit, 0;
+    is $trap->stdout, $expected;
+};
+
 subtest 'app info' => sub {
     local @ARGV;
     push @ARGV, qw(--help);

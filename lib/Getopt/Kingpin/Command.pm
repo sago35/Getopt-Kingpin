@@ -9,6 +9,25 @@ our $VERSION = "0.01";
 
 extends 'Getopt::Kingpin';
 
+sub help_short {
+    my $self = shift;
+    my @help = ($self->_name);
+
+    if ($self->_name eq "help") {
+        push @help, "[<command>...]";
+    } else {
+        if ($self->flags->count > 1) {
+            push @help, "[<flags>]";
+        }
+
+        foreach my $arg ($self->args->get_all) {
+            push @help, sprintf "[<%s>]", $arg->name;
+        }
+    }
+
+    return join " ", @help;
+}
+
 1;
 __END__
 
