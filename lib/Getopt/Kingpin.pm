@@ -178,6 +178,9 @@ sub _parse {
             if ($arg_index == 0) {
                 my $cmd = $self->commands->get($arg);
                 if (defined $cmd) {
+                    if ($cmd->_name eq "help") {
+                        $self->flags->get("help")->set_value(1)
+                    }
                     my @argv_for_command = @argv;
                     @argv = ();
                     $cmd->_parse(@argv_for_command);
