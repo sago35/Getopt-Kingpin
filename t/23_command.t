@@ -194,6 +194,56 @@ Commands:
 
 subtest 'command help 3' => sub {
     local @ARGV;
+    push @ARGV, qw(--help post);
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $post = $kingpin->command("post", "post image");
+    my $server = $post->flag("server", "")->string();
+    my $get  = $kingpin->command("get", "get image");
+
+    my $expected = sprintf <<'...', $0;
+usage: %s post [<flags>]
+
+post image
+
+Flags:
+  --help           Show context-sensitive help.
+  --server=SERVER
+
+...
+
+    trap {$kingpin->parse};
+    is $trap->exit, 0;
+    is $trap->stdout, $expected;
+};
+
+subtest 'command help 3' => sub {
+    local @ARGV;
+    push @ARGV, qw(post --help);
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $post = $kingpin->command("post", "post image");
+    my $server = $post->flag("server", "")->string();
+    my $get  = $kingpin->command("get", "get image");
+
+    my $expected = sprintf <<'...', $0;
+usage: %s post [<flags>]
+
+post image
+
+Flags:
+  --help           Show context-sensitive help.
+  --server=SERVER
+
+...
+
+    trap {$kingpin->parse};
+    is $trap->exit, 0;
+    is $trap->stdout, $expected;
+};
+
+subtest 'command help 3' => sub {
+    local @ARGV;
     push @ARGV, qw(help post);
 
     my $kingpin = Getopt::Kingpin->new();
@@ -209,6 +259,105 @@ post image
 Flags:
   --help           Show context-sensitive help.
   --server=SERVER
+
+...
+
+    trap {$kingpin->parse};
+    is $trap->exit, 0;
+    is $trap->stdout, $expected;
+};
+
+subtest 'command help 3' => sub {
+    local @ARGV;
+    push @ARGV, qw(help post --server=SERVER);
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $post = $kingpin->command("post", "post image");
+    my $server = $post->flag("server", "")->string();
+    my $get  = $kingpin->command("get", "get image");
+
+    my $expected = sprintf <<'...', $0;
+usage: %s post [<flags>]
+
+post image
+
+Flags:
+  --help           Show context-sensitive help.
+  --server=SERVER
+
+...
+
+    trap {$kingpin->parse};
+    is $trap->exit, 0;
+    is $trap->stdout, $expected;
+};
+
+subtest 'command help 3' => sub {
+    local @ARGV;
+    push @ARGV, qw(--help post get);
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $post = $kingpin->command("post", "post image");
+    my $server = $post->flag("server", "")->string();
+    my $get  = $kingpin->command("get", "get image");
+
+    my $expected = sprintf <<'...', $0;
+usage: %s post [<flags>]
+
+post image
+
+Flags:
+  --help           Show context-sensitive help.
+  --server=SERVER
+
+...
+
+    trap {$kingpin->parse};
+    is $trap->exit, 0;
+    is $trap->stdout, $expected;
+};
+
+subtest 'command help 4' => sub {
+    local @ARGV;
+    push @ARGV, qw(help get);
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $post = $kingpin->command("post", "post image");
+    my $server = $post->flag("server", "")->string();
+    my $get  = $kingpin->command("get", "get image");
+
+    my $expected = sprintf <<'...', $0;
+usage: t\23_command.t get
+
+get image
+
+Flags:
+  --help  Show context-sensitive help.
+
+...
+
+    trap {$kingpin->parse};
+    is $trap->exit, 0;
+    is $trap->stdout, $expected;
+};
+
+subtest 'command help 5' => sub {
+    local @ARGV;
+    push @ARGV, qw(--help post);
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $post = $kingpin->command("post", "");
+    my $server = $post->arg("server", "server address")->string();
+    my $get  = $kingpin->command("get", "get image");
+
+    my $expected = sprintf <<'...', $0;
+usage: t\23_command.t post [<server>]
+
+Flags:
+  --help  Show context-sensitive help.
+
+Args:
+  [<server>]  server address
 
 ...
 
