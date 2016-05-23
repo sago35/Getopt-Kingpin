@@ -117,6 +117,7 @@ sub _parse {
     };
     my $arg_index = 0;
     my $arg_only = 0;
+    my $current_cmd;
     while (scalar @argv > 0) {
         my $arg = shift @argv;
         if ($arg eq "--") {
@@ -180,11 +181,13 @@ sub _parse {
                 if (defined $cmd) {
                     if ($cmd->_name eq "help") {
                         $self->flags->get("help")->set_value(1)
+                    } else {
+                        my @argv_for_command = @argv;
+                        @argv = ();
+                        $cmd->_parse(@argv_for_command);
+                        $current_cmd = $cmd;
+                        next;
                     }
-                    my @argv_for_command = @argv;
-                    @argv = ();
-                    $cmd->_parse(@argv_for_command);
-                    next;
                 }
             }
 
@@ -198,7 +201,11 @@ sub _parse {
     }
 
     if ($self->flags->get("help")) {
-        $self->help;
+        if (defined $current_cmd) {
+            $current_cmd->help;
+        } else {
+            $self->help;
+        }
         exit 0;
     }
 
