@@ -16,9 +16,9 @@ has _commands => (
 sub add {
     my $self = shift;
     my $hash = {@_};
-    my ($name, $description) = ($hash->{name}, $hash->{description});
+    my ($name, $description, $parent) = ($hash->{name}, $hash->{description}, $hash->{parent});
 
-    my $command = Getopt::Kingpin::Command->new($name, $description);
+    my $command = Getopt::Kingpin::Command->new(_name => $name, _description => $description, _parent => $parent);
     push @{$self->_commands}, $command;
 
     return $command;

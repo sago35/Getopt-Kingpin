@@ -43,6 +43,11 @@ has _version => (
     default => sub {""},
 );
 
+has _parent => (
+    is => 'rw',
+    default => sub {return},
+);
+
 has _name => (
     is => 'rw',
     default => sub {$0},
@@ -98,6 +103,7 @@ sub command {
     my $ret = $self->commands->add(
         name        => $name,
         description => $description,
+        parent      => $self,
     );
     return $ret;
 }
