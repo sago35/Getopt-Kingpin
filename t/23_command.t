@@ -208,9 +208,7 @@ post image
 
 Flags:
   --help           Show context-sensitive help.
-
   --server=SERVER
-
 
 ...
 
