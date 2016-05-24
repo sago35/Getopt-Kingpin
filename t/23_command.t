@@ -327,7 +327,7 @@ subtest 'command help 4' => sub {
     my $get  = $kingpin->command("get", "get image");
 
     my $expected = sprintf <<'...', $0;
-usage: t\23_command.t get
+usage: %s get
 
 get image
 
@@ -351,7 +351,7 @@ subtest 'command help 5' => sub {
     my $get  = $kingpin->command("get", "get image");
 
     my $expected = sprintf <<'...', $0;
-usage: t\23_command.t post [<server>]
+usage: %s post [<server>]
 
 Flags:
   --help  Show context-sensitive help.
