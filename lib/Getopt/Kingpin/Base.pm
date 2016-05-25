@@ -28,7 +28,9 @@ sub _set_types {
 
     if (not exists $types->{$type}) {
         my $module = sprintf "Getopt::Kingpin::Type::%s", $type;
-        croak "type error '$type'" unless eval "require $module"; ## no critic
+        if (not $module->can('set_value')) {
+            croak "type error '$type'" unless eval "require $module"; ## no critic
+        }
         $types->{$type} = {
             type      => \&{"${module}::type"},
             set_value => \&{"${module}::set_value"},
