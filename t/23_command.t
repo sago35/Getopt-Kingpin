@@ -366,5 +366,39 @@ Args:
     is $trap->stdout, $expected;
 };
 
+subtest 'command help 6' => sub {
+    local @ARGV;
+    push @ARGV, qw(--help);
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $post = $kingpin->command("post", "post image");
+    my $server = $post->flag("server", "server address")->string();
+    my $get  = $kingpin->command("get", "get image");
+    my $xyz  = $get->command("xyz", "set xyz");
+
+    my $expected = sprintf <<'...', $0;
+usage: %s [<flags>] <command> [<args> ...]
+
+Flags:
+  --help  Show context-sensitive help.
+
+Commands:
+  help [<command>...]
+    Show help.
+
+  post [<flags>]
+    post image
+
+  get xyz
+    set xyz
+
+
+...
+
+    trap {$kingpin->parse};
+    is $trap->exit, 0;
+    is $trap->stdout, $expected;
+};
+
 done_testing;
 

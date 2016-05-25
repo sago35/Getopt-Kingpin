@@ -52,9 +52,18 @@ sub help {
     $ret .= "Commands:\n";
 
     foreach my $cmd ($self->get_all) {
-        $ret .= sprintf "  %s\n", $cmd->help_short;
-        $ret .= sprintf "    %s\n", $cmd->_description;
-        $ret .= sprintf "\n";
+        if ($cmd->commands->count > 1) {
+            foreach my $sub ($cmd->commands->get_all) {
+                next if $sub->_name eq "help";
+                $ret .= sprintf "  %s %s\n", $cmd->_name, $sub->_name;
+                $ret .= sprintf "    %s\n", $sub->_description;
+                $ret .= sprintf "\n";
+            }
+        } else {
+            $ret .= sprintf "  %s\n", $cmd->help_short;
+            $ret .= sprintf "    %s\n", $cmd->_description;
+            $ret .= sprintf "\n";
+        }
     }
 
     return $ret;
