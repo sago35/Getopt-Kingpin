@@ -28,6 +28,23 @@ sub help_short {
     return join " ", @help;
 }
 
+sub help {
+    my $self = shift;
+    printf "usage: %s %s\n", $self->_parent->_name, $self->help_short;
+    printf "\n";
+
+    if ($self->_description ne "") {
+        printf "%s\n", $self->_description;
+        printf "\n";
+    }
+
+    printf "%s\n", $self->flags->help;
+
+    if ($self->args->count > 0) {
+        printf "%s\n", $self->args->help;
+    }
+}
+
 1;
 __END__
 

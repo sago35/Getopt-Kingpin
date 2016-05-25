@@ -43,6 +43,11 @@ has _version => (
     default => sub {""},
 );
 
+has _parent => (
+    is => 'rw',
+    default => sub {return},
+);
+
 has _name => (
     is => 'rw',
     default => sub {$0},
@@ -98,6 +103,7 @@ sub command {
     my $ret = $self->commands->add(
         name        => $name,
         description => $description,
+        parent      => $self,
     );
     return $ret;
 }
@@ -117,6 +123,7 @@ sub _parse {
     };
     my $arg_index = 0;
     my $arg_only = 0;
+    my $current_cmd;
     while (scalar @argv > 0) {
         my $arg = shift @argv;
         if ($arg eq "--") {
@@ -178,10 +185,15 @@ sub _parse {
             if ($arg_index == 0) {
                 my $cmd = $self->commands->get($arg);
                 if (defined $cmd) {
-                    my @argv_for_command = @argv;
-                    @argv = ();
-                    $cmd->_parse(@argv_for_command);
-                    next;
+                    if ($cmd->_name eq "help") {
+                        $self->flags->get("help")->set_value(1)
+                    } else {
+                        my @argv_for_command = @argv;
+                        @argv = ();
+                        $cmd->_parse(@argv_for_command);
+                        $current_cmd = $cmd;
+                        next;
+                    }
                 }
             }
 
@@ -195,7 +207,11 @@ sub _parse {
     }
 
     if ($self->flags->get("help")) {
-        $self->help;
+        if (defined $current_cmd) {
+            $current_cmd->help;
+        } else {
+            $self->help;
+        }
         exit 0;
     }
 

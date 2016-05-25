@@ -16,9 +16,9 @@ has _commands => (
 sub add {
     my $self = shift;
     my $hash = {@_};
-    my ($name, $description) = ($hash->{name}, $hash->{description});
+    my ($name, $description, $parent) = ($hash->{name}, $hash->{description}, $hash->{parent});
 
-    my $command = Getopt::Kingpin::Command->new($name, $description);
+    my $command = Getopt::Kingpin::Command->new(_name => $name, _description => $description, _parent => $parent);
     push @{$self->_commands}, $command;
 
     return $command;
@@ -52,9 +52,18 @@ sub help {
     $ret .= "Commands:\n";
 
     foreach my $cmd ($self->get_all) {
-        $ret .= sprintf "  %s\n", $cmd->help_short;
-        $ret .= sprintf "    %s\n", $cmd->_description;
-        $ret .= sprintf "\n";
+        if ($cmd->commands->count > 1) {
+            foreach my $sub ($cmd->commands->get_all) {
+                next if $sub->_name eq "help";
+                $ret .= sprintf "  %s %s\n", $cmd->_name, $sub->_name;
+                $ret .= sprintf "    %s\n", $sub->_description;
+                $ret .= sprintf "\n";
+            }
+        } else {
+            $ret .= sprintf "  %s\n", $cmd->help_short;
+            $ret .= sprintf "    %s\n", $cmd->_description;
+            $ret .= sprintf "\n";
+        }
     }
 
     return $ret;
