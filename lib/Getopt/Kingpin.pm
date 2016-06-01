@@ -10,6 +10,11 @@ use Carp;
 
 our $VERSION = "0.01";
 
+use overload (
+    '""' => sub {$_[0]->_name},
+    fallback => 1,
+);
+
 has flags => (
     is => 'rw',
     default => sub {
