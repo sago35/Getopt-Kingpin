@@ -250,6 +250,8 @@ sub _parse {
             croak sprintf "required arg '%s' not provided", $arg->name;
         }
     }
+
+    return $current_cmd;
 }
 
 sub get {
