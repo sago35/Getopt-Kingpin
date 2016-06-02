@@ -11,9 +11,9 @@ extends 'Getopt::Kingpin';
 
 sub help_short {
     my $self = shift;
-    my @help = ($self->_name);
+    my @help = ($self->name);
 
-    if ($self->_name eq "help") {
+    if ($self->name eq "help") {
         push @help, "[<command>...]";
     } else {
         if ($self->flags->count > 1) {
@@ -30,11 +30,11 @@ sub help_short {
 
 sub help {
     my $self = shift;
-    printf "usage: %s %s\n", $self->_parent->_name, $self->help_short;
+    printf "usage: %s %s\n", $self->parent->name, $self->help_short;
     printf "\n";
 
-    if ($self->_description ne "") {
-        printf "%s\n", $self->_description;
+    if ($self->description ne "") {
+        printf "%s\n", $self->description;
         printf "\n";
     }
 

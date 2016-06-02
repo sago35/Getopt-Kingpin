@@ -11,7 +11,7 @@ use Carp;
 our $VERSION = "0.01";
 
 use overload (
-    '""' => sub {$_[0]->_name},
+    '""' => sub {$_[0]->name},
     fallback => 1,
 );
 
@@ -48,17 +48,17 @@ has _version => (
     default => sub {""},
 );
 
-has _parent => (
+has parent => (
     is => 'rw',
     default => sub {return},
 );
 
-has _name => (
+has name => (
     is => 'rw',
     default => sub {$0},
 );
 
-has _description => (
+has description => (
     is      => 'rw',
     default => sub {""},
 );
@@ -68,8 +68,8 @@ around BUILDARGS => sub {
 
     if (@args == 2 and not ref $args[0]) {
         return +{
-            _name => $args[0],
-            _description => $args[1],
+            name => $args[0],
+            description => $args[1],
         };
     } else {
         return $class->$orig(@args);
@@ -140,7 +140,7 @@ sub _parse {
             my $v = $self->flags->get($name);
 
             if (not defined $v) {
-                printf STDERR "%s: error: unknown long flag '--%s', try --help", $self->_name, $name;
+                printf STDERR "%s: error: unknown long flag '--%s', try --help", $self->name, $name;
                 exit 1;
             }
 
@@ -165,7 +165,7 @@ sub _parse {
                     }
                 }
                 if (not defined $name) {
-                    printf STDERR "%s: error: unknown short flag '-%s', try --help", $self->_name, $s;
+                    printf STDERR "%s: error: unknown short flag '-%s', try --help", $self->name, $s;
                     exit 1;
                 }
                 delete $required_but_not_found->{$name} if exists $required_but_not_found->{$name};
@@ -190,7 +190,7 @@ sub _parse {
             if ($arg_index == 0) {
                 my $cmd = $self->commands->get($arg);
                 if (defined $cmd) {
-                    if ($cmd->_name eq "help") {
+                    if ($cmd->name eq "help") {
                         $self->flags->get("help")->set_value(1)
                     } else {
                         my @argv_for_command = @argv;
@@ -246,7 +246,7 @@ sub _parse {
     }
 
     foreach my $r (values %$required_but_not_found) {
-        printf STDERR "%s: error: required flag --%s not provided, try --help", $self->_name, $r->name;
+        printf STDERR "%s: error: required flag --%s not provided, try --help", $self->name, $r->name;
         exit 1;
     }
     for (my $i = 0; $i < $self->args->count; $i++) {
@@ -280,7 +280,7 @@ sub version {
 
 sub help_short {
     my $self = shift;
-    my @help = ($self->_name);
+    my @help = ($self->name);
 
     push @help, "[<flags>]";
 
@@ -309,8 +309,8 @@ sub help {
     printf "usage: %s\n", $self->help_short;
     printf "\n";
 
-    if ($self->_description ne "") {
-        printf "%s\n", $self->_description;
+    if ($self->description ne "") {
+        printf "%s\n", $self->description;
         printf "\n";
     }
 
