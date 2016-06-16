@@ -20,8 +20,13 @@ sub help_short {
             push @help, "[<flags>]";
         }
 
-        foreach my $arg ($self->args->get_all) {
-            push @help, sprintf "[<%s>]", $arg->name;
+        if ($self->commands->count > 0) {
+            push @help, "<command>";
+            push @help, "[<args> ...]";
+        } else {
+            foreach my $arg ($self->args->get_all) {
+                push @help, sprintf "[<%s>]", $arg->name;
+            }
         }
     }
 
@@ -42,6 +47,16 @@ sub help {
 
     if ($self->args->count > 0) {
         printf "%s\n", $self->args->help;
+    }
+
+    if ($self->commands->count > 1) {
+        printf "Subcommands:\n";
+        foreach my $sub ($self->commands->get_all) {
+            next if $sub->name eq "help";
+            printf "  %s %s\n", $sub->parent->name, $sub->name;
+            printf "    %s\n", $sub->description;
+            printf "\n";
+        }
     }
 }
 
