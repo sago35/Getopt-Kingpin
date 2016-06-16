@@ -449,7 +449,7 @@ subtest 'command help 6' => sub {
     my $xyz  = $get->command("xyz", "set xyz");
 
     my $expected = sprintf <<'...', $0;
-usage: t\23_command.t get <command> [<args> ...]
+usage: %s get <command> [<args> ...]
 
 get image
 
