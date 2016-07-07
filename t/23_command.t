@@ -294,7 +294,7 @@ Flags:
 
 subtest 'command help 3' => sub {
     local @ARGV;
-    push @ARGV, qw(--help post get);
+    push @ARGV, qw(--help post);
 
     my $kingpin = Getopt::Kingpin->new();
     my $post = $kingpin->command("post", "post image");

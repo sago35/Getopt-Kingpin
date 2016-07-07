@@ -69,7 +69,7 @@ subtest 'arg required 3' => sub {
 
 subtest 'arg num' => sub {
     local @ARGV;
-    push @ARGV, qw(--name=kingpin arg1 arg2);
+    push @ARGV, qw(--name=kingpin arg1);
 
     my $kingpin = Getopt::Kingpin->new;
     my $name = $kingpin->flag('name', 'set name')->string();
@@ -82,7 +82,7 @@ subtest 'arg num' => sub {
 
 subtest 'arg get' => sub {
     local @ARGV;
-    push @ARGV, qw(arg1 arg2 arg3);
+    push @ARGV, qw(arg1);
 
     my $kingpin = Getopt::Kingpin->new;
     my $arg1 = $kingpin->arg('arg1', 'set arg1')->string();
@@ -90,40 +90,6 @@ subtest 'arg get' => sub {
     $kingpin->parse;
 
     is $kingpin->args->get(0), 'arg1';
-    is $kingpin->args->get(1), undef;
-    is $kingpin->args->get(2), undef;
-};
-
-subtest 'consuming all remaining arguments 1' => sub {
-    local @ARGV;
-    push @ARGV, qw(name arg1 arg2 arg3);
-
-    my $kingpin = Getopt::Kingpin->new;
-    my $name = $kingpin->arg('name', 'set name')->string();
-
-    $kingpin->parse;
-
-    is $name, 'name';
-
-    my @remain = $kingpin->args->get_remain;
-    is $remain[0], "arg1";
-    is $remain[1], "arg2";
-    is $remain[2], "arg3";
-};
-
-subtest 'consuming all remaining arguments 2' => sub {
-    local @ARGV;
-    push @ARGV, qw(name arg1 arg2 arg3);
-
-    my $kingpin = Getopt::Kingpin->new;
-
-    $kingpin->parse;
-
-    my @remain = $kingpin->args->get_remain;
-    is $remain[0], "name";
-    is $remain[1], "arg1";
-    is $remain[2], "arg2";
-    is $remain[3], "arg3";
 };
 
 done_testing;
