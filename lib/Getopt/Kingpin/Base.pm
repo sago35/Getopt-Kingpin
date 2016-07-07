@@ -28,6 +28,7 @@ sub _set_types {
 
     if (not exists $types->{$type}) {
         my $module = sprintf "Getopt::Kingpin::Type::%s", $type;
+        $module =~ s/List$//;
         if (not $module->can('set_value')) {
             croak "type error '$type'" unless eval "require $module"; ## no critic
         }
@@ -41,6 +42,10 @@ sub _set_types {
         if (not defined $self->_default) {
             $self->_default(0);
         }
+    }
+
+    if ($type =~ /List$/) {
+        $self->is_cumulative(1);
     }
 }
 
@@ -72,6 +77,11 @@ has value => (
 );
 
 has _defined => (
+    is => 'rw',
+    default => sub {0},
+);
+
+has is_cumulative => (
     is => 'rw',
     default => sub {0},
 );
@@ -141,7 +151,15 @@ sub set_value {
 
     $_[0]->_set_types($type);
 
-    if ($_[0]->_defined) {
+    if ($_[0]->is_cumulative) {
+        my @values;
+        if ($_[0]->_defined) {
+            @values = @{$_[0]->value};
+        }
+        push @values, $_[1];
+        $_[0]->_defined(1);
+        $types->{$type}->{set_value}->($_[0], [@values]);
+    } elsif ($_[0]->_defined) {
         printf STDERR "error: flag '%s' cannot be repeated, try --help", $_[0]->name;
         exit 1;
     } else {
