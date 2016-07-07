@@ -32,5 +32,32 @@ subtest 'repeatable flag (is_cumulative)' => sub {
     is_deeply $args->value, ['a', 'b', 'c'];
 };
 
+subtest 'repeatable arg error' => sub {
+    local @ARGV;
+    push @ARGV, qw(a b c);
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $args = $kingpin->arg("xxx", "xxx yyy")->string();
+
+    trap {
+        my $cmd = $kingpin->parse;
+    };
+
+    like $trap->stderr, qr/error: unexpected b, try --help/;
+    is $trap->exit, 1;
+};
+
+subtest 'repeatable arg (is_cumulative)' => sub {
+    local @ARGV;
+    push @ARGV, qw(a b c);
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $args = $kingpin->arg("xxx", "xxx yyy")->string_list();
+
+    my $cmd = $kingpin->parse;
+
+    is_deeply $args->value, ['a', 'b', 'c'];
+};
+
 done_testing;
 
