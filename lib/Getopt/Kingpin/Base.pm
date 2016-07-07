@@ -71,6 +71,11 @@ has value => (
     is => 'rw',
 );
 
+has _defined => (
+    is => 'rw',
+    default => sub {0},
+);
+
 has _default => (
     is => 'rw',
 );
@@ -136,7 +141,13 @@ sub set_value {
 
     $_[0]->_set_types($type);
 
-    $types->{$type}->{set_value}->(@_);
+    if ($_[0]->_defined) {
+        printf STDERR "error: flag '%s' cannot be repeated, try --help", $_[0]->name;
+        exit 1;
+    } else {
+        $_[0]->_defined(1);
+        $types->{$type}->{set_value}->(@_);
+    }
 }
 
 1;
