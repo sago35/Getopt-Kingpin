@@ -202,11 +202,16 @@ sub _parse {
                 }
             }
 
-            if ($arg_index < $self->args->count) {
-                $self->args->get($arg_index)->set_value($arg);
-                $arg_index++;
-            } else {
-                $self->args->add_remain($arg);
+            if (not ($arg_index == 0 and $arg eq "help")) {
+                if ($arg_index < $self->args->count) {
+                    $self->args->get($arg_index)->set_value($arg);
+                    if (not $self->args->get($arg_index)->is_cumulative) {
+                        $arg_index++;
+                    }
+                } else {
+                    printf STDERR "%s: error: unexpected %s, try --help", $self->name, $arg;
+                    exit 1;
+                }
             }
         }
     }
