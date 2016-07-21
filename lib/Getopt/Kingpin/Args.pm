@@ -32,13 +32,6 @@ sub add {
     return $arg;
 }
 
-sub add_remain {
-    my $self = shift;
-    my $arg = shift;
-
-    push @{$self->_args_remain}, $arg;
-}
-
 sub count {
     my $self = shift;
     return scalar @{$self->_args};
@@ -58,11 +51,6 @@ sub get {
 sub get_all {
     my $self = shift;
     return @{$self->_args};
-}
-
-sub get_remain {
-    my $self = shift;
-    return @{$self->_args_remain};
 }
 
 sub _help_length {
