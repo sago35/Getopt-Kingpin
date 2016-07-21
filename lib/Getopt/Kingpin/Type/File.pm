@@ -12,7 +12,7 @@ sub set_value {
     my ($value) = @_;
 
     my $p = path($value);
-    $self->value($p);
+    return $p;
 }
 
 1;

@@ -13,10 +13,11 @@ sub set_value {
 
     my $p = path($value);
     if ($p->exists) {
-        $self->value($p);
+        # ok
     } else {
         croak sprintf "error: path '%s' does not exist, try --help", $value;
     }
+    return $p;
 }
 
 1;

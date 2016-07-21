@@ -10,7 +10,7 @@ sub set_value {
     my $self = shift;
     my ($value) = @_;
 
-    $self->value($value);
+    return $value;
 }
 
 1;
