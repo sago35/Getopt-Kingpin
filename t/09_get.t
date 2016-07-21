@@ -18,5 +18,21 @@ subtest 'get' => sub {
     is $name, 'kingpin';
 };
 
+subtest 'args get' => sub {
+    local @ARGV;
+    push @ARGV, qw(kingpin);
+
+    my $kingpin = Getopt::Kingpin->new;
+    $kingpin->arg('name', 'set name')->string();
+
+    $kingpin->parse;
+
+    my $name = $kingpin->args->get(0);
+    is ref $name, 'Getopt::Kingpin::Arg';
+    is $name, 'kingpin';
+
+    ok not defined $kingpin->args->get(1);
+};
+
 done_testing;
 
