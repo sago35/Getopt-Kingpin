@@ -94,5 +94,59 @@ subtest 'repeatable arg 2 (is_cumulative)' => sub {
     is $args->value->[2], 'c';
 };
 
+subtest 'not repeatable and repeatable arg' => sub {
+    local @ARGV;
+    push @ARGV, qw(a b c);
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $args1 = $kingpin->arg("xxx", "xxx yyy")->file();
+    my $args2 = $kingpin->arg("yyy", "xxx yyy")->file_list();
+
+    my $cmd = $kingpin->parse;
+
+    is ref $args1->value, "Path::Tiny";
+    is ref $args2->value->[0], "Path::Tiny";
+    is ref $args2->value->[1], "Path::Tiny";
+    is $args1->value, 'a';
+    is $args2->value->[0], 'b';
+    is $args2->value->[1], 'c';
+};
+
+subtest 'not repeatable and repeatable arg (required)' => sub {
+    local @ARGV;
+    push @ARGV, qw(a b c);
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $args1 = $kingpin->arg("xxx", "xxx yyy")->required->file();
+    my $args2 = $kingpin->arg("yyy", "xxx yyy")->file_list();
+
+    my $cmd = $kingpin->parse;
+
+    is ref $args1->value, "Path::Tiny";
+    is ref $args2->value->[0], "Path::Tiny";
+    is ref $args2->value->[1], "Path::Tiny";
+    is $args1->value, 'a';
+    is $args2->value->[0], 'b';
+    is $args2->value->[1], 'c';
+};
+
+subtest 'not repeatable and repeatable arg 2 (required)' => sub {
+    local @ARGV;
+    push @ARGV, qw(a b c);
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $args1 = $kingpin->arg("xxx", "xxx yyy")->required->file();
+    my $args2 = $kingpin->arg("yyy", "xxx yyy")->required->file_list();
+
+    my $cmd = $kingpin->parse;
+
+    is ref $args1->value, "Path::Tiny";
+    is ref $args2->value->[0], "Path::Tiny";
+    is ref $args2->value->[1], "Path::Tiny";
+    is $args1->value, 'a';
+    is $args2->value->[0], 'b';
+    is $args2->value->[1], 'c';
+};
+
 done_testing;
 

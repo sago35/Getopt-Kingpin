@@ -256,7 +256,7 @@ sub _parse {
     }
     for (my $i = 0; $i < $self->args->count; $i++) {
         my $arg = $self->args->get($i);
-        if ($arg->_required and $i + 1 > $arg_index) {
+        if ($arg->_required and not $arg->_defined) {
             croak sprintf "required arg '%s' not provided", $arg->name;
         }
     }
