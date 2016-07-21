@@ -11,10 +11,11 @@ sub set_value {
     my ($value) = @_;
 
     if ($value =~ /^-?[0-9]+$/) {
-        $self->value($value);
+        # ok
     } else {
         croak "int parse error";
     }
+    return $value;
 }
 
 1;

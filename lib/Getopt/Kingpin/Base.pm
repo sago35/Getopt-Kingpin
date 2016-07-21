@@ -156,15 +156,15 @@ sub set_value {
         if ($_[0]->_defined) {
             @values = @{$_[0]->value};
         }
-        push @values, $_[1];
+        push @values, $types->{$type}->{set_value}->($_[0], $_[1]);
         $_[0]->_defined(1);
-        $types->{$type}->{set_value}->($_[0], [@values]);
+        $_[0]->value([@values]);
     } elsif ($_[0]->_defined) {
         printf STDERR "error: flag '%s' cannot be repeated, try --help", $_[0]->name;
         exit 1;
     } else {
         $_[0]->_defined(1);
-        $types->{$type}->{set_value}->(@_);
+        $_[0]->value($types->{$type}->{set_value}->(@_));
     }
 }
 

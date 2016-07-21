@@ -15,10 +15,11 @@ sub set_value {
     if ($p->is_file) {
         croak sprintf "error: '%s' is a file, try --help", $value;
     } elsif ($p->is_dir) {
-        $self->value($p);
+        # ok
     } else {
         croak sprintf "error: path '%s' does not exist, try --help", $value;
     }
+    return $p;
 }
 
 1;
