@@ -32,6 +32,24 @@ subtest 'repeatable flag (is_cumulative)' => sub {
     is_deeply $args->value, ['a', 'b', 'c'];
 };
 
+subtest 'repeatable flag 2 (is_cumulative)' => sub {
+    local @ARGV;
+    push @ARGV, qw(--xxx a --xxx b --xxx c);
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $args = $kingpin->flag("xxx", "xxx yyy")->file_list();
+    #$args->is_cumulative(1);
+
+    my $cmd = $kingpin->parse;
+
+    is ref $args->value->[0], "Path::Tiny";
+    is ref $args->value->[1], "Path::Tiny";
+    is ref $args->value->[2], "Path::Tiny";
+    is $args->value->[0], 'a';
+    is $args->value->[1], 'b';
+    is $args->value->[2], 'c';
+};
+
 subtest 'repeatable arg error' => sub {
     local @ARGV;
     push @ARGV, qw(a b c);
