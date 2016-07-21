@@ -6,5 +6,6 @@ on 'test' => sub {
     requires 'Test::More', '0.98';
     requires 'Test::Exception';
     requires 'Test::Trap';
+    requires 'Digest::MD5';
 };
 
