@@ -6,7 +6,7 @@ use Moo;
 use Carp;
 use Path::Tiny;
 
-our $VERSION = "0.01";
+our $VERSION = "0.02";
 our $types;
 sub AUTOLOAD {
     no overloading;
