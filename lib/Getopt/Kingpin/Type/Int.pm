@@ -13,7 +13,8 @@ sub set_value {
     if ($value =~ /^-?[0-9]+$/) {
         # ok
     } else {
-        croak "int parse error";
+        printf STDERR "int parse error";
+        exit 1;
     }
     return $value;
 }

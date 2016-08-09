@@ -1,6 +1,7 @@
 use strict;
 use Test::More 0.98;
 use Test::Exception;
+use Test::Trap;
 use Getopt::Kingpin;
 
 
@@ -65,9 +66,12 @@ subtest 'existing_file is dir' => sub {
     my $kingpin = Getopt::Kingpin->new();
     my $path = $kingpin->arg("path", "")->existing_file();
 
-    throws_ok {
+    trap {
         $kingpin->parse;
-    } qr/error: 'lib' is a directory, try --help/;
+    };
+
+    like $trap->stderr, qr/error: 'lib' is a directory, try --help/;
+    is $trap->exit, 1;
 };
 
 subtest 'existing_file error' => sub {
@@ -79,9 +83,12 @@ subtest 'existing_file error' => sub {
     my $path = $kingpin->arg("path", "")->file();
     my $not_found = $kingpin->arg("not_found", "")->existing_file();
 
-    throws_ok {
+    trap {
         $kingpin->parse;
-    } qr/error: path 'NOT_FOUND_FILE' does not exist, try --help/;
+    };
+
+    like $trap->stderr, qr/error: path 'NOT_FOUND_FILE' does not exist, try --help/;
+    is $trap->exit, 1;
 };
 
 subtest 'file with default' => sub {

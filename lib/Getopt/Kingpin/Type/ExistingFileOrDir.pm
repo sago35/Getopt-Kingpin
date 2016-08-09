@@ -15,7 +15,8 @@ sub set_value {
     if ($p->exists) {
         # ok
     } else {
-        croak sprintf "error: path '%s' does not exist, try --help", $value;
+        printf STDERR "error: path '%s' does not exist, try --help", $value;
+        exit 1;
     }
     return $p;
 }

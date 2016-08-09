@@ -119,9 +119,12 @@ subtest 'Short-flag+parameter combining 4 error' => sub {
     my $x = $kingpin->flag("long_x", "")->short("x")->int();
     my $y = $kingpin->flag("long_y", "")->short("y")->bool();
 
-    throws_ok {
+    trap {
         $kingpin->parse;
-    } qr/int parse error/;
+    };
+
+    like $trap->stderr, qr/int parse error/;
+    is $trap->exit, 1;
 };
 
 done_testing;
