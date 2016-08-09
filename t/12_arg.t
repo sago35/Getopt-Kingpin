@@ -1,6 +1,7 @@
 use strict;
 use Test::More 0.98;
 use Test::Exception;
+use Test::Trap;
 use Getopt::Kingpin;
 
 
@@ -29,9 +30,12 @@ subtest 'arg required' => sub {
     my $arg1 = $kingpin->arg('arg1', 'set arg1')->string();
     my $arg2 = $kingpin->arg('arg2', 'set arg2')->required->string();
 
-    throws_ok {
+    trap {
         $kingpin->parse;
-    } qr/required arg 'arg2' not provided/, 'required error';
+    };
+    
+    like $trap->stderr, qr/required arg 'arg2' not provided/, 'required error';
+    is $trap->exit, 1;
 };
 
 subtest 'arg required 2' => sub {
@@ -44,9 +48,11 @@ subtest 'arg required 2' => sub {
     my $arg2 = $kingpin->arg('arg2', 'set arg2')->required->string();
 
     # requiredがついている手前は、全てrequiredの扱い
-    throws_ok {
+    trap {
         $kingpin->parse;
-    } qr/required arg 'arg2' not provided/, 'required error';
+    };
+    like $trap->stderr, qr/required arg 'arg2' not provided/, 'required error';
+    is $trap->exit, 1;
 };
 
 subtest 'arg required 3' => sub {
