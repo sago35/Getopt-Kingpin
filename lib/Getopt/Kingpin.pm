@@ -257,7 +257,8 @@ sub _parse {
     for (my $i = 0; $i < $self->args->count; $i++) {
         my $arg = $self->args->get($i);
         if ($arg->_required and not $arg->_defined) {
-            croak sprintf "required arg '%s' not provided", $arg->name;
+            printf STDERR "%s: error: required arg '%s' not provided, try --help", $self->name, $arg->name;
+            exit 1;
         }
     }
 

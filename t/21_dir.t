@@ -1,6 +1,7 @@
 use strict;
 use Test::More 0.98;
 use Test::Exception;
+use Test::Trap;
 use Getopt::Kingpin;
 
 
@@ -31,9 +32,12 @@ subtest 'existing_dir is file' => sub {
     my $kingpin = Getopt::Kingpin->new();
     my $path = $kingpin->arg("path", "")->existing_dir();
 
-    throws_ok {
+    trap {
         $kingpin->parse;
-    } qr/error: 'Build.PL' is a file, try --help/;
+    };
+
+    like $trap->stderr, qr/error: 'Build.PL' is a file, try --help/;
+    is $trap->exit, 1;
 };
 
 subtest 'existing_dir error' => sub {
@@ -43,9 +47,12 @@ subtest 'existing_dir error' => sub {
     my $kingpin = Getopt::Kingpin->new();
     my $path = $kingpin->arg("path", "")->existing_dir();
 
-    throws_ok {
+    trap {
         $kingpin->parse;
-    } qr/error: path 'NOT_FOUND_DIR' does not exist, try --help/;
+    };
+
+    like $trap->stderr, qr/error: path 'NOT_FOUND_DIR' does not exist, try --help/;
+    is $trap->exit, 1;
 };
 
 subtest 'existing_dir with default' => sub {

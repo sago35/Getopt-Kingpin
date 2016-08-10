@@ -1,6 +1,7 @@
 use strict;
 use Test::More 0.98;
 use Test::Exception;
+use Test::Trap;
 use Getopt::Kingpin;
 
 
@@ -23,9 +24,12 @@ subtest 'int error with overload' => sub {
 
     my $kingpin = Getopt::Kingpin->new;
     my $x = $kingpin->flag('x', 'set x')->int();
-    throws_ok {
+    trap {
         $kingpin->parse;
-    } qr/int parse error/, 'int parse error';
+    };
+
+    like $trap->stderr, qr/int parse error/, 'int parse error';
+    is $trap->exit, 1;
 
 };
 

@@ -13,11 +13,13 @@ sub set_value {
 
     my $p = path($value);
     if ($p->is_file) {
-        croak sprintf "error: '%s' is a file, try --help", $value;
+        printf STDERR "error: '%s' is a file, try --help", $value;
+        exit 1;
     } elsif ($p->is_dir) {
         # ok
     } else {
-        croak sprintf "error: path '%s' does not exist, try --help", $value;
+        printf STDERR "error: path '%s' does not exist, try --help", $value;
+        exit 1;
     }
     return $p;
 }
