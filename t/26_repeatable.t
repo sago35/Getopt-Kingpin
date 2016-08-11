@@ -32,6 +32,20 @@ subtest 'repeatable flag (is_cumulative)' => sub {
     is_deeply $args->value, ['a', 'b', 'c'];
 };
 
+subtest 'repeatable flag (is_cumulative no-flags)' => sub {
+    local @ARGV;
+    push @ARGV, qw();
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $args = $kingpin->flag("xxx", "xxx yyy")->string_list();
+    #$args->is_cumulative(1);
+
+    my $cmd = $kingpin->parse;
+
+    is_deeply $args->value, [];
+};
+
+
 subtest 'repeatable flag 2 (is_cumulative)' => sub {
     local @ARGV;
     push @ARGV, qw(--xxx a --xxx b --xxx c);
@@ -75,6 +89,18 @@ subtest 'repeatable arg (is_cumulative)' => sub {
     my $cmd = $kingpin->parse;
 
     is_deeply $args->value, ['a', 'b', 'c'];
+};
+
+subtest 'repeatable arg (is_cumulative no-args)' => sub {
+    local @ARGV;
+    push @ARGV, qw();
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $args = $kingpin->arg("xxx", "xxx yyy")->string_list();
+
+    my $cmd = $kingpin->parse;
+
+    is_deeply $args->value, [];
 };
 
 subtest 'repeatable arg 2 (is_cumulative)' => sub {
