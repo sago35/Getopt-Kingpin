@@ -237,6 +237,8 @@ sub _parse {
             $f->set_value($f->_envar);
         } elsif (defined $f->_default) {
             $f->set_value($f->_default);
+        } elsif ($f->type =~ /List$/) {
+            $f->value([]);
         }
     }
     for (my $i = 0; $i < $self->args->count; $i++) {
@@ -247,6 +249,8 @@ sub _parse {
             $arg->set_value($arg->_envar);
         } elsif (defined $arg->_default) {
             $arg->set_value($arg->_default);
+        } elsif ($arg->type =~ /List$/) {
+            $arg->value([]);
         }
     }
 
