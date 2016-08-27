@@ -236,7 +236,13 @@ sub _parse {
         } elsif (defined $f->_envar) {
             $f->set_value($f->_envar);
         } elsif (defined $f->_default) {
-            $f->set_value($f->_default);
+            if ($f->type =~ /List$/) {
+                foreach my $default (@{$f->_default}) {
+                    $f->set_value($default);
+                }
+            } else {
+                $f->set_value($f->_default);
+            }
         } elsif ($f->type =~ /List$/) {
             $f->value([]);
         }
@@ -248,7 +254,13 @@ sub _parse {
         } elsif (defined $arg->_envar) {
             $arg->set_value($arg->_envar);
         } elsif (defined $arg->_default) {
+            if ($arg->type =~ /List$/) {
+                foreach my $default (@{$arg->_default}) {
+                    $arg->set_value($default);
+                }
+            } else {
             $arg->set_value($arg->_default);
+            }
         } elsif ($arg->type =~ /List$/) {
             $arg->value([]);
         }
