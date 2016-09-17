@@ -2,6 +2,7 @@ use strict;
 use Test::More 0.98;
 use Test::Trap;
 use Getopt::Kingpin;
+use File::Basename;
 
 
 subtest 'version' => sub {
@@ -30,7 +31,7 @@ subtest 'version help' => sub {
         $kingpin->parse;
     };
 
-    is $trap->stdout, sprintf <<'...', $0;
+    is $trap->stdout, sprintf <<'...', basename($0);
 usage: %s [<flags>]
 
 Flags:

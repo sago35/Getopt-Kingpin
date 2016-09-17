@@ -4,6 +4,7 @@ use Test::Exception;
 use Test::Trap;
 use Getopt::Kingpin;
 use Getopt::Kingpin::Command;
+use File::Basename;
 
 subtest 'command (flag)' => sub {
     local @ARGV;
@@ -71,7 +72,7 @@ subtest 'command help' => sub {
     my $server = $post->flag("server", "")->string();
     my $image = $post->arg("image", "")->file();
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s [<flags>] <command> [<args> ...]
 
 Flags:
@@ -102,7 +103,7 @@ subtest 'command help' => sub {
     my $image = $post->arg("image", "")->file();
     my $get  = $kingpin->command("get", "get image");
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s [<flags>] <command> [<args> ...]
 
 Flags:
@@ -135,7 +136,7 @@ subtest 'command help' => sub {
     my $server = $post->flag("server", "")->string();
     my $get  = $kingpin->command("get", "get image");
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s [<flags>] <command> [<args> ...]
 
 Flags:
@@ -168,7 +169,7 @@ subtest 'command help 2' => sub {
     my $server = $post->flag("server", "")->string();
     my $get  = $kingpin->command("get", "get image");
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s [<flags>] <command> [<args> ...]
 
 Flags:
@@ -201,7 +202,7 @@ subtest 'command help 3' => sub {
     my $server = $post->flag("server", "")->string();
     my $get  = $kingpin->command("get", "get image");
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s post [<flags>]
 
 post image
@@ -226,7 +227,7 @@ subtest 'command help 3' => sub {
     my $server = $post->flag("server", "")->string();
     my $get  = $kingpin->command("get", "get image");
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s post [<flags>]
 
 post image
@@ -251,7 +252,7 @@ subtest 'command help 3' => sub {
     my $server = $post->flag("server", "")->string();
     my $get  = $kingpin->command("get", "get image");
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s post [<flags>]
 
 post image
@@ -276,7 +277,7 @@ subtest 'command help 3' => sub {
     my $server = $post->flag("server", "")->string();
     my $get  = $kingpin->command("get", "get image");
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s post [<flags>]
 
 post image
@@ -301,7 +302,7 @@ subtest 'command help 3' => sub {
     my $server = $post->flag("server", "")->string();
     my $get  = $kingpin->command("get", "get image");
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s post [<flags>]
 
 post image
@@ -326,7 +327,7 @@ subtest 'command help 4' => sub {
     my $server = $post->flag("server", "")->string();
     my $get  = $kingpin->command("get", "get image");
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s get
 
 get image
@@ -350,7 +351,7 @@ subtest 'command help 5' => sub {
     my $server = $post->arg("server", "server address")->string();
     my $get  = $kingpin->command("get", "get image");
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s post [<server>]
 
 Flags:
@@ -376,7 +377,7 @@ subtest 'command help 6' => sub {
     my $get  = $kingpin->command("get", "get image");
     my $xyz  = $get->command("xyz", "set xyz");
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s [<flags>] <command> [<args> ...]
 
 Flags:
@@ -411,7 +412,7 @@ subtest 'command help 6' => sub {
     my $xyz  = $get->command("xyz", "set xyz");
     my $abc  = $get->command("abc", "set abc");
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s [<flags>] <command> [<args> ...]
 
 Flags:
@@ -448,7 +449,7 @@ subtest 'command help 6' => sub {
     my $get  = $kingpin->command("get", "get image");
     my $xyz  = $get->command("xyz", "set xyz");
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s get <command> [<args> ...]
 
 get image

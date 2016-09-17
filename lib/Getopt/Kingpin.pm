@@ -6,6 +6,7 @@ use Moo;
 use Getopt::Kingpin::Flags;
 use Getopt::Kingpin::Args;
 use Getopt::Kingpin::Commands;
+use File::Basename;
 use Carp;
 
 our $VERSION = "0.03";
@@ -55,7 +56,7 @@ has parent => (
 
 has name => (
     is => 'rw',
-    default => sub {$0},
+    default => sub {basename($0)},
 );
 
 has description => (

@@ -3,6 +3,7 @@ use Test::More 0.98;
 use Test::Exception;
 use Test::Trap;
 use Getopt::Kingpin;
+use File::Basename;
 
 
 subtest 'help' => sub {
@@ -13,7 +14,7 @@ subtest 'help' => sub {
     my $verbose = $kingpin->flag('verbose', 'Verbose mode.')->short('v')->bool();
     my $name    = $kingpin->arg('name', 'Name of user.')->required()->string();
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s [<flags>] <name>
 
 Flags:
@@ -40,7 +41,7 @@ subtest 'help short' => sub {
     my $verbose = $kingpin->flag('verbose', 'Verbose mode.')->short('v')->bool();
     my $name    = $kingpin->arg('name', 'Name of user.')->required()->string();
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s [<flags>] <name>
 
 Flags:
@@ -66,7 +67,7 @@ subtest 'help max_length_of_flag' => sub {
     my $verbose = $kingpin->flag('verbose', 'Verbose mode.')->short('v')->bool();
     my $ip      = $kingpin->flag('ip', 'IP address.')->string();
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s [<flags>]
 
 Flags:
@@ -90,7 +91,7 @@ subtest 'help max_length_of_flag 2' => sub {
     my $verbose = $kingpin->flag('verbose', 'Verbose mode.')->short('v')->bool();
     my $ip      = $kingpin->flag('ipaddress', 'IP address.')->string();
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s [<flags>]
 
 Flags:
@@ -116,7 +117,7 @@ subtest 'help max_length_of_arg' => sub {
     my $name    = $kingpin->arg('name', 'Name of user.')->required()->string();
     my $name    = $kingpin->arg('age', 'Age of user.')->required()->int();
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s [<flags>] <name> <age>
 
 Flags:
@@ -146,7 +147,7 @@ subtest 'help max_length_of_arg 2' => sub {
     my $name    = $kingpin->arg('age', 'Age of user.')->required()->int();
     my $name    = $kingpin->arg('name', 'Name of user.')->required()->string();
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s [<flags>] <age> <name>
 
 Flags:
@@ -176,7 +177,7 @@ subtest 'help required' => sub {
     my $name    = $kingpin->arg('age', 'Age of user.')->required()->int();
     my $name    = $kingpin->arg('name', 'Name of user.')->string();
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s [<flags>] <age> <name>
 
 Flags:
@@ -223,7 +224,7 @@ subtest 'place holder' => sub {
     my $kingpin = Getopt::Kingpin->new;
     $kingpin->flag("name", "Set name.")->string();
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s [<flags>]
 
 Flags:
@@ -243,7 +244,7 @@ subtest 'default' => sub {
     my $kingpin = Getopt::Kingpin->new;
     my $name = $kingpin->flag('name', 'Set name.')->default("default name")->string();
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s [<flags>]
 
 Flags:
@@ -263,7 +264,7 @@ subtest 'place holder' => sub {
     my $kingpin = Getopt::Kingpin->new;
     my $name = $kingpin->flag('name', 'Set name.')->placeholder("place_holder_name")->string();
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s [<flags>]
 
 Flags:
@@ -283,7 +284,7 @@ subtest 'place holder with default' => sub {
     my $kingpin = Getopt::Kingpin->new;
     my $name = $kingpin->flag('name', 'Set name.')->placeholder("place_holder_name")->default("default name")->string();
 
-    my $expected = sprintf <<'...', $0;
+    my $expected = sprintf <<'...', basename($0);
 usage: %s [<flags>]
 
 Flags:
