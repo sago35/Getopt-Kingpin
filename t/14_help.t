@@ -297,5 +297,25 @@ Flags:
     is $trap->stdout, $expected;
 };
 
+subtest 'flag with hidden flag' => sub {
+    local @ARGV;
+    push @ARGV, qw(--help);
+
+    my $kingpin = Getopt::Kingpin->new;
+
+    my $name = $kingpin->flag('name', 'Set name.')->hidden->string();
+
+    my $expected = sprintf <<'...', basename($0);
+usage: %s [<flags>]
+
+Flags:
+  --help  Show context-sensitive help.
+
+...
+
+    trap {$kingpin->parse};
+    is $trap->stdout, $expected;
+};
+
 done_testing;
 
