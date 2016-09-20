@@ -12,11 +12,24 @@ has _placeholder => (
     is => 'rw',
 );
 
+has _hidden => (
+    is => 'rw',
+    default => sub {0},
+);
+
 sub placeholder {
     my $self = shift;
     my $placeholder = shift;
 
     $self->_placeholder($placeholder);
+
+    return $self;
+}
+
+sub hidden {
+    my $self = shift;
+
+    $self->_hidden(1);
 
     return $self;
 }

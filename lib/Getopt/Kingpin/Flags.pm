@@ -64,7 +64,7 @@ sub _help_length {
     my $self = shift;
 
     my $len = [0, 0, 0];
-    foreach my $f ($self->values) {
+    foreach my $f (grep {$_->_hidden != 1} $self->values) {
         my $str = $f->help_str;
 
         for (my $i = 0; $i < scalar @{$len}; $i++) {
@@ -84,7 +84,7 @@ sub help {
     $ret .= "Flags:\n";
 
     my $len = $self->_help_length;
-    foreach my $f ($self->values) {
+    foreach my $f (grep {$_->_hidden != 1} $self->values) {
         my $x = "";
 
         my $long = $len->[1];
