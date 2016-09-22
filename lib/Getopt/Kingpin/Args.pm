@@ -6,7 +6,7 @@ use Moo;
 use Getopt::Kingpin::Arg;
 use Carp;
 
-our $VERSION = "0.03";
+our $VERSION = "0.04";
 
 has _args => (
     is => 'rw',

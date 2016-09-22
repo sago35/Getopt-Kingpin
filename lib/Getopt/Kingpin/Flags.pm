@@ -6,7 +6,7 @@ use Moo;
 use Getopt::Kingpin::Flag;
 use Carp;
 
-our $VERSION = "0.03";
+our $VERSION = "0.04";
 
 has _flags => (
     is => 'rw',

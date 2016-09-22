@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Moo;
 
-our $VERSION = "0.03";
+our $VERSION = "0.04";
 
 extends 'Getopt::Kingpin::Base';
 
