@@ -2,11 +2,9 @@ package Getopt::Kingpin::Arg;
 use 5.008001;
 use strict;
 use warnings;
-use Moo;
+use Getopt::Kingpin::Base -base;
 
 our $VERSION = "0.04";
-
-extends 'Getopt::Kingpin::Base';
 
 sub help_name {
     my $self = shift;

@@ -2,12 +2,10 @@ package Getopt::Kingpin::Command;
 use 5.008001;
 use strict;
 use warnings;
-use Moo;
+use Getopt::Kingpin -base;
 use Carp;
 
 our $VERSION = "0.04";
-
-extends 'Getopt::Kingpin';
 
 sub help_short {
     my $self = shift;

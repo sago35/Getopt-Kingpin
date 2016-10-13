@@ -2,16 +2,15 @@ package Getopt::Kingpin::Flags;
 use 5.008001;
 use strict;
 use warnings;
-use Moo;
+use Object::Simple -base;
 use Getopt::Kingpin::Flag;
 use Carp;
 
 our $VERSION = "0.04";
 
-has _flags => (
-    is => 'rw',
-    default => sub {return {}},
-);
+has _flags => sub {
+    return {};
+};
 
 sub add {
     my $self = shift;

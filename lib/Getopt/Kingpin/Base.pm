@@ -2,7 +2,7 @@ package Getopt::Kingpin::Base;
 use 5.008001;
 use strict;
 use warnings;
-use Moo;
+use Object::Simple -base;
 use Carp;
 use Path::Tiny;
 
@@ -60,55 +60,17 @@ use overload (
     fallback => 1,
 );
 
-has name => (
-    is => 'rw',
-);
-
-has short_name => (
-    is => 'rw',
-);
-
-has description => (
-    is => 'rw',
-);
-
-has value => (
-    is => 'rw',
-);
-
-has _defined => (
-    is => 'rw',
-    default => sub {0},
-);
-
-has is_cumulative => (
-    is => 'rw',
-    default => sub {0},
-);
-
-has _default => (
-    is => 'rw',
-);
-
-has _envar => (
-    is => 'rw',
-);
-
-has type => (
-    is => 'rw',
-    default => sub {"String"},
-);
-
-has _required => (
-    is => 'rw',
-    default => sub {0},
-);
-
-has index => (
-    is => 'rw',
-    default => sub {0},
-);
-
+has name          => undef;
+has short_name    => undef;
+has description   => undef;
+has value         => undef;
+has _defined      => 0;
+has is_cumulative => 0;
+has _default      => undef;
+has _envar        => undef;
+has type          => "String";
+has _required     => 0;
+has index         => 0;
 
 sub short {
     my $self = shift;

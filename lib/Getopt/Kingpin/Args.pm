@@ -2,21 +2,19 @@ package Getopt::Kingpin::Args;
 use 5.008001;
 use strict;
 use warnings;
-use Moo;
+use Object::Simple -base;
 use Getopt::Kingpin::Arg;
 use Carp;
 
 our $VERSION = "0.04";
 
-has _args => (
-    is => 'rw',
-    default => sub {return []},
-);
+has _args => sub {
+    return [];
+};
 
-has _args_remain => (
-    is => 'rw',
-    default => sub {return []},
-);
+has _args_remain => sub {
+    return [];
+};
 
 sub add {
     my $self = shift;
