@@ -21,6 +21,9 @@ sub AUTOLOAD {
     return $self;
 }
 
+sub DESTROY {
+}
+
 sub _set_types {
     my $self = shift;
     my ($type) = @_;
