@@ -2,7 +2,7 @@ package Getopt::Kingpin;
 use 5.008001;
 use strict;
 use warnings;
-use Moo;
+use Object::Simple -base;
 use Getopt::Kingpin::Flags;
 use Getopt::Kingpin::Args;
 use Getopt::Kingpin::Commands;
@@ -16,66 +16,57 @@ use overload (
     fallback => 1,
 );
 
-has flags => (
-    is => 'rw',
-    default => sub {
-        my $flags = Getopt::Kingpin::Flags->new;
-        $flags->add(
-            name        => 'help',
-            description => 'Show context-sensitive help.',
-        )->bool();
-        return $flags;
-    },
-);
+has flags => sub {
+    my $flags = Getopt::Kingpin::Flags->new;
+    $flags->add(
+        name        => 'help',
+        description => 'Show context-sensitive help.',
+    )->bool();
+    return $flags;
+};
 
-has args => (
-    is => 'rw',
-    default => sub {
-        my $args = Getopt::Kingpin::Args->new;
-        return $args;
-    },
-);
+has args => sub {
+    my $args = Getopt::Kingpin::Args->new;
+    return $args;
+};
 
-has commands => (
-    is => 'rw',
-    default => sub {
-        my $commands = Getopt::Kingpin::Commands->new;
-        return $commands;
-    },
-);
+has commands => sub {
+    my $commands = Getopt::Kingpin::Commands->new;
+    return $commands;
+};
 
-has _version => (
-    is => 'rw',
-    default => sub {""},
-);
+has _version => sub {
+    return "";
+};
 
-has parent => (
-    is => 'rw',
-    default => sub {return},
-);
+has parent => sub {
+    return
+};
 
-has name => (
-    is => 'rw',
-    default => sub {basename($0)},
-);
+has name => sub {
+    return basename($0);
+};
 
-has description => (
-    is      => 'rw',
-    default => sub {""},
-);
+has description => sub {
+    return "";
+};
 
-around BUILDARGS => sub {
-    my ($orig, $class, @args) = @_;
+sub new {
+    my $class = shift;
+    my @args = @_;
 
-    if (@args == 2 and not ref $args[0]) {
-        return +{
+    my $self;
+    if (@args == 2) {
+        $self = $class->SUPER::new(
             name => $args[0],
             description => $args[1],
-        };
+        );
     } else {
-        return $class->$orig(@args);
+        $self = $class->SUPER::new(@args);
     }
-};
+
+    return $self;
+}
 
 sub flag {
     my $self = shift;

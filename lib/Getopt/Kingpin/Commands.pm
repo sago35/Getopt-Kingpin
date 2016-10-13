@@ -2,16 +2,15 @@ package Getopt::Kingpin::Commands;
 use 5.008001;
 use strict;
 use warnings;
-use Moo;
+use Object::Simple -base;
 use Getopt::Kingpin::Command;
 use Carp;
 
 our $VERSION = "0.04";
 
-has _commands => (
-    is => 'rw',
-    default => sub {return []},
-);
+has _commands => sub {
+    return [];
+};
 
 sub add {
     my $self = shift;

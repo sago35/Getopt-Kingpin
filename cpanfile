@@ -1,5 +1,5 @@
 requires 'perl', '5.008001';
-requires 'Moo';
+requires 'Object::Simple';
 requires 'Path::Tiny';
 
 on 'test' => sub {

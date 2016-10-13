@@ -2,20 +2,12 @@ package Getopt::Kingpin::Flag;
 use 5.008001;
 use strict;
 use warnings;
-use Moo;
+use Getopt::Kingpin::Base -base;
 
 our $VERSION = "0.04";
 
-extends 'Getopt::Kingpin::Base';
-
-has _placeholder => (
-    is => 'rw',
-);
-
-has _hidden => (
-    is => 'rw',
-    default => sub {0},
-);
+has _placeholder => "";
+has _hidden      => 0;
 
 sub placeholder {
     my $self = shift;
