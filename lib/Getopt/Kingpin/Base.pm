@@ -9,7 +9,6 @@ use Path::Tiny;
 our $VERSION = "0.04";
 our $types;
 sub AUTOLOAD {
-    no overloading;
     my $self = shift;
     my $func = our $AUTOLOAD;
     $func =~ s/.*:://;
@@ -56,7 +55,7 @@ sub _camelize {
 }
 
 use overload (
-    '""' => sub {$_[0]->value // ""},
+    '""' => sub {defined $_[0]->value ? $_[0]->value : ""},
     fallback => 1,
 );
 
