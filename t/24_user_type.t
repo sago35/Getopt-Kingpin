@@ -45,7 +45,7 @@ sub set_value {
     my ($value) = @_;
 
     if ($value eq "foo") {
-        $self->value($value);
+        return $value;
     } else {
         croak "error";
     }
@@ -61,6 +61,6 @@ sub set_value {
     my $self = shift;
     my ($value) = @_;
 
-    $self->value(Digest::MD5::md5_hex($value));
+    return Digest::MD5::md5_hex($value);
 }
 
