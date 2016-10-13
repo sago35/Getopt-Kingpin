@@ -47,7 +47,7 @@ sub help_str {
         }
     }
 
-    $ret->[2] = $self->description // "";
+    $ret->[2] = defined $self->description ? $self->description : "";
 
     return $ret;
 }

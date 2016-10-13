@@ -125,8 +125,11 @@ sub _parse {
         my $arg = shift @argv;
         if ($arg eq "--") {
             $arg_only = 1;
-        } elsif ($arg_only == 0 and $arg =~ /^--(?<no>no-)?(?<name>\S+?)(?<equal>=(?<value>\S+))?$/) {
-            my $name = $+{name};
+        } elsif ($arg_only == 0 and $arg =~ /^--(no-)?(\S+?)(=(\S+))?$/) {
+            my $no    = $1;
+            my $name  = $2;
+            my $equal = $3;
+            my $val   = $4;
 
             delete $required_but_not_found->{$name} if exists $required_but_not_found->{$name};
             my $v = $self->flags->get($name);
@@ -138,16 +141,16 @@ sub _parse {
 
             my $value;
             if ($v->type eq "Bool") {
-                $value = defined $+{no} ? 0 : 1;
-            } elsif (defined $+{equal}) {
-                $value = $+{value}
+                $value = defined $no ? 0 : 1;
+            } elsif (defined $equal) {
+                $value = $val;
             } else {
                 $value = shift @argv;
             }
 
             $v->set_value($value);
-        } elsif ($arg_only == 0 and $arg =~ /^-(?<short_name>\S+)$/) {
-            my $short_name = $+{short_name};
+        } elsif ($arg_only == 0 and $arg =~ /^-(\S+)$/) {
+            my $short_name = $1;
             while (length $short_name > 0) {
                 my ($s, $remain) = split //, $short_name, 2;
                 my $name;
