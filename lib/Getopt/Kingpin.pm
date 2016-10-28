@@ -107,8 +107,13 @@ sub command {
 
 sub parse {
     my $self = shift;
-    my @_argv = @ARGV;
-    $self->_parse(@_argv);
+    my @argv = @_;
+
+    if (scalar @argv == 0) {
+        @argv = @ARGV;
+    }
+
+    $self->_parse(@argv);
 }
 
 sub _parse {
@@ -393,9 +398,10 @@ Add and return Getopt::Kingpin::Flag object.
 
 Add and return Getopt::Kingpin::Arg object.
 
-=head2 parse()
+=head2 parse(@arguments)
 
-Parse @ARGV.
+Parse @arguments.
+If @arguments is empty, parse @ARGV.
 
 =head2 _parse()
 

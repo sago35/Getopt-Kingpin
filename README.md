@@ -44,9 +44,10 @@ Add and return Getopt::Kingpin::Flag object.
 
 Add and return Getopt::Kingpin::Arg object.
 
-## parse()
+## parse(@arguments)
 
-Parse @ARGV.
+Parse @arguments.
+If @arguments is empty, parse @ARGV.
 
 ## \_parse()
 
