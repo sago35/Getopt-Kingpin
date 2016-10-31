@@ -23,7 +23,7 @@ sub help_short {
             push @help, "[<args> ...]";
         } else {
             foreach my $arg ($self->args->get_all) {
-                push @help, sprintf "[<%s>]", $arg->name;
+                push @help, $arg->help_name(1);
             }
         }
     }
