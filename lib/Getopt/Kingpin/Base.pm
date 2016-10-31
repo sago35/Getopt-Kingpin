@@ -22,6 +22,7 @@ sub AUTOLOAD {
 }
 
 sub DESTROY {
+    return 1;
 }
 
 sub _set_types {
