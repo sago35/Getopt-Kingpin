@@ -282,7 +282,11 @@ sub _parse {
         }
     }
 
-    return $current_cmd // $self;
+    if (defined $current_cmd) {
+        return $current_cmd;
+    } else {
+        return $self;
+    }
 }
 
 sub get {
