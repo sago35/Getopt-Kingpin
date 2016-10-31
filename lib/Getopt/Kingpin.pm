@@ -195,6 +195,10 @@ sub _parse {
                     } else {
                         my @argv_for_command = @argv;
                         @argv = ();
+
+                        if ($self->flags->get("help")) {
+                            push @argv_for_command, "--help";
+                        }
                         $cmd->_parse(@argv_for_command);
                         $current_cmd = $cmd;
                         next;
