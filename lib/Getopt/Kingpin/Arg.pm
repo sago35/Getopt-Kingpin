@@ -8,8 +8,16 @@ our $VERSION = "0.04";
 
 sub help_name {
     my $self = shift;
+    my $mode = shift;
+
+    if (not defined $mode) {
+        $mode = 0;
+    }
 
     my $ret = '<' . $self->name . '>';
+    if ($mode and $self->is_cumulative) {
+        $ret = $ret . '...';
+    }
     if (not $self->_required) {
         $ret = '[' . $ret . ']';
     }
