@@ -368,10 +368,10 @@ Getopt::Kingpin - command line options parser (like golang kingpin)
 =head1 SYNOPSIS
 
     use Getopt::Kingpin;
-    my $kingpin = Getopt::Kingpin->new();
+    my $kingpin = Getopt::Kingpin->new;
     $kingpin->flags->get("help")->short('h');
-    my $verbose = $kingpin->flag('verbose', 'Verbose mode.')->short('v')->bool();
-    my $name    = $kingpin->arg('name', 'Name of user.')->required()->string();
+    my $verbose = $kingpin->flag('verbose', 'Verbose mode.')->short('v')->bool;
+    my $name    = $kingpin->arg('name', 'Name of user.')->required->string;
 
     $kingpin->parse;
 

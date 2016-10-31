@@ -6,15 +6,39 @@ Getopt::Kingpin - command line options parser (like golang kingpin)
 # SYNOPSIS
 
     use Getopt::Kingpin;
-    my $kingpin = Getopt::Kingpin->new();
+    my $kingpin = Getopt::Kingpin->new;
     $kingpin->flags->get("help")->short('h');
-    my $verbose = $kingpin->flag('verbose', 'Verbose mode.')->short('v')->bool();
-    my $name    = $kingpin->arg('name', 'Name of user.')->required()->string();
+    my $verbose = $kingpin->flag('verbose', 'Verbose mode.')->short('v')->bool;
+    my $name    = $kingpin->arg('name', 'Name of user.')->required->string;
 
     $kingpin->parse;
 
     # perl sample.pl hello
     printf "name : %s\n", $name;
+
+With sub command.
+
+    use Getopt::Kingpin;
+    my $kingpin = Getopt::Kingpin->new;
+
+    my $register      = $kingpin->command('register', 'Register a new user.');
+    my $register_nick = $register->arg('nick', 'Nickname for user.')->required->string;
+    my $register_name = $register->arg('name', 'Name for user.')->required->string;
+
+    my $post       = $kingpin->command('post', 'Post a message to a channel.');
+    my $post_image   = $post->flag('image', 'Image to post.')->file;
+    my $post_channel = $post->arg('channel', 'Channel to post to.')->required->string;
+    my $post_text    = $post->arg('text', 'Text to post.')->string_list;
+
+    my $cmd = $kingpin->parse;
+
+    if ($cmd eq 'register') {
+        printf "register %s %s\n", $register_nick, $register_name;
+    } elsif ($cmd eq 'post') {
+        printf "post %s %s %s\n", $post_image, $post_channel, @{$post_text->value};
+    } else {
+        $kingpin->help;
+    }
 
 # DESCRIPTION
 
