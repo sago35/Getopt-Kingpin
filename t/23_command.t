@@ -502,6 +502,178 @@ Args:
     is $trap->stdout, $expected;
 };
 
+subtest 'command help 7-2' => sub {
+    local @ARGV;
+    push @ARGV, qw(register --help);
+
+    my $kingpin = Getopt::Kingpin->new;
+
+    my $register      = $kingpin->command('register', 'Register a new user.');
+    my $register_nick = $register->arg('nick', 'Nickname for user.')->required->string;
+    my $register_name = $register->arg('name', 'Name for user.')->required->string;
+
+    my $post        = $kingpin->command('post', 'Post a message to a channel.');
+    my $postImage   = $post->flag('image', 'Image to post.')->file;
+    my $postChannel = $post->arg('channel', 'Channel to post to.')->required->string;
+    my $postText    = $post->arg('text', 'Text to post.')->string_list;
+
+    my $expected = sprintf <<'...', basename($0);
+usage: %s register <nick> <name>
+
+Register a new user.
+
+Flags:
+  --help  Show context-sensitive help.
+
+Args:
+  <nick>  Nickname for user.
+  <name>  Name for user.
+
+...
+
+    trap {$kingpin->parse};
+    is $trap->exit, 0;
+    is $trap->stdout, $expected;
+};
+
+subtest 'command help 7-3' => sub {
+    local @ARGV;
+    push @ARGV, qw(help register);
+
+    my $kingpin = Getopt::Kingpin->new;
+
+    my $register      = $kingpin->command('register', 'Register a new user.');
+    my $register_nick = $register->arg('nick', 'Nickname for user.')->required->string;
+    my $register_name = $register->arg('name', 'Name for user.')->required->string;
+
+    my $post        = $kingpin->command('post', 'Post a message to a channel.');
+    my $postImage   = $post->flag('image', 'Image to post.')->file;
+    my $postChannel = $post->arg('channel', 'Channel to post to.')->required->string;
+    my $postText    = $post->arg('text', 'Text to post.')->string_list;
+
+    my $expected = sprintf <<'...', basename($0);
+usage: %s register <nick> <name>
+
+Register a new user.
+
+Flags:
+  --help  Show context-sensitive help.
+
+Args:
+  <nick>  Nickname for user.
+  <name>  Name for user.
+
+...
+
+    trap {$kingpin->parse};
+    is $trap->exit, 0;
+    is $trap->stdout, $expected;
+};
+
+subtest 'command help 8' => sub {
+    local @ARGV;
+    push @ARGV, qw(--help post);
+
+    my $kingpin = Getopt::Kingpin->new;
+
+    my $register      = $kingpin->command('register', 'Register a new user.');
+    my $register_nick = $register->arg('nick', 'Nickname for user.')->required->string;
+    my $register_name = $register->arg('name', 'Name for user.')->required->string;
+
+    my $post        = $kingpin->command('post', 'Post a message to a channel.');
+    my $postImage   = $post->flag('image', 'Image to post.')->file;
+    my $postChannel = $post->arg('channel', 'Channel to post to.')->required->string;
+    my $postText    = $post->arg('text', 'Text to post.')->string_list;
+
+    my $expected = sprintf <<'...', basename($0);
+usage: %s post [<flags>] <channel> [<text>...]
+
+Post a message to a channel.
+
+Flags:
+  --help         Show context-sensitive help.
+  --image=IMAGE  Image to post.
+
+Args:
+  <channel>  Channel to post to.
+  [<text>]   Text to post.
+
+...
+
+    trap {$kingpin->parse};
+    is $trap->exit, 0;
+    is $trap->stdout, $expected;
+};
+
+subtest 'command help 8-2' => sub {
+    local @ARGV;
+    push @ARGV, qw(post --help);
+
+    my $kingpin = Getopt::Kingpin->new;
+
+    my $register      = $kingpin->command('register', 'Register a new user.');
+    my $register_nick = $register->arg('nick', 'Nickname for user.')->required->string;
+    my $register_name = $register->arg('name', 'Name for user.')->required->string;
+
+    my $post        = $kingpin->command('post', 'Post a message to a channel.');
+    my $postImage   = $post->flag('image', 'Image to post.')->file;
+    my $postChannel = $post->arg('channel', 'Channel to post to.')->required->string;
+    my $postText    = $post->arg('text', 'Text to post.')->string_list;
+
+    my $expected = sprintf <<'...', basename($0);
+usage: %s post [<flags>] <channel> [<text>...]
+
+Post a message to a channel.
+
+Flags:
+  --help         Show context-sensitive help.
+  --image=IMAGE  Image to post.
+
+Args:
+  <channel>  Channel to post to.
+  [<text>]   Text to post.
+
+...
+
+    trap {$kingpin->parse};
+    is $trap->exit, 0;
+    is $trap->stdout, $expected;
+};
+
+subtest 'command help 8-3' => sub {
+    local @ARGV;
+    push @ARGV, qw(help post);
+
+    my $kingpin = Getopt::Kingpin->new;
+
+    my $register      = $kingpin->command('register', 'Register a new user.');
+    my $register_nick = $register->arg('nick', 'Nickname for user.')->required->string;
+    my $register_name = $register->arg('name', 'Name for user.')->required->string;
+
+    my $post        = $kingpin->command('post', 'Post a message to a channel.');
+    my $postImage   = $post->flag('image', 'Image to post.')->file;
+    my $postChannel = $post->arg('channel', 'Channel to post to.')->required->string;
+    my $postText    = $post->arg('text', 'Text to post.')->string_list;
+
+    my $expected = sprintf <<'...', basename($0);
+usage: %s post [<flags>] <channel> [<text>...]
+
+Post a message to a channel.
+
+Flags:
+  --help         Show context-sensitive help.
+  --image=IMAGE  Image to post.
+
+Args:
+  <channel>  Channel to post to.
+  [<text>]   Text to post.
+
+...
+
+    trap {$kingpin->parse};
+    is $trap->exit, 0;
+    is $trap->stdout, $expected;
+};
 
 done_testing;
 
