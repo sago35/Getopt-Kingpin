@@ -289,14 +289,6 @@ sub _parse {
     }
 }
 
-sub get {
-    my $self = shift;
-    my ($target) = @_;
-    my $t = $self->flags->get($target);
-
-    return $t;
-}
-
 sub version {
     my $self = shift;
     my ($version) = @_;
@@ -417,35 +409,170 @@ https://github.com/alecthomas/kingpin
 =head2 new()
 
 Create a parser object.
+Default script-name is basename($0).
 
     my $kingpin = Getopt::Kingpin->new;
-    my $name = $kingpin->flag('name', 'set name')->string();
-    $kingpin->parse;
+    my $kingpin = Getopt::Kingpin->new("script-name.pl", "description of script");
+    my $kingpin = Getopt::Kingpin->new(
+        name        => "script-name.pl",
+        description => "description of script",
+    );
+
+    # Use hash ref to set description only.
+    my $kingpin = Getopt::Kingpin->new({
+        description => "description of script",
+    });
 
 =head2 flag($name, $description)
 
 Add and return Getopt::Kingpin::Flag object.
 
+    # Define --debug option
+    my $debug = $kingpin->flag("debug", "Enable debug mode.");
+
+    # Set $debug to boolean value
+    $debug->bool;
+
+    # shorthand
+    my $debug = $kingpin->flag("debug", "Enable debug mode.")->bool;
+
+Getopt::Kingpin::Flag object has methods below.
+
+=head3 value()
+
+Get flag value.
+
+    my $name = $kingpin->flag("name", "Set name.")->string;
+
+    # perl script.pl --name 'kingpin'
+    printf "%s\n", $name->value;  # -> kingpin
+
+    # simple way
+    printf "%s\n", $name;  # -> kingpin
+
+=head3 short()
+
+Set short flag.
+
+    # Define --debug and -d
+    my $debug = $kingpin->flag("debug", "Enable debug mode.")->short('-d')->bool;
+
+=head3 default()
+
+The default value can be overridden with the default($value).
+
+    # Set default value to true (1)
+    my $debug = $kingpin->flag("debug", "Enable debug mode.")->default(1)->bool;
+
+=head3 override_default_from_envar()
+
+The default value can be overriden with the override_default_from_envar($envar).
+
+    # Set default value to environment value of __DEBUG__
+    # export $__DEBUG__=1 to enable debug mode
+    my $debug = $kingpin->flag("debug", "Enable debug mode.")->override_default_from_envar("__DEBUG__")->bool;
+
+=head3 required()
+
+Set required.
+
+    my $debug = $kingpin->flag("debug", "Enable debug mode.")->required->bool;
+
+=head3 placeholder()
+
+Set placeholder value for flag in the help.
+Here are some examples of flags with various permutations.
+
+    --name=NAME        # flag("name")->string
+    --name="Harry"     # flag("name")->default("Harry")->string
+    --name=FULL-NAME   # flag("name")->placeholder("FULL-NAME")->string
+
+=head3 hidden()
+
+If set hidden(), flag does not apear in the help.
+
+=head3 types
+
+=head4 bool()
+
+Boolean value. (0 or 1)
+Boolean flag has a negative complement: --<name> and --no-<name>.
+
+    # --debug or --no-debug
+    my $debug = $kingpin->flag("debug")->bool;
+
+=head4 existing_dir()
+
+Path::Tiny object.
+
+=head4 existing_file()
+
+Path::Tiny object.
+
+=head4 existing_file_or_dir()
+
+Path::Tiny object.
+
+=head4 file()
+
+Path::Tiny object.
+
+=head4 int()
+
+Integer value.
+
+=head4 string()
+
+String value.
+It is default type to flag.
+
 =head2 arg($name, $description)
 
 Add and return Getopt::Kingpin::Arg object.
 
-=head2 parse(@arguments)
+    my $name = $kingpin->arg("name", "Set name")->string;
+
+Getopt::Kingpin::Arg object has methods below.
+Below are same as Flag's.
+
+=head3 value()
+
+Get value.
+
+=head3 default()
+
+Set default value.
+
+=head3 override_default_from_envar()
+
+Set default value by enviroment variable.
+
+=head3 required()
+
+Set required.
+
+=head2 parse()
 
 Parse @arguments.
 If @arguments is empty, parse @ARGV.
+
+    # parse @ARGV
+    $kingpin->parse;
+
+    # parse @arguments
+    $kingpin->parse(@arguments);
 
 =head2 _parse()
 
 Parse @_. Internal use only.
 
-=head2 get($name)
-
-Get Getopt::Kingpin::Flag instance of $name.
-
 =head2 version($version)
 
 Set application version to $version.
+
+=head2 help_short()
+
+Internal use only.
 
 =head2 help()
 
