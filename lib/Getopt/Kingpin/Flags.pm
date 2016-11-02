@@ -122,8 +122,7 @@ Getopt::Kingpin::Flags - command line option object
 
 =head1 DESCRIPTION
 
-Getopt::Kingpin::Flags は、Getopt::Kingpinから使用するモジュールです。
-Flagを集合として扱います。
+Getopt::Kingpin::Flags is used from Getopt::Kingpin.
 
 =head1 METHOD
 
@@ -133,29 +132,34 @@ Create Getopt::Kingpin::Flags object.
 
 =head2 add(name => $name, description => $description)
 
-$name と $description をもつGetopt::Kingpin::Flagを生成し、管理します。
+Add Getopt::Kingpin::Flag instance which has $name and $description.
 
 =head2 get($name)
 
-$name で指定したGetopt::Kingpin::Flagを取り出します。
+Get Getopt::Kingpin::Flag instanse by $name.
 
 =head2 keys()
 
-定義されている$nameの一覧の出力します。
-add()した順で出力されます。
+Get all names of Getopt::Kingpin::Flag instances.
+Their order is same as add() order.
 
 =head2 values()
 
-定義されているGetopt::Kingpin::Flagをすべて出力します。
-add()した順で出力されます。
+Get all Getopt::Kingpin::Flag instances.
+Their order is same as add() order.
+
+=head2 count()
+
+Get count of Getopt::Kingpin::Arg objects.
 
 =head2 _help_length()
 
-short_name、name、descriptionの文字列長を返します。
+Internal use only.
+Get length of help message.
 
 =head2 help()
 
-ヘルプを表示します。
+Return help message.
 
 =head1 LICENSE
 

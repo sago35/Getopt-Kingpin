@@ -551,6 +551,12 @@ Set default value by enviroment variable.
 
 Set required.
 
+=head2 command()
+
+Add sub-command.
+
+    my $post    = $kingpin->command("post", "post image");
+
 =head2 parse()
 
 Parse @arguments.
@@ -561,6 +567,17 @@ If @arguments is empty, parse @ARGV.
 
     # parse @arguments
     $kingpin->parse(@arguments);
+
+If define sub-command, parse() return Getopt::Kingpin::Command object;
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $post    = $kingpin->command("post", "post image");
+    my $server  = $post->arg("server", "")->string();
+    my $image   = $post->arg("image", "")->file();
+
+    my $cmd = $kingpin->parse;
+    printf "cmd : %s\n", $cmd;
+    printf "cmd : %s\n", $cmd->name;
 
 =head2 _parse()
 

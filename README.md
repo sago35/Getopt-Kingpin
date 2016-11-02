@@ -55,39 +55,198 @@ https://github.com/alecthomas/kingpin
 ## new()
 
 Create a parser object.
+Default script-name is basename($0).
 
     my $kingpin = Getopt::Kingpin->new;
-    my $name = $kingpin->flag('name', 'set name')->string();
-    $kingpin->parse;
+    my $kingpin = Getopt::Kingpin->new("script-name.pl", "description of script");
+    my $kingpin = Getopt::Kingpin->new(
+        name        => "script-name.pl",
+        description => "description of script",
+    );
+
+    # Use hash ref to set description only.
+    my $kingpin = Getopt::Kingpin->new({
+        description => "description of script",
+    });
 
 ## flag($name, $description)
 
 Add and return Getopt::Kingpin::Flag object.
 
+    # Define --debug option
+    my $debug = $kingpin->flag("debug", "Enable debug mode.");
+
+    # Set $debug to boolean value
+    $debug->bool;
+
+    # shorthand
+    my $debug = $kingpin->flag("debug", "Enable debug mode.")->bool;
+
+Getopt::Kingpin::Flag object has methods below.
+
+### value()
+
+Get flag value.
+
+    my $name = $kingpin->flag("name", "Set name.")->string;
+
+    # perl script.pl --name 'kingpin'
+    printf "%s\n", $name->value;  # -> kingpin
+
+    # simple way
+    printf "%s\n", $name;  # -> kingpin
+
+### short()
+
+Set short flag.
+
+    # Define --debug and -d
+    my $debug = $kingpin->flag("debug", "Enable debug mode.")->short('-d')->bool;
+
+### default()
+
+The default value can be overridden with the default($value).
+
+    # Set default value to true (1)
+    my $debug = $kingpin->flag("debug", "Enable debug mode.")->default(1)->bool;
+
+### override\_default\_from\_envar()
+
+The default value can be overriden with the override\_default\_from\_envar($envar).
+
+    # Set default value to environment value of __DEBUG__
+    # export $__DEBUG__=1 to enable debug mode
+    my $debug = $kingpin->flag("debug", "Enable debug mode.")->override_default_from_envar("__DEBUG__")->bool;
+
+### required()
+
+Set required.
+
+    my $debug = $kingpin->flag("debug", "Enable debug mode.")->required->bool;
+
+### placeholder()
+
+Set placeholder value for flag in the help.
+Here are some examples of flags with various permutations.
+
+    --name=NAME        # flag("name")->string
+    --name="Harry"     # flag("name")->default("Harry")->string
+    --name=FULL-NAME   # flag("name")->placeholder("FULL-NAME")->string
+
+### hidden()
+
+If set hidden(), flag does not apear in the help.
+
+### types
+
+#### bool()
+
+Boolean value. (0 or 1)
+Boolean flag has a negative complement: --<name> and --no-<name>.
+
+    # --debug or --no-debug
+    my $debug = $kingpin->flag("debug")->bool;
+
+#### existing\_dir()
+
+Path::Tiny object.
+
+#### existing\_file()
+
+Path::Tiny object.
+
+#### existing\_file\_or\_dir()
+
+Path::Tiny object.
+
+#### file()
+
+Path::Tiny object.
+
+#### int()
+
+Integer value.
+
+#### string()
+
+String value.
+It is default type to flag.
+
 ## arg($name, $description)
 
 Add and return Getopt::Kingpin::Arg object.
 
-## parse(@arguments)
+    my $name = $kingpin->arg("name", "Set name")->string;
+
+Getopt::Kingpin::Arg object has methods below.
+Below are same as Flag's.
+
+### value()
+
+Get value.
+
+### default()
+
+Set default value.
+
+### override\_default\_from\_envar()
+
+Set default value by enviroment variable.
+
+### required()
+
+Set required.
+
+## command()
+
+Add sub-command.
+
+    my $post    = $kingpin->command("post", "post image");
+
+## parse()
 
 Parse @arguments.
 If @arguments is empty, parse @ARGV.
+
+    # parse @ARGV
+    $kingpin->parse;
+
+    # parse @arguments
+    $kingpin->parse(@arguments);
+
+If define sub-command, parse() return Getopt::Kingpin::Command object;
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $post    = $kingpin->command("post", "post image");
+    my $server  = $post->arg("server", "")->string();
+    my $image   = $post->arg("image", "")->file();
+
+    my $cmd = $kingpin->parse;
+    printf "cmd : %s\n", $cmd;
+    printf "cmd : %s\n", $cmd->name;
 
 ## \_parse()
 
 Parse @\_. Internal use only.
 
-## get($name)
-
-Get Getopt::Kingpin::Flag instance of $name.
-
 ## version($version)
 
 Set application version to $version.
 
+## help\_short()
+
+Internal use only.
+
 ## help()
 
 Print help.
+
+# SEE ALSO
+
+- [Getopt::Long](https://metacpan.org/pod/Getopt::Long)
+- [Getopt::Long::Descriptive](https://metacpan.org/pod/Getopt::Long::Descriptive)
+- [Smart::Options](https://metacpan.org/pod/Smart::Options)
+- [MooseX::Getopt::Usage](https://metacpan.org/pod/MooseX::Getopt::Usage)
 
 # LICENSE
 

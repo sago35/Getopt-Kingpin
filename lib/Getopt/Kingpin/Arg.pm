@@ -44,41 +44,17 @@ Getopt::Kingpin::Flag - command line option object
 
 =head1 DESCRIPTION
 
-Getopt::Kingpin::Flag は、Getopt::Kingpinから使用するモジュールです。
+Getopt::Kingpin::Arg is used from Getopt::Kingpin.
 
 =head1 METHOD
 
 =head2 new()
 
-Create Getopt::Kingpin::Flag object.
+Create Getopt::Kingpin::Arg object.
 
-=head2 string()
+=head2 help_name()
 
-自分自身をstringとして定義します。
-
-=head2 int()
-
-自分自身をintegerとして定義します。
-
-=head2 bool()
-
-自分自身をboolとして定義します。
-
-=head2 short($short_name)
-
-short optionを作成します。
-
-=head2 default($default_value)
-
-デフォルト値を設定します。
-
-=head2 override_default_from_envar($env_var_name)
-
-デフォルト値を環境変数で上書きします。
-
-=head2 required()
-
-そのオプションを必須とする。
+Return name for help.
 
 =head1 LICENSE
 
