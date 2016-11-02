@@ -59,15 +59,15 @@
    "release_status" : "unstable",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://github.com/sago35/Getopt-Kingpin/issues"
+         "web" : "https://github.com///issues"
       },
-      "homepage" : "https://github.com/sago35/Getopt-Kingpin",
+      "homepage" : "https://github.com//",
       "repository" : {
          "type" : "git",
-         "url" : "git://github.com/sago35/Getopt-Kingpin.git",
-         "web" : "https://github.com/sago35/Getopt-Kingpin"
+         "url" : "git://github.com//.git",
+         "web" : "https://github.com//"
       }
    },
-   "version" : "0.04",
+   "version" : "0.05",
    "x_serialization_backend" : "JSON::PP version 2.27300"
 }

@@ -2,6 +2,11 @@ Revision history for Perl extension Getopt-Kingpin
 
 {{$NEXT}}
 
+0.05 2016-11-02T12:39:12Z
+
+    - Support perl 5.8.1 or later
+    - Use Object::Simple
+
 0.04 2016-09-22T04:26:28Z
 
     - Support hidden flag

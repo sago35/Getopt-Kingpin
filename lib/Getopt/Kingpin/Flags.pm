@@ -6,7 +6,7 @@ use Object::Simple -base;
 use Getopt::Kingpin::Flag;
 use Carp;
 
-our $VERSION = "0.04";
+our $VERSION = "0.05";
 
 has _flags => sub {
     return {};
