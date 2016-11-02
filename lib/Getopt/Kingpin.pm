@@ -578,6 +578,28 @@ Internal use only.
 
 Print help.
 
+=head1 SEE ALSO
+
+=over
+
+=item *
+
+L<Getopt::Long>
+
+=item *
+
+L<Getopt::Long::Descriptive>
+
+=item *
+
+L<Smart::Options>
+
+=item *
+
+L<MooseX::Getopt::Usage>
+
+=back
+
 =head1 LICENSE
 
 Copyright (C) sago35.
