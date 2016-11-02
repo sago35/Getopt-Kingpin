@@ -113,7 +113,7 @@ sub parse {
         @argv = @ARGV;
     }
 
-    $self->_parse(@argv);
+    return $self->_parse(@argv);
 }
 
 sub _parse {
