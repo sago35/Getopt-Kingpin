@@ -208,8 +208,8 @@ sub _parse {
 
             if (not ($arg_index == 0 and $arg eq "help")) {
                 if ($arg_index < $self->args->count) {
-                    $self->args->get($arg_index)->set_value($arg);
-                    if (not $self->args->get($arg_index)->is_cumulative) {
+                    $self->args->get_by_index($arg_index)->set_value($arg);
+                    if (not $self->args->get_by_index($arg_index)->is_cumulative) {
                         $arg_index++;
                     }
                 } else {
@@ -252,7 +252,7 @@ sub _parse {
         }
     }
     for (my $i = 0; $i < $self->args->count; $i++) {
-        my $arg = $self->args->get($i);
+        my $arg = $self->args->get_by_index($i);
         if (defined $arg->value) {
             next;
         } elsif (defined $arg->_envar) {
@@ -275,7 +275,7 @@ sub _parse {
         exit 1;
     }
     for (my $i = 0; $i < $self->args->count; $i++) {
-        my $arg = $self->args->get($i);
+        my $arg = $self->args->get_by_index($i);
         if ($arg->_required and not $arg->_defined) {
             printf STDERR "%s: error: required arg '%s' not provided, try --help", $self->name, $arg->name;
             exit 1;

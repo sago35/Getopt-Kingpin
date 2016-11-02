@@ -37,6 +37,18 @@ sub count {
 
 sub get {
     my $self = shift;
+    my ($name) = @_;
+
+    foreach my $arg ($self->get_all) {
+        if ($arg->name eq $name) {
+            return $arg;
+        }
+    }
+    croak "get($name) failed";
+}
+
+sub get_by_index {
+    my $self = shift;
     my ($index) = @_;
 
     if ($self->count <= $index) {
