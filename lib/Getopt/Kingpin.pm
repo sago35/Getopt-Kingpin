@@ -370,7 +370,18 @@ Getopt::Kingpin - command line options parser (like golang kingpin)
     # perl sample.pl hello
     printf "name : %s\n", $name;
 
-With sub command.
+Automatically generate --help option.
+
+    usage: script.pl [<flags>] <name>
+
+    Flags:
+      -h, --help     Show context-sensitive help.
+      -v, --verbose  Verbose mode.
+
+    Args:
+      <name>  Name of user.
+
+Support sub-command.
 
     use Getopt::Kingpin;
     my $kingpin = Getopt::Kingpin->new;
@@ -394,12 +405,40 @@ With sub command.
         $kingpin->help;
     }
 
+Help is below.
+
+    usage: script.pl [<flags>] <command> [<args> ...]
+
+    Flags:
+      --help  Show context-sensitive help.
+
+    Commands:
+      help [<command>...]
+        Show help.
+
+      register [<nick>] [<name>]
+        Register a new user.
+
+      post [<flags>] [<channel>] [<text>]
+        Post a message to a channel.
+
 =head1 DESCRIPTION
 
 Getopt::Kingpin is a command line parser.
 It supports flags and positional arguments.
 
+=over
+
+=item *
+
+Simple to use
+
+=item *
+
 Automatically generate help flag (--help).
+
+=back
+
 
 This module is inspired by Kingpin written in golang.
 https://github.com/alecthomas/kingpin
