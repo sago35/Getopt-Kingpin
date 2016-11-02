@@ -79,49 +79,42 @@ Getopt::Kingpin::Flags - command line option object
 
 =head1 SYNOPSIS
 
-    use Getopt::Kingpin::Flags;
-    my $flags = Getopt::Kingpin::Flags->new;
-    $flags->add(
-        name        => 'help',
-        description => 'Show context-sensitive help.',
-    )->bool();
+    use Getopt::Kingpin::Commands;
+    my $commands = Getopt::Kingpin::Commands->new;
+    $commands->add(
+        name        => 'post',
+        description => 'post image',
+    );
 
 =head1 DESCRIPTION
 
-Getopt::Kingpin::Flags は、Getopt::Kingpinから使用するモジュールです。
-Flagを集合として扱います。
+Getopt::Kingpin::Commands is used from Getopt::Kingpin.
 
 =head1 METHOD
 
 =head2 new()
 
-Create Getopt::Kingpin::Flags object.
+Create Getopt::Kingpin::Commands object.
 
 =head2 add(name => $name, description => $description)
 
-$name と $description をもつGetopt::Kingpin::Flagを生成し、管理します。
+Add Getopt::Kingpin::Command instance which has $name and $description.
+
+=head2 count()
+
+Get count of Getopt::Kingpin::Command objects.
 
 =head2 get($name)
 
-$name で指定したGetopt::Kingpin::Flagを取り出します。
+Get Getopt::Kingpin::Arg instanse by $name.
 
-=head2 keys()
+=head2 get_all()
 
-定義されている$nameの一覧の出力します。
-add()した順で出力されます。
-
-=head2 values()
-
-定義されているGetopt::Kingpin::Flagをすべて出力します。
-add()した順で出力されます。
-
-=head2 _help_length()
-
-short_name、name、descriptionの文字列長を返します。
+Get all Getopt::Kingpin::Commands instanses.
 
 =head2 help()
 
-ヘルプを表示します。
+Return help message.
 
 =head1 LICENSE
 

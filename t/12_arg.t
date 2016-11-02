@@ -95,7 +95,7 @@ subtest 'arg get' => sub {
 
     $kingpin->parse;
 
-    is $kingpin->args->get(0), 'arg1';
+    is $kingpin->args->get_by_index(0), 'arg1';
 };
 
 done_testing;

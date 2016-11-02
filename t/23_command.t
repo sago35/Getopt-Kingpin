@@ -15,7 +15,11 @@ subtest 'command (flag)' => sub {
     my $server = $post->flag("server", "")->string();
     my $image = $post->flag("image", "")->file();
 
-    $kingpin->parse;
+    my $cmd = $kingpin->parse;
+
+    is $cmd, "post";
+    is $cmd->flags->get("server"), "127.0.0.1";
+    is $cmd->flags->get("image"), "abc.jpg";
 
     is ref $post, "Getopt::Kingpin::Command";
     is ref $server, "Getopt::Kingpin::Flag";
@@ -34,7 +38,11 @@ subtest 'command (arg)' => sub {
     my $server = $post->arg("server", "")->string();
     my $image = $post->arg("image", "")->file();
 
-    $kingpin->parse;
+    my $cmd = $kingpin->parse;
+
+    is $cmd, "post";
+    is $cmd->args->get("server"), "127.0.0.1";
+    is $cmd->args->get("image"), "abc.jpg";
 
     is ref $post, "Getopt::Kingpin::Command";
     is ref $server, "Getopt::Kingpin::Arg";

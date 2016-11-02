@@ -13,7 +13,7 @@ subtest 'get' => sub {
 
     $kingpin->parse;
 
-    my $name = $kingpin->get('name');
+    my $name = $kingpin->flags->get('name');
     is ref $name, 'Getopt::Kingpin::Flag';
     is $name, 'kingpin';
 };
@@ -27,11 +27,19 @@ subtest 'args get' => sub {
 
     $kingpin->parse;
 
-    my $name = $kingpin->args->get(0);
+    my $name = $kingpin->args->get_by_index(0);
     is ref $name, 'Getopt::Kingpin::Arg';
     is $name, 'kingpin';
 
-    ok not defined $kingpin->args->get(1);
+    my $name2 = $kingpin->args->get("name");
+    is ref $name2, 'Getopt::Kingpin::Arg';
+    is $name2, 'kingpin';
+
+    ok not defined $kingpin->args->get_by_index(1);
+
+    throws_ok {
+        $kingpin->args->get("xyz");
+    } qr/failed/;
 };
 
 done_testing;

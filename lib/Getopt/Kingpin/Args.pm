@@ -37,6 +37,18 @@ sub count {
 
 sub get {
     my $self = shift;
+    my ($name) = @_;
+
+    foreach my $arg ($self->get_all) {
+        if ($arg->name eq $name) {
+            return $arg;
+        }
+    }
+    croak "get($name) failed";
+}
+
+sub get_by_index {
+    my $self = shift;
     my ($index) = @_;
 
     if ($self->count <= $index) {
@@ -112,9 +124,30 @@ Create Getopt::Kingpin::Args object.
 
 Add Getopt::Kingpin::Arg instance which has $name and $description.
 
+=head2 count()
+
+Get count of Getopt::Kingpin::Arg objects.
+
 =head2 get($name)
 
 Get Getopt::Kingpin::Arg instanse by $name.
+
+    my $kingpin = Getopt::Kingpin->new;
+    $kingpin->arg('name', 'set name')->string();
+    $kingpin->parse;
+
+    my $name = $kingpin->args->get("name");
+
+=head2 get_by_index($index)
+
+Get Getopt::Kingpin::Arg instanse by $index.
+
+    $args->get_by_index(0);
+    $args->get_by_index(1);
+
+=head2 get_all()
+
+Get all Getopt::Kingpin::Arg instanses.
 
 =head2 keys()
 
@@ -133,7 +166,7 @@ Get length of help message.
 
 =head2 help()
 
-Print help.
+Return help message.
 
 =head1 LICENSE
 
