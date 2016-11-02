@@ -11,7 +11,7 @@ subtest 'string normal' => sub {
     $kingpin->flag('name', 'set name')->string();
     $kingpin->parse;
 
-    is $kingpin->get('name'), 'kingpin';
+    is $kingpin->flags->get('name'), 'kingpin';
 };
 
 subtest 'string normal 2 options' => sub {
@@ -23,8 +23,8 @@ subtest 'string normal 2 options' => sub {
     $k->flag('xyz',  'option 2')->string;
     $k->parse;
 
-    is $k->get('name'), 'kingpin';
-    is $k->get('xyz'), 'abcde';
+    is $k->flags->get('name'), 'kingpin';
+    is $k->flags->get('xyz'), 'abcde';
 
 };
 

@@ -13,7 +13,7 @@ subtest 'get' => sub {
 
     $kingpin->parse;
 
-    my $name = $kingpin->get('name');
+    my $name = $kingpin->flags->get('name');
     is ref $name, 'Getopt::Kingpin::Flag';
     is $name, 'kingpin';
 };
