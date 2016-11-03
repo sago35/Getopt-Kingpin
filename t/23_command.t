@@ -685,12 +685,13 @@ Args:
 
 subtest 'command help 9-1' => sub {
     local @ARGV;
-    push @ARGV, qw(--verbose register NICK NAME);
+    push @ARGV, qw(--verbose register NICK NAME --age 100);
 
     my $kingpin = Getopt::Kingpin->new;
     my $verbose = $kingpin->flag("verbose", "set verbose mode")->bool;
 
     my $register      = $kingpin->command('register', 'Register a new user.');
+    my $register_age  = $register->flag('age', 'Age for user.')->int;
     my $register_nick = $register->arg('nick', 'Nickname for user.')->required->string;
     my $register_name = $register->arg('name', 'Name for user.')->required->string;
 
@@ -698,18 +699,20 @@ subtest 'command help 9-1' => sub {
 
     is $cmd, "register";
     is $verbose, 1;
+    is $register_age, 100;
     is $register_nick, "NICK";
     is $register_name, "NAME";
 };
 
 subtest 'command help 9-2' => sub {
     local @ARGV;
-    push @ARGV, qw(register NICK NAME --verbose);
+    push @ARGV, qw(register NICK NAME --age 100 --verbose);
 
     my $kingpin = Getopt::Kingpin->new;
     my $verbose = $kingpin->flag("verbose", "set verbose mode")->bool;
 
     my $register      = $kingpin->command('register', 'Register a new user.');
+    my $register_age  = $register->flag('age', 'Age for user.')->int;
     my $register_nick = $register->arg('nick', 'Nickname for user.')->required->string;
     my $register_name = $register->arg('name', 'Name for user.')->required->string;
 
@@ -717,6 +720,7 @@ subtest 'command help 9-2' => sub {
 
     is $cmd, "register";
     is $verbose, 1;
+    is $register_age, 100;
     is $register_nick, "NICK";
     is $register_name, "NAME";
 };
