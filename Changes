@@ -2,6 +2,12 @@ Revision history for Perl extension Getopt-Kingpin
 
 {{$NEXT}}
 
+0.06 2016-11-03T13:56:23Z
+
+    - Support global flag in sub-command
+        - ref t/23_command.t (command help 9-2)
+    - Fix meta data for metacpan
+
 0.05 2016-11-02T12:39:12Z
 
     - Support perl 5.8.1 or later

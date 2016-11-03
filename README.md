@@ -1,4 +1,4 @@
-
+[![Build Status](https://travis-ci.org/sago35/Getopt-Kingpin.svg?branch=master)](https://travis-ci.org/sago35/Getopt-Kingpin) [![Coverage Status](http://codecov.io/github/sago35/Getopt-Kingpin/coverage.svg?branch=master)](https://codecov.io/github/sago35/Getopt-Kingpin?branch=master)
 # NAME
 
 Getopt::Kingpin - command line options parser (like golang kingpin)
@@ -171,7 +171,7 @@ If set hidden(), flag does not apear in the help.
 #### bool()
 
 Boolean value. (0 or 1)
-Boolean flag has a negative complement: --<name> and --no-<name>.
+Boolean flag has a negative complement: --&lt;name> and --no-&lt;name>.
 
     # --debug or --no-debug
     my $debug = $kingpin->flag("debug")->bool;
