@@ -30,6 +30,35 @@ sub add {
     return $self->_flags->{$name};
 }
 
+sub unshift {
+    my $self = shift;
+    my @flags = @_;
+
+    my $index_offset = scalar @flags;
+    foreach my $name ($self->keys) {
+        if ($name ne "help") {
+            $self->_flags->{$name}->index($self->_flags->{$name}->index + $index_offset);
+        }
+    }
+
+    my $index = 1;
+    foreach my $f (@flags) {
+        my $name = $f->name;
+
+        if ($name eq "help") {
+
+        } else {
+            if (exists $self->_flags->{$name}) {
+                croak sprintf "flag %s is already exists", $name;
+            }
+
+            $f->index($index);
+            $self->_flags->{$name} = $f;
+            $index++;
+        }
+    }
+}
+
 sub get {
     my $self = shift;
     my ($name) = @_;
@@ -133,6 +162,10 @@ Create Getopt::Kingpin::Flags object.
 =head2 add(name => $name, description => $description)
 
 Add Getopt::Kingpin::Flag instance which has $name and $description.
+
+=head2 unshift(@flags)
+
+Unshift Getopt::Kingpin::Flag instances to $self->_flags
 
 =head2 get($name)
 

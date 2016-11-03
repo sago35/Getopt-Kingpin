@@ -683,5 +683,147 @@ Args:
     is $trap->stdout, $expected;
 };
 
+subtest 'command help 9-1' => sub {
+    local @ARGV;
+    push @ARGV, qw(--verbose register NICK NAME --age 100);
+
+    my $kingpin = Getopt::Kingpin->new;
+    my $verbose = $kingpin->flag("verbose", "set verbose mode")->bool;
+
+    my $register      = $kingpin->command('register', 'Register a new user.');
+    my $register_age  = $register->flag('age', 'Age for user.')->int;
+    my $register_nick = $register->arg('nick', 'Nickname for user.')->required->string;
+    my $register_name = $register->arg('name', 'Name for user.')->required->string;
+
+    my $cmd = $kingpin->parse;
+
+    is $cmd, "register";
+    is $verbose, 1;
+    is $register_age, 100;
+    is $register_nick, "NICK";
+    is $register_name, "NAME";
+};
+
+subtest 'command help 9-2' => sub {
+    local @ARGV;
+    push @ARGV, qw(register NICK NAME --age 100 --verbose);
+
+    my $kingpin = Getopt::Kingpin->new;
+    my $verbose = $kingpin->flag("verbose", "set verbose mode")->bool;
+
+    my $register      = $kingpin->command('register', 'Register a new user.');
+    my $register_age  = $register->flag('age', 'Age for user.')->int;
+    my $register_nick = $register->arg('nick', 'Nickname for user.')->required->string;
+    my $register_name = $register->arg('name', 'Name for user.')->required->string;
+
+    my $cmd = $kingpin->parse;
+
+    is $cmd, "register";
+    is $verbose, 1;
+    is $register_age, 100;
+    is $register_nick, "NICK";
+    is $register_name, "NAME";
+};
+
+subtest 'command help 9-3 help' => sub {
+    local @ARGV;
+    push @ARGV, qw(help register);
+
+    my $kingpin = Getopt::Kingpin->new;
+    my $verbose = $kingpin->flag("verbose", "set verbose mode")->bool;
+
+    my $register      = $kingpin->command('register', 'Register a new user.');
+    my $register_age  = $register->flag('age', 'Age for user.')->int;
+    my $register_nick = $register->arg('nick', 'Nickname for user.')->required->string;
+    my $register_name = $register->arg('name', 'Name for user.')->required->string;
+
+    my $expected = sprintf <<'...', basename($0);
+usage: %s register [<flags>] <nick> <name>
+
+Register a new user.
+
+Flags:
+  --help     Show context-sensitive help.
+  --verbose  set verbose mode
+  --age=AGE  Age for user.
+
+Args:
+  <nick>  Nickname for user.
+  <name>  Name for user.
+
+...
+
+    trap {$kingpin->parse};
+    is $trap->exit, 0;
+    is $trap->stdout, $expected;
+};
+
+subtest 'command help 9-4 help' => sub {
+    local @ARGV;
+    push @ARGV, qw(--help register);
+
+    my $kingpin = Getopt::Kingpin->new;
+    my $verbose = $kingpin->flag("verbose", "set verbose mode")->bool;
+
+    my $register      = $kingpin->command('register', 'Register a new user.');
+    my $register_age  = $register->flag('age', 'Age for user.')->int;
+    my $register_nick = $register->arg('nick', 'Nickname for user.')->required->string;
+    my $register_name = $register->arg('name', 'Name for user.')->required->string;
+
+    my $expected = sprintf <<'...', basename($0);
+usage: %s register [<flags>] <nick> <name>
+
+Register a new user.
+
+Flags:
+  --help     Show context-sensitive help.
+  --verbose  set verbose mode
+  --age=AGE  Age for user.
+
+Args:
+  <nick>  Nickname for user.
+  <name>  Name for user.
+
+...
+
+    trap {$kingpin->parse};
+    is $trap->exit, 0;
+    is $trap->stdout, $expected;
+};
+
+subtest 'command help 9-4 help' => sub {
+    local @ARGV;
+    push @ARGV, qw(register --help);
+
+    my $kingpin = Getopt::Kingpin->new;
+    my $verbose = $kingpin->flag("verbose", "set verbose mode")->bool;
+
+    my $register      = $kingpin->command('register', 'Register a new user.');
+    my $register_age  = $register->flag('age', 'Age for user.')->int;
+    my $register_nick = $register->arg('nick', 'Nickname for user.')->required->string;
+    my $register_name = $register->arg('name', 'Name for user.')->required->string;
+
+    my $expected = sprintf <<'...', basename($0);
+usage: %s register [<flags>] <nick> <name>
+
+Register a new user.
+
+Flags:
+  --help     Show context-sensitive help.
+  --verbose  set verbose mode
+  --age=AGE  Age for user.
+
+Args:
+  <nick>  Nickname for user.
+  <name>  Name for user.
+
+...
+
+    trap {$kingpin->parse};
+    is $trap->exit, 0;
+    is $trap->stdout, $expected;
+};
+
+
 done_testing;
 
