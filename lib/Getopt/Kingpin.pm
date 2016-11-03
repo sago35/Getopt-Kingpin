@@ -120,6 +120,10 @@ sub _parse {
     my $self = shift;
     my @argv = @_;
 
+    if (defined $self->parent) {
+        $self->flags->unshift($self->parent->flags->values);
+    }
+
     my $required_but_not_found = {
         map {$_->name => $_} grep {$_->_required} $self->flags->values,
     };
