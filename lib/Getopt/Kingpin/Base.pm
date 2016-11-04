@@ -111,6 +111,12 @@ sub required {
     return $self;
 }
 
+sub hint_options {
+    my $self = shift;
+
+    return $self;
+}
+
 sub set_value {
     my $type = $_[0]->type;
 

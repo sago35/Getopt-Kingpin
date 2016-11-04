@@ -22,6 +22,10 @@ has flags => sub {
         name        => 'help',
         description => 'Show context-sensitive help.',
     )->bool();
+    $flags->add(
+        name        => 'completion-bash',
+        description => 'Output possible completions for the given args.',
+    )->hidden->bool;
     return $flags;
 };
 
@@ -235,6 +239,11 @@ sub _parse {
 
     if ($self->flags->get("version")) {
         printf STDERR "%s\n", $self->_version;
+        exit 0;
+    }
+
+    if ($self->flags->get("completion-bash")) {
+        printf "%s\n", join "\n", $self->commands->get_all;
         exit 0;
     }
 
