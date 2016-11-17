@@ -86,7 +86,7 @@ Set placeholder value for flag in the help.
 
 =head2 hidden()
 
-If set hidden(), flag does not apear in the help.
+If set hidden(), flag does not appear in the help.
 
 =head2 help_str()
 
