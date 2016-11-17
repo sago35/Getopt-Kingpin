@@ -509,7 +509,7 @@ The default value can be overridden with the default($value).
 
 =head3 override_default_from_envar()
 
-The default value can be overriden with the override_default_from_envar($envar).
+The default value can be overridden with the override_default_from_envar($envar).
 
     # Set default value to environment value of __DEBUG__
     # export $__DEBUG__=1 to enable debug mode
@@ -532,7 +532,7 @@ Here are some examples of flags with various permutations.
 
 =head3 hidden()
 
-If set hidden(), flag does not apear in the help.
+If set hidden(), flag does not appear in the help.
 
 =head3 types
 
@@ -588,7 +588,7 @@ Set default value.
 
 =head3 override_default_from_envar()
 
-Set default value by enviroment variable.
+Set default value by environment variable.
 
 =head3 required()
 

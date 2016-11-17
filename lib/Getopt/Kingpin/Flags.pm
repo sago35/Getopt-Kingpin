@@ -169,7 +169,7 @@ Unshift Getopt::Kingpin::Flag instances to $self->_flags
 
 =head2 get($name)
 
-Get Getopt::Kingpin::Flag instanse by $name.
+Get Getopt::Kingpin::Flag instance by $name.
 
 =head2 keys()
 

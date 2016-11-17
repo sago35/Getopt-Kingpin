@@ -75,7 +75,7 @@ __END__
 
 =head1 NAME
 
-Getopt::Kingpin::Flags - command line option object
+Getopt::Kingpin::Commands - command line option object
 
 =head1 SYNOPSIS
 
@@ -106,11 +106,11 @@ Get count of Getopt::Kingpin::Command objects.
 
 =head2 get($name)
 
-Get Getopt::Kingpin::Arg instanse by $name.
+Get Getopt::Kingpin::Arg instance by $name.
 
 =head2 get_all()
 
-Get all Getopt::Kingpin::Commands instanses.
+Get all Getopt::Kingpin::Commands instances.
 
 =head2 help()
 
