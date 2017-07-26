@@ -6,7 +6,7 @@ use Getopt::Kingpin::Base -base;
 
 our $VERSION = "0.06";
 
-has _placeholder => "";
+has _placeholder => undef;
 has _hidden      => 0;
 
 sub placeholder {
@@ -38,9 +38,9 @@ sub help_str {
     if ($self->type eq "Bool") {
         $ret->[1] = sprintf "--%s", $self->name;
     } else {
-        if ($self->_placeholder) {
+        if (defined $self->_placeholder) {
             $ret->[1] = sprintf '--%s=%s', $self->name, $self->_placeholder;
-        } elsif ($self->_default) {
+        } elsif (defined $self->_default) {
             $ret->[1] = sprintf '--%s="%s"', $self->name, $self->_default;
         } else {
             $ret->[1] = sprintf "--%s=%s", $self->name, uc $self->name;
