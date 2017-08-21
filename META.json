@@ -68,7 +68,7 @@
          "web" : "https://github.com/sago35/Getopt-Kingpin"
       }
    },
-   "version" : "0.06",
+   "version" : "0.07",
    "x_contributors" : [
       "Syohei YOSHIDA <syohex@gmail.com>"
    ],
