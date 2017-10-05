@@ -13,12 +13,12 @@ sub set_value {
 
     my $p = path($value);
     if ($p->is_dir) {
-        printf STDERR "error: '%s' is a directory, try --help", $value;
+        printf STDERR "error: '%s' is a directory, try --help\n", $value;
         exit 1;
     } elsif ($p->is_file) {
         # ok
     } else {
-        printf STDERR "error: path '%s' does not exist, try --help", $value;
+        printf STDERR "error: path '%s' does not exist, try --help\n", $value;
         exit 1;
     }
     return $p;
