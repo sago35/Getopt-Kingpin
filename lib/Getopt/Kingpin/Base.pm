@@ -125,7 +125,7 @@ sub set_value {
         $_[0]->_defined(1);
         $_[0]->value([@values]);
     } elsif ($_[0]->_defined) {
-        printf STDERR "error: flag '%s' cannot be repeated, try --help", $_[0]->name;
+        printf STDERR "error: flag '%s' cannot be repeated, try --help\n", $_[0]->name;
         exit 1;
     } else {
         $_[0]->_defined(1);

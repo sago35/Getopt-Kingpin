@@ -144,7 +144,7 @@ sub _parse {
             my $v = $self->flags->get($name);
 
             if (not defined $v) {
-                printf STDERR "%s: error: unknown long flag '--%s', try --help", $self->name, $name;
+                printf STDERR "%s: error: unknown long flag '--%s', try --help\n", $self->name, $name;
                 exit 1;
             }
 
@@ -169,7 +169,7 @@ sub _parse {
                     }
                 }
                 if (not defined $name) {
-                    printf STDERR "%s: error: unknown short flag '-%s', try --help", $self->name, $s;
+                    printf STDERR "%s: error: unknown short flag '-%s', try --help\n", $self->name, $s;
                     exit 1;
                 }
                 delete $required_but_not_found->{$name} if exists $required_but_not_found->{$name};
@@ -217,7 +217,7 @@ sub _parse {
                         $arg_index++;
                     }
                 } else {
-                    printf STDERR "%s: error: unexpected %s, try --help", $self->name, $arg;
+                    printf STDERR "%s: error: unexpected %s, try --help\n", $self->name, $arg;
                     exit 1;
                 }
             }
@@ -275,13 +275,13 @@ sub _parse {
     }
 
     foreach my $r (values %$required_but_not_found) {
-        printf STDERR "%s: error: required flag --%s not provided, try --help", $self->name, $r->name;
+        printf STDERR "%s: error: required flag --%s not provided, try --help\n", $self->name, $r->name;
         exit 1;
     }
     for (my $i = 0; $i < $self->args->count; $i++) {
         my $arg = $self->args->get_by_index($i);
         if ($arg->_required and not $arg->_defined) {
-            printf STDERR "%s: error: required arg '%s' not provided, try --help", $self->name, $arg->name;
+            printf STDERR "%s: error: required arg '%s' not provided, try --help\n", $self->name, $arg->name;
             exit 1;
         }
     }
