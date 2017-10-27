@@ -140,7 +140,6 @@ sub _parse {
     };
     my $arg_index = 0;
     my $arg_only = 0;
-    my $current_cmd;
     while (scalar @argv > 0) {
         my $arg = shift @argv;
         if ($arg eq "--") {
@@ -243,11 +242,7 @@ sub _parse {
     }
 
     if ($self->flags->get("help")) {
-        if (defined $current_cmd) {
-            $current_cmd->help;
-        } else {
-            $self->help;
-        }
+        $self->help;
         return undef, 0;
     }
 
@@ -322,11 +317,7 @@ sub _parse {
         }
     }
 
-    if (defined $current_cmd) {
-        return $current_cmd;
-    } else {
-        return $self;
-    }
+    return $self;
 }
 
 sub version {
