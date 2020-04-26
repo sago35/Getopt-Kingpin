@@ -14,7 +14,7 @@ sub set_value {
         # ok
     } else {
         printf STDERR "int parse error\n";
-        exit 1;
+        return undef, 1;
     }
     return $value;
 }
