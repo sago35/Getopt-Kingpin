@@ -9,7 +9,7 @@ use Getopt::Kingpin::Commands;
 use File::Basename;
 use Carp;
 
-our $VERSION = "0.07";
+our $VERSION = "0.08";
 
 use overload (
     '""' => sub {$_[0]->name},
