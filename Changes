@@ -2,6 +2,9 @@ Revision history for Perl extension Getopt-Kingpin
 
 {{$NEXT}}
 
+    - Fix META.json issue
+        - https://github.com/metacpan/metacpan-web/issues/2306
+
 0.08 2020-04-27T04:02:15Z
 
     - Add newline at the end of error messages
