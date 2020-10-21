@@ -37,6 +37,14 @@ sub help_str {
 
     if ($self->type eq "Bool") {
         $ret->[1] = sprintf "--%s", $self->name;
+    } elsif ($self->is_hash) {
+        if (defined $self->_placeholder and $self->_placeholder =~ /=/) {
+            $ret->[1] = sprintf '--%s %s', $self->name, $self->_placeholder;
+        } elsif (defined $self->_placeholder) {
+            $ret->[1] = sprintf '--%s KEY=%s', $self->name, $self->_placeholder;
+        } else {
+            $ret->[1] = sprintf "--%s KEY=VALUE", $self->name;
+        }
     } else {
         if (defined $self->_placeholder) {
             $ret->[1] = sprintf '--%s=%s', $self->name, $self->_placeholder;
