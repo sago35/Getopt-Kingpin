@@ -1,0 +1,84 @@
+use strict;
+use Test::More 0.98;
+use Test::Exception;
+use Capture::Tiny ':all';
+use Getopt::Kingpin;
+
+subtest 'repeatable flag error' => sub {
+    local @ARGV;
+    push @ARGV, qw(--xxx a --xxx b --xxx c);
+
+    my $kingpin = Getopt::Kingpin->new();
+    $kingpin->terminate(sub {return @_});
+    my $args = $kingpin->flag("xxx", "xxx yyy")->string();
+
+    my ($stdout, $stderr, $ret, $exit) = capture {
+        $kingpin->parse;
+    };
+
+    like $stderr, qr/error: flag 'xxx' cannot be repeated, try --help/;
+    is $exit, 1;
+};
+
+subtest 'repeatable flag (is_hash)' => sub {
+    local @ARGV;
+    push @ARGV, qw(--xxx a=a --xxx b= --xxx c);
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $args = $kingpin->flag("xxx", "xxx yyy")->string_hash();
+    #$args->is_cumulative(1);
+
+    my $cmd = $kingpin->parse;
+
+    is_deeply $args->value, { a=>'a', b=>'', c=>undef };
+};
+
+subtest 'repeatable flag 2 (is_hash)' => sub {
+    local @ARGV;
+    push @ARGV, qw(--xxx a=a --xxx b=b --xxx c=c);
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $args = $kingpin->flag("xxx", "xxx yyy")->file_hash();
+    #$args->is_cumulative(1);
+
+    my $cmd = $kingpin->parse;
+
+    is ref $args->value->{'a'}, "Path::Tiny";
+    is ref $args->value->{'b'}, "Path::Tiny";
+    is ref $args->value->{'c'}, "Path::Tiny";
+    is $args->value->{'a'}, 'a';
+    is $args->value->{'b'}, 'b';
+    is $args->value->{'c'}, 'c';
+};
+
+subtest 'repeatable arg (is_hash)' => sub {
+    local @ARGV;
+    push @ARGV, qw(a=a b= c);
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $args = $kingpin->arg("xxx", "xxx yyy")->string_hash();
+
+    my $cmd = $kingpin->parse;
+
+    is_deeply $args->value, { a=>'a', b=>'', c=>undef };
+};
+
+subtest 'repeatable arg 2 (is_hash)' => sub {
+    local @ARGV;
+    push @ARGV, qw(a=a b=b c=c);
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $args = $kingpin->arg("xxx", "xxx yyy")->file_hash();
+
+    my $cmd = $kingpin->parse;
+
+    is ref $args->value->{'a'}, "Path::Tiny";
+    is ref $args->value->{'b'}, "Path::Tiny";
+    is ref $args->value->{'c'}, "Path::Tiny";
+    is $args->value->{'a'}, 'a';
+    is $args->value->{'b'}, 'b';
+    is $args->value->{'c'}, 'c';
+};
+
+done_testing;
+
