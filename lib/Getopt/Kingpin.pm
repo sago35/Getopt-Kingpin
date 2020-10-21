@@ -231,11 +231,12 @@ sub _parse {
 
             if (not ($arg_index == 0 and $arg eq "help")) {
                 if ($arg_index < $self->args->count) {
-                    my ($dummy, $exit) = $self->args->get_by_index($arg_index)->set_value($arg);
+                    my $arg_obj = $self->args->get_by_index($arg_index);
+                    my ($dummy, $exit) = $arg_obj->set_value($arg);
                     if (defined $exit) {
                         return undef, $exit;
                     }
-                    if (not $self->args->get_by_index($arg_index)->is_cumulative) {
+                    if (not $arg_obj->is_cumulative || $arg_obj->is_hash) {
                         $arg_index++;
                     }
                 } else {
