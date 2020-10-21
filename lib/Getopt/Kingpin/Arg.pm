@@ -18,6 +18,9 @@ sub help_name {
     if ($mode and $self->is_cumulative) {
         $ret = $ret . '...';
     }
+    if ($self->is_hash) {
+        $ret =~ s/</<KEY=/;
+    }
     if (not $self->_required) {
         $ret = '[' . $ret . ']';
     }
