@@ -140,6 +140,11 @@ sub _parse {
     };
     my $arg_index = 0;
     my $arg_only = 0;
+    
+    if (@argv == 1 and ref($argv[0]) and ref($argv[0]) eq "ARRAY") {
+        @argv = @{ $argv[0] };
+    }
+    
     while (scalar @argv > 0) {
         my $arg = shift @argv;
         if ($arg eq "--") {
@@ -648,6 +653,13 @@ If define sub-command, parse() return Getopt::Kingpin::Command object;
     my $cmd = $kingpin->parse;
     printf "cmd : %s\n", $cmd;
     printf "cmd : %s\n", $cmd->name;
+
+You may also pass an arrayref to parse():
+
+    $kingpin->parse( \@arguments );
+
+An empty arrayref will not cause Kingpin to parse @ARGV like
+an empty array would.
 
 =head2 _parse()
 
