@@ -17,6 +17,29 @@ subtest 'num normal' => sub {
     ok $x == 0;
 };
 
+subtest 'num scientific notation 1' => sub {
+    local @ARGV;
+    push @ARGV, qw(--x 1e3);
+
+    my $kingpin = Getopt::Kingpin->new;
+    my $x = $kingpin->flag('x', 'set x')->num();
+    $kingpin->parse;
+
+    is $x->value + 0, 1000; # + 0 to force == instead of eq check
+    ok $x == 1000;
+};
+
+subtest 'num scientific notation 2' => sub {
+    local @ARGV;
+    push @ARGV, qw(--x -1.5e6);
+
+    my $kingpin = Getopt::Kingpin->new;
+    my $x = $kingpin->flag('x', 'set x')->num();
+    $kingpin->parse;
+
+    is $x->value + 0, -1_500_000;
+    ok $x == -1_500_000;
+};
 
 subtest 'num error' => sub {
     local @ARGV;
