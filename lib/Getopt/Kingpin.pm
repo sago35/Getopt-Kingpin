@@ -596,6 +596,10 @@ Path::Tiny object.
 
 Integer value.
 
+=head4 num()
+
+Numeric value.
+
 =head4 string()
 
 String value.
