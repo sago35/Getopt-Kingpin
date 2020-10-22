@@ -26,7 +26,6 @@ subtest 'repeatable flag (is_hash)' => sub {
 
     my $kingpin = Getopt::Kingpin->new();
     my $args = $kingpin->flag("xxx", "xxx yyy")->string_hash();
-    #$args->is_cumulative(1);
 
     my $cmd = $kingpin->parse;
 
@@ -39,7 +38,6 @@ subtest 'repeatable flag 2 (is_hash)' => sub {
 
     my $kingpin = Getopt::Kingpin->new();
     my $args = $kingpin->flag("xxx", "xxx yyy")->file_hash();
-    #$args->is_cumulative(1);
 
     my $cmd = $kingpin->parse;
 
@@ -49,6 +47,27 @@ subtest 'repeatable flag 2 (is_hash)' => sub {
     is $args->value->{'a'}, 'a';
     is $args->value->{'b'}, 'b';
     is $args->value->{'c'}, 'c';
+};
+
+subtest 'repeatable flag 3 (is_hash)' => sub {
+    local @ARGV;
+    push @ARGV, qw(--xxx a=21 --xxx b=22 --xxx c=XYZ);
+
+    my $kingpin = Getopt::Kingpin->new();
+    $kingpin->terminate(sub {return @_});
+    my $args = $kingpin->flag("xxx", "xxx yyy")->int_hash();
+
+    my ($stdout, $stderr, $ret, $exit) = capture {
+        $kingpin->parse;
+    };
+
+    is ref($args->value), 'HASH';
+    is $args->value->{'a'}, 21;
+    is $args->value->{'b'}, 22;
+    is $args->value->{'c'}, undef;
+
+    like $stderr, qr/int parse error/;
+    is $exit, 1;
 };
 
 subtest 'repeatable arg (is_hash)' => sub {
