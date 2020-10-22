@@ -40,14 +40,14 @@ Getopt::Kingpin::Type::Num - command line option object
 
 =head1 DESCRIPTION
 
-Getopt::Kingpin::Type::Num は、Getopt::Kingpin内で使用する型定義です。
+Getopt::Kingpin::Type::Num is the type definition for Num within Getopt::Kingpin.
 
 =head1 METHOD
 
 =head2 set_value($value)
 
-$self->valueに値を設定します。
-値はqr/-?[0-9]+$/で定義されるもののみです。
+Set the value of $self->value. Allowed values are checked by looks_like_number
+from L<Scalar::Util>.
 
 =head1 LICENSE
 
