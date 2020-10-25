@@ -35,14 +35,13 @@ Getopt::Kingpin::Type::File - command line option object
 
 =head1 DESCRIPTION
 
-Getopt::Kingpin::Type::File は、Getopt::Kingpin内で使用する型定義です。
+Getopt::Kingpin::Type::File is the type definition for File within Getopt::Kingpin.
 
 =head1 METHOD
 
 =head2 set_value($value)
 
-$self->valueに値を設定します。
-値は、Path::Tinyによって処理されます。
+Set the value of $self->value. Converts strings to Path::Tiny objects.
 
 =head1 LICENSE
 
