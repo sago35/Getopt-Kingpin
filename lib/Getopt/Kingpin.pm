@@ -597,6 +597,18 @@ Integer value.
 String value.
 It is default type to flag.
 
+=head4 string_list(), int_list(), file_list(), etc
+
+Allows repeated uses of a flag.
+
+  --input=customers.csv --input=customers2.csv
+
+=head4 string_hash(), int_hash(), file_hash(), etc
+
+Allows repeated use of a flag as key-value pairs.
+
+  --define os=linux --define arch=x86_64
+
 =head2 arg($name, $description)
 
 Add and return Getopt::Kingpin::Arg object.
