@@ -39,14 +39,14 @@ Getopt::Kingpin::Type::Int - command line option object
 
 =head1 DESCRIPTION
 
-Getopt::Kingpin::Type::Int は、Getopt::Kingpin内で使用する型定義です。
+Getopt::Kingpin::Type::Int is the type definition for Int within Getopt::Kingpin.
 
 =head1 METHOD
 
 =head2 set_value($value)
 
-$self->valueに値を設定します。
-値はqr/-?[0-9]+$/で定義されるもののみです。
+Set the value of $self->value. Tests it against the regular expression
+C<< /^-?[0-9]+$/ >>.
 
 =head1 LICENSE
 
