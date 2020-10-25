@@ -33,14 +33,13 @@ Getopt::Kingpin::Type::Bool - command line option object
 
 =head1 DESCRIPTION
 
-Getopt::Kingpin::Type::Bool は、Getopt::Kingpin内で使用する型定義です。
+Getopt::Kingpin::Type::Bool is the type definition for Bool within Getopt::Kingpin.
 
 =head1 METHOD
 
 =head2 set_value($value)
 
-$self->valueに値を設定します。
-値は0 or 非0のみです。
+Set the value of $self->value.
 
 =head1 LICENSE
 
