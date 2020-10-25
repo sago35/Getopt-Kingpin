@@ -33,14 +33,13 @@ Getopt::Kingpin::Type::String - command line option object
 
 =head1 DESCRIPTION
 
-Getopt::Kingpin::Type::String は、Getopt::Kingpin内で使用する型定義です。
+Getopt::Kingpin::Type::String is the type definition for String within Getopt::Kingpin.
 
 =head1 METHOD
 
 =head2 set_value($value)
 
-$self->valueに値を設定します。
-値は、文字列をとることができます。
+Set the value of $self->value.
 
 =head1 LICENSE
 
