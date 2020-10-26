@@ -70,18 +70,19 @@ sub get {
 sub keys {
     my $self = shift;
     my @keys = sort {$self->_flags->{$a}->index <=> $self->_flags->{$b}->index} keys %{$self->_flags};
+    @keys = grep {$self->_flags->{$_}->_hidden == 0} @keys;
     return @keys;
 }
 
 sub values {
     my $self = shift;
-    my @values = sort {$a->index <=> $b->index} values %{$self->_flags};
+    my @values = map {$self->_flags->{$_}} $self->keys;
     return @values;
 }
 
 sub count {
     my $self = shift;
-    return scalar $self->values;
+    return scalar $self->keys;
 }
 
 sub _help_length {
