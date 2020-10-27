@@ -275,6 +275,13 @@ sub _parse {
                         return undef, $exit;
                     }
                 }
+            } elsif ($item->type =~ /Hash$/) {
+                while (my ($key, $val) = each %{$default}) {
+                    my ($dummy, $exit) = $item->set_value([ $key, $val ]);
+                    if (defined $exit) {
+                        return undef, $exit;
+                    }
+                }
             } else {
                 my ($dummy, $exit) = $item->set_value($default);
                 if (defined $exit) {
@@ -283,6 +290,8 @@ sub _parse {
             }
         } elsif ($item->type =~ /List$/) {
             $item->value([]);
+        } elsif ($item->type =~ /Hash$/) {
+            $item->value({});
         }
         return;
     };
