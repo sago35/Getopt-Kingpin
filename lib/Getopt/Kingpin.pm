@@ -267,15 +267,16 @@ sub _parse {
                 return undef, $exit;
             }
         } elsif (defined $item->_default) {
+            my $default = $item->_default;
             if ($item->type =~ /List$/) {
-                foreach my $default (@{$item->_default}) {
-                    my ($dummy, $exit) = $item->set_value($default);
+                foreach my $val (@{$default}) {
+                    my ($dummy, $exit) = $item->set_value($val);
                     if (defined $exit) {
                         return undef, $exit;
                     }
                 }
             } else {
-                my ($dummy, $exit) = $item->set_value($item->_default);
+                my ($dummy, $exit) = $item->set_value($default);
                 if (defined $exit) {
                     return undef, $exit;
                 }
