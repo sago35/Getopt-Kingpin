@@ -137,7 +137,7 @@ sub set_value {
         if ($self->_defined) {
             %values = %{$self->value};
         }
-        my ($key, $val) = split(/=/, $_[0], 2);
+        my ($key, $val) = (ref($_[0]) eq 'ARRAY') ? @{$_[0]} : split(/=/, $_[0], 2);
         my @ret = $types->{$type}->{set_value}->($self, $val);
         if (scalar @ret > 1) {
             return undef, $ret[1];

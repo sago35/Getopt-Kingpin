@@ -99,5 +99,45 @@ subtest 'repeatable arg 2 (is_hash)' => sub {
     is $args->value->{'c'}, 'c';
 };
 
+subtest 'repeatable flag (is_hash) with default' => sub {
+    local @ARGV;
+    push @ARGV, qw();
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $args = $kingpin->flag("xxx", "xxx yyy")->default({a=>'a',b=>'',c=>undef})->string_hash();
+
+    my $cmd = $kingpin->parse;
+
+    is_deeply $args->value, { a=>'a', b=>'', c=>undef };
+};
+
+subtest 'repeatable flag (is_hash) with no default and no flag on command line' => sub {
+    local @ARGV;
+    push @ARGV, qw();
+
+    my $kingpin = Getopt::Kingpin->new();
+    my $args = $kingpin->flag("xxx", "xxx yyy")->string_hash();
+
+    my $cmd = $kingpin->parse;
+
+    is_deeply $args->value, {};
+};
+
+subtest 'repeatable flag (is_hash) with bad default' => sub {
+    local @ARGV;
+    push @ARGV, qw();
+
+    my $kingpin = Getopt::Kingpin->new();
+    $kingpin->terminate(sub {return @_});
+    my $args = $kingpin->flag("xxx", "xxx yyy")->default({'a'=>'xyz'})->int_hash();
+
+    my ($stdout, $stderr, $ret, $exit) = capture {
+        $kingpin->parse;
+    };
+
+    like $stderr, qr/int parse error/;
+    is $exit, 1;
+};
+
 done_testing;
 

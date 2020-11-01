@@ -257,58 +257,53 @@ sub _parse {
         return undef, 0;
     }
 
-    foreach my $f ($self->flags->values) {
-        if (defined $f->value) {
-            next;
-        } elsif (defined $f->_envar) {
-            my ($dummy, $exit) = $f->set_value($f->_envar);
+    my $process_item = sub {
+        my $item = shift;
+        if (defined $item->value) {
+            return;
+        } elsif (defined $item->_envar) {
+            my ($dummy, $exit) = $item->set_value($item->_envar);
             if (defined $exit) {
                 return undef, $exit;
             }
-        } elsif (defined $f->_default) {
-            if ($f->type =~ /List$/) {
-                foreach my $default (@{$f->_default}) {
-                    my ($dummy, $exit) = $f->set_value($default);
+        } elsif (defined $item->_default) {
+            my $default = $item->_default;
+            if ($item->type =~ /List$/) {
+                foreach my $val (@{$default}) {
+                    my ($dummy, $exit) = $item->set_value($val);
+                    if (defined $exit) {
+                        return undef, $exit;
+                    }
+                }
+            } elsif ($item->type =~ /Hash$/) {
+                while (my ($key, $val) = each %{$default}) {
+                    my ($dummy, $exit) = $item->set_value([ $key, $val ]);
                     if (defined $exit) {
                         return undef, $exit;
                     }
                 }
             } else {
-                my ($dummy, $exit) = $f->set_value($f->_default);
+                my ($dummy, $exit) = $item->set_value($default);
                 if (defined $exit) {
                     return undef, $exit;
                 }
             }
-        } elsif ($f->type =~ /List$/) {
-            $f->value([]);
+        } elsif ($item->type =~ /List$/) {
+            $item->value([]);
+        } elsif ($item->type =~ /Hash$/) {
+            $item->value({});
         }
+        return;
+    };
+
+    foreach my $f ($self->flags->values) {
+        my @r = $process_item->($f);
+        return @r if @r > 1;
     }
     for (my $i = 0; $i < $self->args->count; $i++) {
         my $arg = $self->args->get_by_index($i);
-        if (defined $arg->value) {
-            next;
-        } elsif (defined $arg->_envar) {
-            my ($dummy, $exit) = $arg->set_value($arg->_envar);
-            if (defined $exit) {
-                return undef, $exit;
-            }
-        } elsif (defined $arg->_default) {
-            if ($arg->type =~ /List$/) {
-                foreach my $default (@{$arg->_default}) {
-                    my ($dummy, $exit) = $arg->set_value($default);
-                    if (defined $exit) {
-                        return undef, $exit;
-                    }
-                }
-            } else {
-                my ($dummy, $exit) = $arg->set_value($arg->_default);
-                if (defined $exit) {
-                    return undef, $exit;
-                }
-            }
-        } elsif ($arg->type =~ /List$/) {
-            $arg->value([]);
-        }
+        my @r = $process_item->($arg);
+        return @r if @r > 1;
     }
 
     foreach my $r (values %$required_but_not_found) {
