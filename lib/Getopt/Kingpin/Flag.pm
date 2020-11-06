@@ -35,6 +35,12 @@ sub help_str {
         $ret->[0] = sprintf "-%s", $self->short_name;
     }
 
+    my $default = $self->_default;
+    my $printable_default = defined $default;
+    if (ref $default) {
+        $printable_default = Scalar::Util::blessed($default) && overload::Method($default, q[""]);
+    }
+
     if ($self->type eq "Bool") {
         $ret->[1] = sprintf "--%s", $self->name;
     } elsif ($self->is_hash) {
@@ -48,8 +54,8 @@ sub help_str {
     } else {
         if (defined $self->_placeholder) {
             $ret->[1] = sprintf '--%s=%s', $self->name, $self->_placeholder;
-        } elsif (defined $self->_default) {
-            $ret->[1] = sprintf '--%s="%s"', $self->name, $self->_default;
+        } elsif ($printable_default) {
+            $ret->[1] = sprintf '--%s="%s"', $self->name, $default;
         } else {
             $ret->[1] = sprintf "--%s=%s", $self->name, uc $self->name;
         }

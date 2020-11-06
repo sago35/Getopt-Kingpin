@@ -8,6 +8,7 @@ use Getopt::Kingpin::Args;
 use Getopt::Kingpin::Commands;
 use File::Basename;
 use Carp;
+use Scalar::Util qw(blessed);
 
 our $VERSION = "0.09";
 
@@ -268,6 +269,10 @@ sub _parse {
             }
         } elsif (defined $item->_default) {
             my $default = $item->_default;
+            if (ref($default) eq 'CODE'
+            || (blessed($default) && overload::Method($default, '&{}'))) {
+                $default = $default->();
+            }
             if ($item->type =~ /List$/) {
                 foreach my $val (@{$default}) {
                     my ($dummy, $exit) = $item->set_value($val);
@@ -534,6 +539,13 @@ The default value can be overridden with the default($value).
 
     # Set default value to true (1)
     my $debug = $kingpin->flag("debug", "Enable debug mode.")->default(1)->bool;
+
+The default can be set to a coderef or object overloading &{}.
+
+    my $debug = $kingpin->flag("debug", "Enable debug mode.")->default(sub {
+      my $config = read_config_files();
+      return $config->{DEBUG};
+    })->bool;
 
 =head3 override_default_from_envar()
 
