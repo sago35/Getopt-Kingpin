@@ -2,6 +2,8 @@ Revision history for Perl extension Getopt-Kingpin
 
 {{$NEXT}}
 
+0.10 2020-11-06T13:08:51Z
+
     - Add support for `Type Num`
     - Add support for `Type Hash`
     - Allow default to be a coderef or object overloading &{}

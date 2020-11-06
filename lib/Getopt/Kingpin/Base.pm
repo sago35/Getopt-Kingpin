@@ -6,7 +6,7 @@ use Object::Simple -base;
 use Carp;
 use Path::Tiny;
 
-our $VERSION = "0.09";
+our $VERSION = "0.10";
 our $types;
 sub AUTOLOAD {
     my $self = shift;

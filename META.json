@@ -68,10 +68,11 @@
          "web" : "https://github.com/sago35/Getopt-Kingpin"
       }
    },
-   "version" : "0.09",
+   "version" : "0.10",
    "x_contributors" : [
       "Pavel Goran <me@pvgoran.name>",
-      "Syohei YOSHIDA <syohex@gmail.com>"
+      "Syohei YOSHIDA <syohex@gmail.com>",
+      "Toby Inkster <mail@tobyinkster.co.uk>"
    ],
    "x_serialization_backend" : "JSON::PP version 4.02",
    "x_static_install" : 1
