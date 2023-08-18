@@ -33,4 +33,5 @@ jobs:
         run: |
           cpanm --quiet --notest Module::Build::Tiny Devel::Cover Devel::Cover::Report::Codecov
           perl Build.PL
+          ./Build build
           cover -test -report codecov
