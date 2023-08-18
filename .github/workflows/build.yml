@@ -32,6 +32,7 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: |
           cpanm --quiet --notest Module::Build::Tiny Devel::Cover Devel::Cover::Report::Codecov
+          cpanm --quiet --notest --skip-satisfied --installdeps --with-recommend .
           perl Build.PL
           ./Build build
           cover -test -report codecov
