@@ -19,4 +19,6 @@ jobs:
       - run: cpanm --quiet --notest --skip-satisfied --installdeps --with-recommend .
       - run: perl -V
       - run: cpanm --installdeps .
+      - run: perl Build.PL
+      - run: ./Build build
       - run: cover -test
