@@ -35,4 +35,5 @@ jobs:
           cpanm --quiet --notest --skip-satisfied --installdeps --with-recommend .
           perl Build.PL
           ./Build build
-          cover -test -report codecov
+          cover -test
+          cover -report codecov
