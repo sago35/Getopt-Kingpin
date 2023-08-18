@@ -1,4 +1,4 @@
 name = "Getopt-Kingpin"
-badges = ["github-actions/$workflow_file", "metacpan", "appveyor"]
+badges = ["github-actions/build.yml", "metacpan", "appveyor"]
 module_maker="ModuleBuildTiny"
 

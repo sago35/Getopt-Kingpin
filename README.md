@@ -1,4 +1,4 @@
-[![Actions Status](https://github.com/sago35/Getopt-Kingpin/workflows/$workflow_file/badge.svg)](https://github.com/sago35/Getopt-Kingpin/actions) [![MetaCPAN Release](https://badge.fury.io/pl/Getopt-Kingpin.svg)](https://metacpan.org/release/Getopt-Kingpin) [![Build Status](https://img.shields.io/appveyor/ci/sago35/Getopt-Kingpin/main.svg?logo=appveyor)](https://ci.appveyor.com/project/sago35/Getopt-Kingpin/branch/main)
+[![Actions Status](https://github.com/sago35/Getopt-Kingpin/actions/workflows/build.yml/badge.svg)](https://github.com/sago35/Getopt-Kingpin/actions) [![MetaCPAN Release](https://badge.fury.io/pl/Getopt-Kingpin.svg)](https://metacpan.org/release/Getopt-Kingpin) [![Build Status](https://img.shields.io/appveyor/ci/sago35/Getopt-Kingpin/main.svg?logo=appveyor)](https://ci.appveyor.com/project/sago35/Getopt-Kingpin/branch/main)
 # NAME
 
 Getopt::Kingpin - command line options parser (like golang kingpin)
