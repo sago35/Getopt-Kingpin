@@ -11,7 +11,7 @@ sub set_value {
     my ($value) = @_;
 
     if ((scalar grep {$value eq $_} @{$self->{_options}}) == 0) {
-        printf STDERR "error: '%s' does not exist in Enum-values=(%s), try --help\n", $value, join(", ", @{$self->{_options}});
+        printf STDERR "error: enum value must be one of %s, got '%s', try --help\n", join(",", @{$self->{_options}}), $value;
         return undef, 1;
     }
 
