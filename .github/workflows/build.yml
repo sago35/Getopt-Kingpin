@@ -15,7 +15,7 @@ jobs:
         uses: shogo82148/actions-setup-perl@v1
         with:
           perl-version: ${{ matrix.perl }}
-      - env:
+        env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       - run: cpanm --quiet --notest --skip-satisfied Devel::Cover Devel::Cover::Report::Codecov
       - run: cpanm --quiet --notest --skip-satisfied --installdeps --with-recommend .
