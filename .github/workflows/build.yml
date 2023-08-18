@@ -21,6 +21,16 @@ jobs:
       - run: cpanm --quiet --notest --skip-satisfied --installdeps --with-recommend .
       - run: perl -V
       - run: cpanm --installdeps .
-      - run: perl Build.PL
-      - run: ./Build build
-      - run: cover -test -report codecov
+      - run: cover -test
+  codecov:
+    runs-on: ubuntu-latest
+    container: perl:latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run codecov GitHub Action
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        run: |
+          cpanm --quiet --notest Module::Build Devel::Cover Devel::Cover::Report::Codecovbash
+          perl Build.PL
+          cover -test -report codecov
