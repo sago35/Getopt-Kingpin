@@ -17,7 +17,7 @@ jobs:
           perl-version: ${{ matrix.perl }}
         env: 
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      - run: cpanm --quiet --notest --skip-satisfied Devel::Cover Devel::Cover::Report::Codecov Module::Build::Tiny
+      - run: cpanm --quiet --notest --skip-satisfied Devel::Cover Devel::Cover::Report::Codecovbash Module::Build::Tiny
       - run: cpanm --quiet --notest --skip-satisfied --installdeps --with-recommend .
       - run: perl -V
       - run: cpanm --installdeps .
